@@ -1,13 +1,11 @@
-import Image from "next/image";
-import { Inter } from "@next/font/google";
 import { ReservationTable } from "@/components/reservation_table/ReservationTable";
-
-const inter = Inter({ subsets: ["latin"] });
-
+import { Box } from "../app/common/components";
 export default function Home() {
   return (
     <main>
-      <ReservationTable />
+      <Box maxW={"900px"} margin="auto">
+        <ReservationTable />
+      </Box>
     </main>
   );
 }
