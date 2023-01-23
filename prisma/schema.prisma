@@ -9,7 +9,8 @@ generator client {
 }
 
 model Student {
-  id                 String               @id
+  id                 Int                  @id @default(autoincrement())
+  studentId          String
   ReservationStudent ReservationStudent[]
   StudentLedger      StudentLedger[]
 }
@@ -25,7 +26,7 @@ model Reservation {
 model ReservationStudent {
   reservationStudentId Int         @id @default(autoincrement())
   student              Student     @relation(fields: [studentId], references: [id])
-  studentId            String
+  studentId            Int
   reservation          Reservation @relation(fields: [reservationId], references: [id])
   reservationId        Int
 }
@@ -33,5 +34,5 @@ model ReservationStudent {
 model StudentLedger {
   id        Int     @id
   student   Student @relation(fields: [studentId], references: [id])
-  studentId String
+  studentId Int
 }

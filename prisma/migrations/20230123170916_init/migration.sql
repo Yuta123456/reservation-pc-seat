@@ -1,15 +1,7 @@
-/*
-  Warnings:
-
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "User";
-
 -- CreateTable
 CREATE TABLE "Student" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "studentId" TEXT NOT NULL,
 
     CONSTRAINT "Student_pkey" PRIMARY KEY ("id")
 );
@@ -27,7 +19,7 @@ CREATE TABLE "Reservation" (
 -- CreateTable
 CREATE TABLE "ReservationStudent" (
     "reservationStudentId" SERIAL NOT NULL,
-    "studentId" TEXT NOT NULL,
+    "studentId" INTEGER NOT NULL,
     "reservationId" INTEGER NOT NULL,
 
     CONSTRAINT "ReservationStudent_pkey" PRIMARY KEY ("reservationStudentId")
@@ -36,7 +28,7 @@ CREATE TABLE "ReservationStudent" (
 -- CreateTable
 CREATE TABLE "StudentLedger" (
     "id" INTEGER NOT NULL,
-    "studentId" TEXT NOT NULL,
+    "studentId" INTEGER NOT NULL,
 
     CONSTRAINT "StudentLedger_pkey" PRIMARY KEY ("id")
 );
