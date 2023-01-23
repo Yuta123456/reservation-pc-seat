@@ -45,11 +45,10 @@ export const ReservationTable = () => {
                     <Text fontSize={"1rem"}>PC{index + 1}</Text>
                   </Th>
                   {resForPeriod.map((resInfo, index) => {
-                    console.log(resInfo);
                     return (
                       <Th key={index} sx={{ height: "100px" }}>
                         <Text fontSize={"2rem"}>
-                          {resInfo.isReserve ? "使用中" : "空き"}
+                          {resInfo.reservationState}
                         </Text>
                       </Th>
                     );

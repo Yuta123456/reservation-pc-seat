@@ -1,5 +1,7 @@
+type ReservationState = "isReserved" | "available" | "occupied";
+
 type ReservationInfo = {
-  isReserve: boolean;
+  reservationState: ReservationState;
   studentIds: string[];
 };
 
@@ -9,44 +11,44 @@ type ReservationForPCSeat = ReservationInfo[];
 // 日付に対してfetchするはず
 export const reservationData: ReservationForPCSeat[] = [
   [
-    { isReserve: true, studentIds: ["5418070"] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: true, studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: ["5418070"] },
   ],
   [
-    { isReserve: true, studentIds: ["5418070"] },
-    { isReserve: true, studentIds: ["5417830", "5418073"] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: true, studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: ["5418070"] },
   ],
   [
-    { isReserve: true, studentIds: ["5418070"] },
-    { isReserve: true, studentIds: ["5417830", "5418073"] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: true, studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: ["5418070"] },
+    { reservationState: "isReserved", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: ["5418070"] },
   ],
   [
-    { isReserve: true, studentIds: ["5418070"] },
-    { isReserve: true, studentIds: ["5417830", "5418073"] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: true, studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "occupied", studentIds: [] },
+    { reservationState: "isReserved", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: ["5418070"] },
   ],
   [
-    { isReserve: true, studentIds: ["5418070"] },
-    { isReserve: true, studentIds: ["5417830"] },
-    { isReserve: true, studentIds: ["5417830"] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: false, studentIds: [] },
-    { isReserve: true, studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: ["5418070"] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: [] },
+    { reservationState: "available", studentIds: [] },
+    { reservationState: "isReserved", studentIds: ["5418070"] },
   ],
 ];
 
