@@ -13,6 +13,7 @@ import {
   Input,
   IconButton,
   useToast,
+  color,
 } from "../../app/common/components";
 
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
@@ -44,9 +45,9 @@ export const ReservationForm: FC<ReservationFormProps> = ({
   const [numberOfForm, setNumberOfForm] = useState<number>(1);
   const toast = useToast();
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxW={"90vw"}>
         <ModalHeader>予約フォーム</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -55,6 +56,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
             {[...Array(numberOfForm)].map((_, i) => {
               return (
                 <Input
+                  marginBottom={"5px"}
                   key={i + 1}
                   placeholder="学籍番号"
                   onChange={(e) => {
@@ -67,24 +69,25 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 />
               );
             })}
-            <Box display={"flex"} justifyContent="flex-end">
-              <IconButton
-                aria-label="Search database"
-                icon={<AddIcon />}
+            <Box display={"flex"} justifyContent="flex-end" marginTop={"10px"}>
+              <Button
                 onClick={() => {
                   setNumberOfForm((n) => {
                     return n + 1;
                   });
+                  // TODO: disable追加
                   setStudentsIds((prevStudentIds) => {
                     const newStudentIds = [...prevStudentIds];
                     newStudentIds.push("");
                     return newStudentIds;
                   });
                 }}
-              />
-              <IconButton
-                aria-label="Search database"
-                icon={<MinusIcon />}
+                colorScheme="teal"
+                marginRight="5px"
+              >
+                利用者を追加
+              </Button>
+              <Button
                 isDisabled={studentsIds.length <= 1}
                 onClick={() => {
                   setNumberOfForm((n) => {
@@ -96,7 +99,10 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                     return newStudentIds;
                   });
                 }}
-              />
+                colorScheme="red"
+              >
+                利用者を削除
+              </Button>
             </Box>
           </Box>
         </ModalBody>
