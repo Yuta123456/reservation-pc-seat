@@ -7,6 +7,7 @@ import {
   Tbody,
   Text,
 } from "@/app/common/components";
+import { useIsPc } from "@/Hooks/isPc";
 import { reservationData } from "@/mockData/ReservationData";
 import { FC } from "react";
 
@@ -23,22 +24,22 @@ export const ReservationTable: FC<ReservationTableProps> = ({
           <Tr>
             <Th></Th>
             <Th>
-              <Text fontSize={"1rem"}>1時限目</Text>
+              <Text fontSize={"1.5rem"}>1時限目</Text>
             </Th>
             <Th>
-              <Text fontSize={"1rem"}>2時限目</Text>
+              <Text fontSize={"1.5rem"}>2時限目</Text>
             </Th>
             <Th>
-              <Text fontSize={"1rem"}>昼休み</Text>
+              <Text fontSize={"1.5rem"}>昼休み</Text>
             </Th>
             <Th>
-              <Text fontSize={"1rem"}>3時限目</Text>
+              <Text fontSize={"1.5rem"}>3時限目</Text>
             </Th>
             <Th>
-              <Text fontSize={"1rem"}>4時限目</Text>
+              <Text fontSize={"1.5rem"}>4時限目</Text>
             </Th>
             <Th>
-              <Text fontSize={"1rem"}>5時限目</Text>
+              <Text fontSize={"1.5rem"}>5時限目</Text>
             </Th>
           </Tr>
         </Thead>
@@ -48,7 +49,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
               <Tr key={index}>
                 <>
                   <Th>
-                    <Text fontSize={"1rem"}>PC{index + 1}</Text>
+                    <Text fontSize={"1.5rem"}>PC{index + 1}</Text>
                   </Th>
                   {resForPeriod.map((resInfo, j) => {
                     return (
@@ -59,7 +60,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
                           onCellClick(String(index), String(j));
                         }}
                       >
-                        <Text fontSize={"2rem"}>
+                        <Text fontSize={"1.5em"}>
                           {resInfo.reservationState}
                         </Text>
                       </Th>
