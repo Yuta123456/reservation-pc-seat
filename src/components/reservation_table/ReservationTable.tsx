@@ -35,13 +35,16 @@ export const ReservationTable: FC<ReservationTableProps> = ({
 
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
-    color: "green",
+    bgColor: "teal.500",
+    color: "white",
   },
   isReserved: {
-    color: "gley",
+    bgColor: "gray.500",
+    color: "white",
   },
   occupied: {
-    color: "gley",
+    bgColor: "gray.500",
+    color: "white",
   },
 };
 const reservationStateText: Record<ReservationState, string> = {
