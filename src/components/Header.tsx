@@ -3,7 +3,10 @@ import { useIsPc } from "@/Hooks/isPc";
 import { Box, Text } from "../app/common/components";
 
 export const Header = () => {
-  const isPc = useIsPc();
+  const isPc = useIsPc(undefined);
+  if (isPc === undefined) {
+    return <></>;
+  }
   return <>{isPc ? <PCHeader></PCHeader> : <SPHeader></SPHeader>}</>;
 };
 

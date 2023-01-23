@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export const useIsPc = () => {
-  const [isPc, setIsPc] = useState(true);
+export const useIsPc = (initState: boolean | undefined) => {
+  const [isPc, setIsPc] = useState<boolean | undefined>(initState);
   useEffect(() => {
     if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
       setIsPc(false);

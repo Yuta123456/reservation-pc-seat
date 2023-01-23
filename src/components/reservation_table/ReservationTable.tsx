@@ -18,7 +18,10 @@ type ReservationTableProps = {
 export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
-  const isPc = useIsPc();
+  const isPc = useIsPc(undefined);
+  if (isPc === undefined) {
+    return <></>;
+  }
   return (
     <>
       {isPc ? (
