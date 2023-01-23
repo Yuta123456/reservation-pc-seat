@@ -8,8 +8,14 @@ import {
   Text,
 } from "@/app/common/components";
 import { reservationData } from "@/mockData/ReservationData";
+import { FC } from "react";
 
-export const ReservationTable = () => {
+type ReservationTableProps = {
+  onCellClick: (period: string, seat: string) => void;
+};
+export const ReservationTable: FC<ReservationTableProps> = ({
+  onCellClick,
+}) => {
   return (
     <TableContainer>
       <Table variant="simple">
@@ -44,9 +50,15 @@ export const ReservationTable = () => {
                   <Th>
                     <Text fontSize={"1rem"}>PC{index + 1}</Text>
                   </Th>
-                  {resForPeriod.map((resInfo, index) => {
+                  {resForPeriod.map((resInfo, j) => {
                     return (
-                      <Th key={index} sx={{ height: "100px" }}>
+                      <Th
+                        key={j}
+                        sx={{ height: "100px" }}
+                        onClick={() => {
+                          onCellClick(String(index), String(j));
+                        }}
+                      >
                         <Text fontSize={"2rem"}>
                           {resInfo.reservationState}
                         </Text>
