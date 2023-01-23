@@ -1,6 +1,13 @@
+"use client";
+import { useIsPc } from "@/Hooks/isPc";
 import { Box, Text } from "../app/common/components";
 
 export const Header = () => {
+  const isPc = useIsPc();
+  return <>{isPc ? <PCHeader></PCHeader> : <SPHeader></SPHeader>}</>;
+};
+
+const PCHeader = () => {
   return (
     <Box
       bg="teal"
@@ -18,6 +25,30 @@ export const Header = () => {
         alignItems="center"
       >
         <Text fontSize={"1.5rem"}>Learning Commons PC Reservation</Text>
+      </Box>
+    </Box>
+  );
+};
+const SPHeader = () => {
+  return (
+    <Box
+      bg="teal"
+      w="100vw"
+      color="white"
+      h="50px"
+      alignItems="center"
+      display={"flex"}
+    >
+      <Box
+        maxW={"900px"}
+        w="100%"
+        margin={"auto"}
+        display={"flex"}
+        justifyContent="center"
+      >
+        <Text fontSize={"1rem"} fontFamily="fantasy">
+          Learning Commons PC 予約
+        </Text>
       </Box>
     </Box>
   );
