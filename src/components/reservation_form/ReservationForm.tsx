@@ -10,6 +10,7 @@ import {
   Box,
   Input,
   IconButton,
+  useToast,
 } from "../../app/common/components";
 
 import { AddIcon } from "@chakra-ui/icons";
@@ -29,6 +30,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
 }) => {
   const [studentsIds, setStudentsIds] = useState<string[]>([]);
   const [numberOfForm, setNumberOfForm] = useState<number>(1);
+  const toast = useToast();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -38,10 +40,10 @@ export const ReservationForm: FC<ReservationFormProps> = ({
         <ModalBody>
           <Box>
             {period}時限目の{seat}席を予約しますか？
-            {[...Array(numberOfForm)].map((i) => {
+            {[...Array(numberOfForm)].map((_, i) => {
               return (
                 <Input
-                  key={i}
+                  key={i + 1}
                   placeholder="学籍番号"
                   onChange={(e) => {
                     setStudentsIds((prevStudentIds) => {
@@ -65,7 +67,18 @@ export const ReservationForm: FC<ReservationFormProps> = ({
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={onClose}>
+          <Button
+            colorScheme="blue"
+            onClick={() => {
+              onClose();
+              toast({
+                title: "予約しました",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+              });
+            }}
+          >
             予約する
           </Button>
         </ModalFooter>

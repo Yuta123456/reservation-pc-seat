@@ -93,9 +93,11 @@ const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
                             height: "100px",
                             ...reservationStateStyle[resInfo.reservationState],
                           }}
-                          onClick={() => {
-                            onCellClick(String(index), String(j));
-                          }}
+                          {...(resInfo.reservationState === "available" && {
+                            onClick: () => {
+                              onCellClick(String(index), String(j));
+                            },
+                          })}
                         >
                           <Text fontSize={"1.5em"}>
                             {reservationStateText[resInfo.reservationState]}
