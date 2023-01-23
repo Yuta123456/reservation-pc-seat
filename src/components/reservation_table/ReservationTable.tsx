@@ -54,7 +54,7 @@ const reservationStateText: Record<ReservationState, string> = {
 };
 const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
   return (
-    <Box minW={"900px"} maxW={"1100px"} margin="auto">
+    <Box minW={"900px"} maxW={"1100px"} margin="auto" textAlign={"center"}>
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -121,7 +121,7 @@ const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
 
 const SPReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
   return (
-    <Box maxW={"100vw"}>
+    <Box maxW={"100vw"} textAlign={"center"}>
       <TableContainer>
         <Table variant="simple">
           <Thead>
