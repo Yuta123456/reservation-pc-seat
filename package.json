@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "dotenv -e .env.production npx prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev --name init",
