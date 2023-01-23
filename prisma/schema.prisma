@@ -5,12 +5,13 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
 }
 
 model Student {
   id                 Int                  @id @default(autoincrement())
-  studentId          String
+  studentId          String               @unique()
   ReservationStudent ReservationStudent[]
   StudentLedger      StudentLedger[]
 }
@@ -32,7 +33,8 @@ model ReservationStudent {
 }
 
 model StudentLedger {
-  id        Int     @id
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId Int
+  id            Int     @id
+  student       Student @relation(fields: [studentId], references: [id])
+  studentId     Int
+  studentLedget Int
 }
