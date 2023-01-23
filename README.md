@@ -5,4 +5,7 @@
 - `docker compose up -d`
 ## データベースマイグレーション
 - マイグレーションは、DBを`schema.prisma`に合わせるSQLを発行するための手順（？）
-- `npx prisma migrate dev --name init`
+- マイグレーションの`.sql`ファイルの名前をinitに指定。package.jsonを参照
+- TODO: 引数に名前を渡すように変更したい
+- `npm migrate:dev`
+- GUIで確認したい場合は `npm run prisma-studio`

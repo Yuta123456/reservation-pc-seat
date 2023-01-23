@@ -19,6 +19,7 @@ import {
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 import { FC, useState } from "react";
+import { useIsPc } from "@/Hooks/useIsPc";
 
 const DisplayPeriod: Record<number, string> = {
   0: "1時限目",
@@ -44,10 +45,18 @@ export const ReservationForm: FC<ReservationFormProps> = ({
   const [studentsIds, setStudentsIds] = useState<string[]>([""]);
   const [numberOfForm, setNumberOfForm] = useState<number>(1);
   const toast = useToast();
+  const isPc = useIsPc(undefined);
+  if (isPc === undefined) {
+    return <></>;
+  }
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
       <ModalOverlay />
-      <ModalContent maxW={"90vw"}>
+      <ModalContent
+        {...(!isPc && {
+          maxW: "90vw",
+        })}
+      >
         <ModalHeader>予約フォーム</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
