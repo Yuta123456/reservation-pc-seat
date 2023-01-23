@@ -6,8 +6,8 @@ import { useState } from "react";
 import { Box } from "../app/common/components";
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
-  const [seat, setSeat] = useState("0");
-  const [period, setPeriod] = useState("0");
+  const [seat, setSeat] = useState(0);
+  const [period, setPeriod] = useState(0);
   return (
     <main>
       <ReservationTable

@@ -13,7 +13,7 @@ import { reservationData, ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 
 type ReservationTableProps = {
-  onCellClick: (period: string, seat: string) => void;
+  onCellClick: (period: number, seat: number) => void;
 };
 export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
@@ -81,24 +81,24 @@ const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {reservationData.map((resForPeriod, index) => {
+            {reservationData.map((resForPeriod, seat) => {
               return (
-                <Tr key={index}>
+                <Tr key={seat}>
                   <>
                     <Th>
-                      <Text fontSize={"1.5em"}>PC{index + 1}</Text>
+                      <Text fontSize={"1.5em"}>PC{seat + 1}</Text>
                     </Th>
-                    {resForPeriod.map((resInfo, j) => {
+                    {resForPeriod.map((resInfo, period) => {
                       return (
                         <Th
-                          key={j}
+                          key={period}
                           sx={{
                             height: "100px",
                             ...reservationStateStyle[resInfo.reservationState],
                           }}
                           {...(resInfo.reservationState === "available" && {
                             onClick: () => {
-                              onCellClick(String(index), String(j));
+                              onCellClick(seat, period);
                             },
                           })}
                         >
@@ -148,34 +148,32 @@ const SPReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {reservationData.map((resForPeriod, index) => {
+            {reservationData.map((resForPeriod, seat) => {
               return (
-                <Tr key={index}>
-                  <>
-                    <Th>
-                      <Text>PC{index + 1}</Text>
-                    </Th>
-                    {resForPeriod.map((resInfo, j) => {
-                      return (
-                        <Th
-                          key={j}
-                          sx={{
-                            height: "60px",
-                            ...reservationStateStyle[resInfo.reservationState],
-                          }}
-                          {...(resInfo.reservationState === "available" && {
-                            onClick: () => {
-                              onCellClick(String(index), String(j));
-                            },
-                          })}
-                        >
-                          <Text>
-                            {reservationStateText[resInfo.reservationState]}
-                          </Text>
-                        </Th>
-                      );
-                    })}
-                  </>
+                <Tr key={seat}>
+                  <Th>
+                    <Text>PC{seat + 1}</Text>
+                  </Th>
+                  {resForPeriod.map((resInfo, period) => {
+                    return (
+                      <Th
+                        key={period}
+                        sx={{
+                          height: "60px",
+                          ...reservationStateStyle[resInfo.reservationState],
+                        }}
+                        {...(resInfo.reservationState === "available" && {
+                          onClick: () => {
+                            onCellClick(seat, period);
+                          },
+                        })}
+                      >
+                        <Text>
+                          {reservationStateText[resInfo.reservationState]}
+                        </Text>
+                      </Th>
+                    );
+                  })}
                 </Tr>
               );
             })}

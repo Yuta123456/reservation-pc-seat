@@ -18,11 +18,21 @@ import {
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 import { FC, useState } from "react";
+
+const DisplayPeriod: Record<number, string> = {
+  0: "1時限目",
+  1: "2時限目",
+  2: "お昼休み",
+  3: "3時限目",
+  4: "4時限目",
+  5: "5時限目",
+};
+
 type ReservationFormProps = {
   isOpen: boolean;
   onClose: () => void;
-  seat: string;
-  period: string;
+  seat: number;
+  period: number;
 };
 export const ReservationForm: FC<ReservationFormProps> = ({
   isOpen,
@@ -41,7 +51,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
         <ModalCloseButton />
         <ModalBody>
           <Box>
-            {period}時限目の{seat}席を予約しますか？
+            {DisplayPeriod[period]}のPC{seat + 1}席を予約しますか？
             {[...Array(numberOfForm)].map((_, i) => {
               return (
                 <Input
