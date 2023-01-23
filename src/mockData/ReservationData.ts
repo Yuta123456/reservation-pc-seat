@@ -1,4 +1,4 @@
-type ReservationState = "isReserved" | "available" | "occupied";
+export type ReservationState = "isReserved" | "available" | "occupied";
 
 type ReservationInfo = {
   reservationState: ReservationState;

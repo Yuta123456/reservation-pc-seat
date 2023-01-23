@@ -9,7 +9,7 @@ import {
   Box,
 } from "@/app/common/components";
 import { useIsPc } from "@/Hooks/isPc";
-import { reservationData } from "@/mockData/ReservationData";
+import { reservationData, ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 
 type ReservationTableProps = {
@@ -33,6 +33,22 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   );
 };
 
+const reservationStateStyle: Record<ReservationState, {}> = {
+  available: {
+    color: "green",
+  },
+  isReserved: {
+    color: "gley",
+  },
+  occupied: {
+    color: "gley",
+  },
+};
+const reservationStateText: Record<ReservationState, string> = {
+  available: "予約可",
+  isReserved: "予約済",
+  occupied: "使用中",
+};
 const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
   return (
     <Box minW={"900px"} maxW={"1100px"} margin="auto">
@@ -73,13 +89,16 @@ const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
                       return (
                         <Th
                           key={j}
-                          sx={{ height: "100px" }}
+                          sx={{
+                            height: "100px",
+                            ...reservationStateStyle[resInfo.reservationState],
+                          }}
                           onClick={() => {
                             onCellClick(String(index), String(j));
                           }}
                         >
                           <Text fontSize={"1.5em"}>
-                            {resInfo.reservationState}
+                            {reservationStateText[resInfo.reservationState]}
                           </Text>
                         </Th>
                       );
@@ -135,12 +154,19 @@ const SPReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
                       return (
                         <Th
                           key={j}
-                          sx={{ height: "40px" }}
-                          onClick={() => {
-                            onCellClick(String(index), String(j));
+                          sx={{
+                            height: "60px",
+                            ...reservationStateStyle[resInfo.reservationState],
                           }}
+                          {...(resInfo.reservationState === "available" && {
+                            onClick: () => {
+                              onCellClick(String(index), String(j));
+                            },
+                          })}
                         >
-                          <Text>{resInfo.reservationState}</Text>
+                          <Text>
+                            {reservationStateText[resInfo.reservationState]}
+                          </Text>
                         </Th>
                       );
                     })}
