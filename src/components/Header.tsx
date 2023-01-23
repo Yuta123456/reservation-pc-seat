@@ -1,5 +1,5 @@
 "use client";
-import { useIsPc } from "@/Hooks/isPc";
+import { useIsPc } from "@/Hooks/useIsPc";
 import { Box, Text } from "../app/common/components";
 
 export const Header = () => {

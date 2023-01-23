@@ -1,7 +1,8 @@
 "use client";
+import { DisplayTime } from "@/components/display_time/DisplayTime";
 import { ReservationForm } from "@/components/reservation_form/ReservationForm";
 import { ReservationTable } from "@/components/reservation_table/ReservationTable";
-import { useIsPc } from "@/Hooks/isPc";
+import { useIsPc } from "@/Hooks/useIsPc";
 import { useState } from "react";
 import { Box } from "../app/common/components";
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
   const [period, setPeriod] = useState(0);
   return (
     <main>
+      <DisplayTime />
       <ReservationTable
         onCellClick={(i, j) => {
           setIsOpenReservationForm(true);

@@ -8,7 +8,7 @@ import {
   Text,
   Box,
 } from "@/app/common/components";
-import { useIsPc } from "@/Hooks/isPc";
+import { useIsPc } from "@/Hooks/useIsPc";
 import { reservationData, ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 
