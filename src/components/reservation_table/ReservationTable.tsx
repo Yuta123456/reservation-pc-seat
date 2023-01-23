@@ -35,7 +35,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
 
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
-    bgColor: "teal.500",
+    bgColor: "teal.200",
     color: "white",
   },
   isReserved: {
@@ -43,7 +43,7 @@ const reservationStateStyle: Record<ReservationState, {}> = {
     color: "white",
   },
   occupied: {
-    bgColor: "gray.500",
+    bgColor: "teal.500",
     color: "white",
   },
 };
