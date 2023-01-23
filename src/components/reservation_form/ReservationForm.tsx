@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Modal,
   ModalOverlay,
@@ -13,7 +15,7 @@ import {
   useToast,
 } from "../../app/common/components";
 
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 import { FC, useState } from "react";
 type ReservationFormProps = {
@@ -28,7 +30,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
   seat,
   period,
 }) => {
-  const [studentsIds, setStudentsIds] = useState<string[]>([]);
+  const [studentsIds, setStudentsIds] = useState<string[]>([""]);
   const [numberOfForm, setNumberOfForm] = useState<number>(1);
   const toast = useToast();
   return (
@@ -55,20 +57,43 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 />
               );
             })}
-            <IconButton
-              aria-label="Search database"
-              icon={<AddIcon />}
-              onClick={() => {
-                setNumberOfForm((n) => {
-                  return n + 1;
-                });
-              }}
-            />
+            <Box display={"flex"} justifyContent="flex-end">
+              <IconButton
+                aria-label="Search database"
+                icon={<AddIcon />}
+                onClick={() => {
+                  setNumberOfForm((n) => {
+                    return n + 1;
+                  });
+                  setStudentsIds((prevStudentIds) => {
+                    const newStudentIds = [...prevStudentIds];
+                    newStudentIds.push("");
+                    return newStudentIds;
+                  });
+                }}
+              />
+              <IconButton
+                aria-label="Search database"
+                icon={<MinusIcon />}
+                isDisabled={studentsIds.length <= 1}
+                onClick={() => {
+                  setNumberOfForm((n) => {
+                    return n - 1;
+                  });
+                  setStudentsIds((prevStudentIds) => {
+                    const newStudentIds = [...prevStudentIds];
+                    newStudentIds.pop();
+                    return newStudentIds;
+                  });
+                }}
+              />
+            </Box>
           </Box>
         </ModalBody>
         <ModalFooter>
           <Button
             colorScheme="blue"
+            isDisabled={studentsIds.some((v) => v.length === 0)}
             onClick={() => {
               onClose();
               toast({
