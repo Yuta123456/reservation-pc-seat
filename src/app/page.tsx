@@ -9,7 +9,7 @@ export default function Home() {
   const [period, setPeriod] = useState(0);
   return (
     <main>
-      <DisplayTime />
+      {/* <DisplayTime /> */}
       <ReservationTable
         onCellClick={(i, j) => {
           setIsOpenReservationForm(true);
