@@ -11,25 +11,31 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  const prisma = new PrismaClient();
+  let handler = undefined;
   switch (req.method) {
     case "POST":
-      const prisma = new PrismaClient();
-      postHandler(req, res, prisma)
-        .then(async () => {
-          await prisma.$disconnect();
-        })
-        .catch(async (e) => {
-          console.error(e);
-          await prisma.$disconnect();
-          res.status(500).end();
-        });
+      handler = postHandler(req, res, prisma);
       break;
-    // case "GET"
+    case "DELETE":
+      handler = deleteHandler(req, res, prisma);
     default:
-      console.warn("No handler for this method.");
-      res.status(400).end();
       break;
   }
+  if (handler === undefined) {
+    console.warn("No handler for this method.");
+    res.status(400).end();
+    return;
+  }
+  handler
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+      res.status(500).end();
+    });
 }
 
 /**
@@ -45,6 +51,7 @@ const postHandler = async (
   prisma: PrismaClient
 ) => {
   const { seat, period, studentsIds } = JSON.parse(req.body);
+  // TODO: 既に予約がある場合はこれを弾く必要がある。
   const reservationResult = await prisma.reservation.create({
     data: {
       seat,
@@ -81,6 +88,7 @@ const postHandler = async (
     });
   });
 
+  // queryをトランザクションで実行することで高速化。ちょっとよく分からない。
   const students: Student[] = await prisma.$transaction([...query]);
   await prisma.reservationStudent.createMany({
     data: students.map(({ id }) => {
@@ -91,4 +99,33 @@ const postHandler = async (
     }),
   });
   res.status(200).json({ reservation: reservationResult });
+};
+
+/*
+ * 予約削除API
+ */
+const deleteHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Data>,
+  prisma: PrismaClient
+) => {
+  const { id } = JSON.parse(req.body);
+
+  // 中間テーブルから削除
+  const reservationStudentQuery = prisma.reservationStudent.deleteMany({
+    where: {
+      reservationId: id,
+    },
+  });
+
+  // 予約の削除
+  const reservationQuery = prisma.reservation.delete({
+    where: {
+      id,
+    },
+  });
+
+  // トランザクション実行
+  await prisma.$transaction([reservationStudentQuery, reservationQuery]);
+  res.status(200).end();
 };

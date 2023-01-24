@@ -11,12 +11,8 @@ import {
   Button,
   Box,
   Input,
-  IconButton,
   useToast,
-  color,
 } from "../../app/common/components";
-
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
@@ -44,6 +40,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
 }) => {
   const [studentsIds, setStudentsIds] = useState<string[]>([""]);
   const [numberOfForm, setNumberOfForm] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const isPc = useIsPc(undefined);
   if (isPc === undefined) {
@@ -117,13 +114,16 @@ export const ReservationForm: FC<ReservationFormProps> = ({
         </ModalBody>
         <ModalFooter>
           <Button
+            isLoading={isLoading}
             colorScheme="blue"
             isDisabled={studentsIds.some((v) => v.length === 0)}
             onClick={() => {
+              setIsLoading(true);
               fetch("api/reservation", {
                 method: "POST",
                 body: JSON.stringify({ seat, period, studentsIds }),
               }).then(async (res) => {
+                setIsLoading(false);
                 onClose();
                 toast({
                   title: "予約しました",
