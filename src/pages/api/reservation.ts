@@ -127,5 +127,5 @@ const deleteHandler = async (
 
   // トランザクション実行
   await prisma.$transaction([reservationStudentQuery, reservationQuery]);
-  res.status(200);
+  res.status(200).end();
 };

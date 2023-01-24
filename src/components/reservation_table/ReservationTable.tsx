@@ -25,7 +25,12 @@ export type ReservationSchedule = {
 };
 
 type ReservationTableProps = {
-  onCellClick: (period: number, seat: number) => void;
+  onCellClick: (
+    period: number,
+    seat: number,
+    isReserved: boolean,
+    reservationId: number | undefined
+  ) => void;
 };
 
 const fetcher = (url: string) =>
@@ -137,7 +142,7 @@ const PCReservationTable: FC<
                     </Th>
                     {/* TODO: マジックナンバー削除。6はperiodのかず */}
                     {[...Array(6)].map((_, period) => {
-                      const isExist: boolean =
+                      const isReserved: boolean =
                         resForPeriod.find((r) => r.period === period) !==
                         undefined;
                       return (
@@ -146,19 +151,22 @@ const PCReservationTable: FC<
                           sx={{
                             height: "100px",
                             ...reservationStateStyle[
-                              isExist ? "isReserved" : "available"
+                              isReserved ? "isReserved" : "available"
                             ],
                           }}
-                          {...(!isExist && {
-                            onClick: () => {
-                              onCellClick(seat, period);
-                            },
-                          })}
+                          onClick={() => {
+                            onCellClick(
+                              seat,
+                              period,
+                              isReserved,
+                              resForPeriod.find((r) => r.period === period)?.id
+                            );
+                          }}
                         >
                           <Text fontSize={"1.5em"}>
                             {
                               reservationStateText[
-                                isExist ? "isReserved" : "available"
+                                isReserved ? "isReserved" : "available"
                               ]
                             }
                           </Text>
@@ -214,7 +222,7 @@ const SPReservationTable: FC<
                     <Text>PC{seat + 1}</Text>
                   </Th>
                   {[...Array(6)].map((_, period) => {
-                    const isExist: boolean =
+                    const isReserved: boolean =
                       resForPeriod.find((r) => r.period === period) !==
                       undefined;
                     return (
@@ -223,19 +231,22 @@ const SPReservationTable: FC<
                         sx={{
                           height: "60px",
                           ...reservationStateStyle[
-                            isExist ? "isReserved" : "available"
+                            isReserved ? "isReserved" : "available"
                           ],
                         }}
-                        {...(!isExist && {
-                          onClick: () => {
-                            onCellClick(seat, period);
-                          },
-                        })}
+                        onClick={() => {
+                          onCellClick(
+                            seat,
+                            period,
+                            isReserved,
+                            resForPeriod.find((r) => r.period === period)?.id
+                          );
+                        }}
                       >
                         <Text>
                           {
                             reservationStateText[
-                              isExist ? "isReserved" : "available"
+                              isReserved ? "isReserved" : "available"
                             ]
                           }
                         </Text>

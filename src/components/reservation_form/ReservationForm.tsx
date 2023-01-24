@@ -11,12 +11,8 @@ import {
   Button,
   Box,
   Input,
-  IconButton,
   useToast,
-  color,
 } from "../../app/common/components";
-
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
