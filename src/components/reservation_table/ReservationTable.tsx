@@ -88,22 +88,32 @@ const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
                     <Th>
                       <Text fontSize={"1.5em"}>PC{seat + 1}</Text>
                     </Th>
-                    {resForPeriod.map((resInfo, period) => {
+                    {/* TODO: マジックナンバー削除。6はperiodのかず */}
+                    {[...Array(6)].map((_, period) => {
+                      const isExist: boolean =
+                        resForPeriod.find((r) => r.period === period) !==
+                        undefined;
                       return (
                         <Th
                           key={period}
                           sx={{
                             height: "100px",
-                            ...reservationStateStyle[resInfo.reservationState],
+                            ...reservationStateStyle[
+                              isExist ? "isReserved" : "available"
+                            ],
                           }}
-                          {...(resInfo.reservationState === "available" && {
+                          {...(!isExist && {
                             onClick: () => {
                               onCellClick(seat, period);
                             },
                           })}
                         >
                           <Text fontSize={"1.5em"}>
-                            {reservationStateText[resInfo.reservationState]}
+                            {
+                              reservationStateText[
+                                isExist ? "isReserved" : "available"
+                              ]
+                            }
                           </Text>
                         </Th>
                       );
@@ -154,22 +164,31 @@ const SPReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
                   <Th>
                     <Text>PC{seat + 1}</Text>
                   </Th>
-                  {resForPeriod.map((resInfo, period) => {
+                  {[...Array(6)].map((_, period) => {
+                    const isExist: boolean =
+                      resForPeriod.find((r) => r.period === period) !==
+                      undefined;
                     return (
                       <Th
                         key={period}
                         sx={{
                           height: "60px",
-                          ...reservationStateStyle[resInfo.reservationState],
+                          ...reservationStateStyle[
+                            isExist ? "isReserved" : "available"
+                          ],
                         }}
-                        {...(resInfo.reservationState === "available" && {
+                        {...(!isExist && {
                           onClick: () => {
                             onCellClick(seat, period);
                           },
                         })}
                       >
                         <Text>
-                          {reservationStateText[resInfo.reservationState]}
+                          {
+                            reservationStateText[
+                              isExist ? "isReserved" : "available"
+                            ]
+                          }
                         </Text>
                       </Th>
                     );
