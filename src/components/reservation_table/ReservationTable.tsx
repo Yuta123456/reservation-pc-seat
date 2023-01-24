@@ -16,7 +16,6 @@ import useSWR from "swr";
 
 type ReservationTableProps = {
   onCellClick: (period: number, seat: number) => void;
-  reservationSchedule: ReservationSchedule[][];
 };
 
 const fetcher = (url: string) =>
@@ -76,10 +75,9 @@ const reservationStateText: Record<ReservationState, string> = {
   isReserved: "予約済",
   occupied: "使用中",
 };
-const PCReservationTable: FC<ReservationTableProps> = ({
-  onCellClick,
-  reservationSchedule,
-}) => {
+const PCReservationTable: FC<
+  ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
+> = ({ onCellClick, reservationSchedule }) => {
   console.log(reservationSchedule);
   return (
     <Box minW={"900px"} maxW={"1100px"} margin="auto" textAlign={"center"}>
@@ -157,10 +155,9 @@ const PCReservationTable: FC<ReservationTableProps> = ({
   );
 };
 
-const SPReservationTable: FC<ReservationTableProps> = ({
-  onCellClick,
-  reservationSchedule,
-}) => {
+const SPReservationTable: FC<
+  ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
+> = ({ onCellClick, reservationSchedule }) => {
   return (
     <Box maxW={"100vw"} textAlign={"center"}>
       <TableContainer>
