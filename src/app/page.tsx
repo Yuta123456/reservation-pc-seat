@@ -15,7 +15,7 @@ export default function Home() {
   );
   return (
     <main>
-      <DisplayTime />
+      {/* <DisplayTime /> */}
       <ReservationTable
         onCellClick={(i, j, isReserved, reservationId) => {
           if (isReserved) {
