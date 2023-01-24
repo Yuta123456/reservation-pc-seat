@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
+import { utcToZonedTime } from "date-fns-tz";
 
 type Data = {
   reservationSchedule: ReservationSchedule[][];
@@ -39,7 +40,10 @@ const getHandler = async (
     return;
   }
   const [year, monthIndex, day] = date;
-  const today = new Date(Number(year), Number(monthIndex), Number(day));
+  const today = utcToZonedTime(
+    new Date(Number(year), Number(monthIndex), Number(day)),
+    "Asia/Tokyo"
+  );
 
   // 今日にされた予約を全て取得
   const todayReservation = await prisma.reservation.findMany({

@@ -15,6 +15,7 @@ import { useIsPc } from "@/Hooks/useIsPc";
 import { ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 import useSWR from "swr";
+import { utcToZonedTime } from "date-fns-tz";
 
 export type ReservationSchedule = {
   id: number;
@@ -36,7 +37,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
   const isPc = useIsPc(undefined);
-  const today = new Date();
+  const today = utcToZonedTime(new Date(), "Asia/Tokyo");
   const { data, error } = useSWR(
     `api/reservation/${today.getFullYear()}/${today.getMonth()}/${today.getDate()}`,
     fetcher,

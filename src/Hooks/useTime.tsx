@@ -1,10 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
-
+import { useCallback, useEffect, useState } from "react";
 export const useTime = (interval: number) => {
-  const [time, updateTime] = useState(Date.now());
+  const getTime = useCallback(() => {
+    return Date.now() + (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000;
+  }, []);
+  const [time, updateTime] = useState(getTime());
   useEffect(() => {
-    const timeoutId = setTimeout(() => updateTime(Date.now()), interval);
+    const timeoutId = setTimeout(() => updateTime(getTime()), interval);
     return () => {
       clearTimeout(timeoutId);
     };

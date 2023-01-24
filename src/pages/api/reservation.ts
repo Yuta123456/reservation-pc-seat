@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Reservation, Student } from "@prisma/client";
+import { utcToZonedTime } from "date-fns-tz";
 
 type Data = {
   reservation: Reservation;
@@ -48,7 +49,7 @@ const postHandler = async (
     data: {
       seat,
       period,
-      date: new Date(),
+      date: utcToZonedTime(new Date(), "Asia/Tokyo"),
     },
   });
 
