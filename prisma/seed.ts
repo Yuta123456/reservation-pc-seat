@@ -1,10 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import { m } from "framer-motion";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const students = await prisma.student.createMany({
+  await prisma.student.createMany({
     data: [
       {
         studentId: "5418071",
@@ -19,7 +18,7 @@ async function main() {
   });
 
   const today = new Date();
-  const reservation = await prisma.reservation.createMany({
+  await prisma.reservation.createMany({
     data: [
       {
         seat: 1,
@@ -33,7 +32,7 @@ async function main() {
       },
     ],
   });
-  const reservationStudent = await prisma.reservationStudent.createMany({
+  await prisma.reservationStudent.createMany({
     data: [
       {
         studentId: 1,

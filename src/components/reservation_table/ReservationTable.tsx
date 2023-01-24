@@ -36,7 +36,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
       refreshInterval: 1000,
     }
   );
-  console.log(data);
+
   if (isPc === undefined || data === undefined || error) {
     return <></>;
   }

@@ -38,7 +38,6 @@ const getHandler = async (
   prisma: PrismaClient
 ) => {
   const { date } = req.query;
-  console.log(date);
   if (date === undefined || typeof date === "string" || date.length !== 3) {
     res.status(400).end();
     return;
