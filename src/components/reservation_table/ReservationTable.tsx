@@ -38,6 +38,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
 }) => {
   const isPc = useIsPc(undefined);
   const today = utcToZonedTime(new Date(), "Asia/Tokyo");
+  // TODO: ここ、頑張らないと予約の書き換えが起こる
   const { data, error } = useSWR(
     `api/reservation/${today.getFullYear()}/${today.getMonth()}/${today.getDate()}`,
     fetcher,

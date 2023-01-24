@@ -40,10 +40,8 @@ const getHandler = async (
     return;
   }
   const [year, monthIndex, day] = date;
-  const today = utcToZonedTime(
-    new Date(Number(year), Number(monthIndex), Number(day)),
-    "Asia/Tokyo"
-  );
+  // ここはTimeZoneの変換がいらない。リクエストの時点で日本時間になっているから
+  const today = new Date(Number(year), Number(monthIndex), Number(day));
 
   // 今日にされた予約を全て取得
   const todayReservation = await prisma.reservation.findMany({
