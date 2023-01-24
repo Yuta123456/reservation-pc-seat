@@ -13,7 +13,7 @@ import {
   useToast,
 } from "../../app/common/components";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
 
 type ReservationFormProps = {
@@ -42,6 +42,7 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
 }) => {
   const toast = useToast();
   const isPc = useIsPc(undefined);
+  const [isLoading, setIsLoading] = useState(false);
   if (isPc === undefined) {
     return <></>;
   }
@@ -62,12 +63,15 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
         </ModalBody>
         <ModalFooter>
           <Button
+            isLoading={isLoading}
             colorScheme="red"
             onClick={() => {
+              setIsLoading(true);
               fetch("api/reservation", {
                 method: "DELETE",
                 body: JSON.stringify({ id }),
               }).then(async (res) => {
+                setIsLoading(false);
                 onClose();
                 toast({
                   title: "削除しました",
