@@ -1,0 +1,40 @@
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
+}
+
+model Student {
+  id                 Int                  @id @default(autoincrement())
+  studentId          String               @unique()
+  ReservationStudent ReservationStudent[]
+  StudentLedger      StudentLedger[]
+}
+
+model Reservation {
+  id                 Int                  @id @default(autoincrement())
+  seat               Int
+  period             Int
+  date               DateTime
+  ReservationStudent ReservationStudent[]
+}
+
+model ReservationStudent {
+  reservationStudentId Int         @id @default(autoincrement())
+  student              Student     @relation(fields: [studentId], references: [id])
+  studentId            Int
+  reservation          Reservation @relation(fields: [reservationId], references: [id])
+  reservationId        Int
+}
+
+model StudentLedger {
+  id            Int     @id
+  student       Student @relation(fields: [studentId], references: [id])
+  studentId     Int
+  studentLedget Int
+}

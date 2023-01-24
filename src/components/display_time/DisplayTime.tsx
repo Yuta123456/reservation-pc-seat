@@ -1,3 +1,4 @@
+"use client";
 import { useTime } from "@/Hooks/useTime";
 import { Text, Box } from "../../app/common/components";
 import dayjs from "dayjs";

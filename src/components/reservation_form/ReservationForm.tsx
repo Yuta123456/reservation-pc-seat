@@ -120,12 +120,17 @@ export const ReservationForm: FC<ReservationFormProps> = ({
             colorScheme="blue"
             isDisabled={studentsIds.some((v) => v.length === 0)}
             onClick={() => {
-              onClose();
-              toast({
-                title: "予約しました",
-                status: "success",
-                duration: 2000,
-                isClosable: true,
+              fetch("api/reservation", {
+                method: "POST",
+                body: JSON.stringify({ seat, period, studentsIds }),
+              }).then(async (res) => {
+                onClose();
+                toast({
+                  title: "予約しました",
+                  status: "success",
+                  duration: 2000,
+                  isClosable: true,
+                });
               });
             }}
           >
