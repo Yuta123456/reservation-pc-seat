@@ -2,32 +2,48 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const posts: any = [];
-
-for (let i = 0; i < 100; i++) {
-  posts.push({ title: `title ${i + 1}` });
-}
-
 async function main() {
-  const students = await prisma.student.create({
-    data: {
-      studentId: "5418070",
-    },
+  await prisma.student.createMany({
+    data: [
+      {
+        studentId: "5418071",
+      },
+      {
+        studentId: "5418072",
+      },
+      {
+        studentId: "5418073",
+      },
+    ],
   });
 
   const today = new Date();
-  const date = `${today.getFullYear()}-${
-    today.getMonth() + 1
-  }-${today.getDate()}`;
-  const reservation = await prisma.reservation.create({
-    data: {
-      seat: 1,
-      period: 5,
-      date: today,
-    },
+  await prisma.reservation.createMany({
+    data: [
+      {
+        seat: 1,
+        period: 5,
+        date: today,
+      },
+      {
+        seat: 1,
+        period: 5,
+        date: today,
+      },
+    ],
   });
-
-  console.log({ students, reservation });
+  await prisma.reservationStudent.createMany({
+    data: [
+      {
+        studentId: 1,
+        reservationId: 1,
+      },
+      {
+        studentId: 2,
+        reservationId: 1,
+      },
+    ],
+  });
 }
 
 main()
