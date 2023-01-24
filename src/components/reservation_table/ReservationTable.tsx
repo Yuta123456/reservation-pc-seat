@@ -9,25 +9,49 @@ import {
   Box,
 } from "@/app/common/components";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { reservationData, ReservationState } from "@/mockData/ReservationData";
-import { FC } from "react";
+import { ReservationState } from "@/mockData/ReservationData";
+import { ReservationSchedule } from "@/pages/api/reservation/[...date]";
+import { FC, useEffect, useState } from "react";
+import useSWR from "swr";
 
 type ReservationTableProps = {
   onCellClick: (period: number, seat: number) => void;
+  reservationSchedule: ReservationSchedule[][];
 };
+
+const fetcher = (url: string) =>
+  fetch(url)
+    .then(async (res) => await res.json())
+    .then((res) => res.reservationSchedule);
+
 export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
   const isPc = useIsPc(undefined);
-  if (isPc === undefined) {
+  const today = new Date();
+  const { data, error } = useSWR(
+    `api/reservation/${today.getFullYear()}/${today.getMonth()}/${today.getDate()}`,
+    fetcher,
+    {
+      refreshInterval: 1000,
+    }
+  );
+  console.log(data);
+  if (isPc === undefined || data === undefined || error) {
     return <></>;
   }
   return (
     <>
       {isPc ? (
-        <PCReservationTable onCellClick={onCellClick} />
+        <PCReservationTable
+          onCellClick={onCellClick}
+          reservationSchedule={data}
+        />
       ) : (
-        <SPReservationTable onCellClick={onCellClick} />
+        <SPReservationTable
+          onCellClick={onCellClick}
+          reservationSchedule={data}
+        />
       )}
     </>
   );
@@ -52,7 +76,11 @@ const reservationStateText: Record<ReservationState, string> = {
   isReserved: "予約済",
   occupied: "使用中",
 };
-const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
+const PCReservationTable: FC<ReservationTableProps> = ({
+  onCellClick,
+  reservationSchedule,
+}) => {
+  console.log(reservationSchedule);
   return (
     <Box minW={"900px"} maxW={"1100px"} margin="auto" textAlign={"center"}>
       <TableContainer>
@@ -81,7 +109,7 @@ const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {reservationData.map((resForPeriod, seat) => {
+            {reservationSchedule.map((resForPeriod, seat) => {
               return (
                 <Tr key={seat}>
                   <>
@@ -129,7 +157,10 @@ const PCReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
   );
 };
 
-const SPReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
+const SPReservationTable: FC<ReservationTableProps> = ({
+  onCellClick,
+  reservationSchedule,
+}) => {
   return (
     <Box maxW={"100vw"} textAlign={"center"}>
       <TableContainer>
@@ -158,7 +189,7 @@ const SPReservationTable: FC<ReservationTableProps> = ({ onCellClick }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {reservationData.map((resForPeriod, seat) => {
+            {reservationSchedule.map((resForPeriod, seat) => {
               return (
                 <Tr key={seat}>
                   <Th>
