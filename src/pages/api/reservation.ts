@@ -69,29 +69,26 @@ const postHandler = async (
 
   // 学籍番号が無い場合には、新しく作る。
   // TODO: await 出来てなさそう
-  const originalStudentIds: Promise<Student>[] = studentsIds.map(
-    async (id: string) => {
-      return prisma.student.upsert({
-        where: {
-          studentId: id,
-        },
-        update: {},
-        create: {
-          studentId: id,
-        },
-      });
-    }
-  );
-
-  Promise.all(originalStudentIds).then(async (students) => {
-    await prisma.reservationStudent.createMany({
-      data: students.map(({ id }) => {
-        return {
-          reservationId,
-          studentId: id,
-        };
-      }),
+  const query = studentsIds.map((id: string) => {
+    return prisma.student.upsert({
+      where: {
+        studentId: id,
+      },
+      update: {},
+      create: {
+        studentId: id,
+      },
     });
-    res.status(200).json({ reservation: reservationResult });
   });
+
+  const students: Student[] = await prisma.$transaction([...query]);
+  await prisma.reservationStudent.createMany({
+    data: students.map(({ id }) => {
+      return {
+        reservationId,
+        studentId: id,
+      };
+    }),
+  });
+  res.status(200).json({ reservation: reservationResult });
 };
