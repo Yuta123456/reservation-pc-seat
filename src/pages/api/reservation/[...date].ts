@@ -1,12 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Reservation, Student } from "@prisma/client";
-export type ReservationSchedule = {
-  id: number;
-  seat: number;
-  period: number;
-  studentIds: string[];
-};
+import { PrismaClient } from "@prisma/client";
+import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
+
 type Data = {
   reservationSchedule: ReservationSchedule[][];
 };

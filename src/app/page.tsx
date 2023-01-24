@@ -2,9 +2,7 @@
 import { DisplayTime } from "@/components/display_time/DisplayTime";
 import { ReservationForm } from "@/components/reservation_form/ReservationForm";
 import { ReservationTable } from "@/components/reservation_table/ReservationTable";
-import { useIsPc } from "@/Hooks/useIsPc";
 import { useState } from "react";
-import { Box } from "../app/common/components";
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
   const [seat, setSeat] = useState(0);

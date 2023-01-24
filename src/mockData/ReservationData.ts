@@ -1,4 +1,5 @@
-import { ReservationSchedule } from "../pages/api/reservation/[...date]";
+import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
+
 export type ReservationState = "isReserved" | "available" | "occupied";
 
 // 日付に対してfetchするはず

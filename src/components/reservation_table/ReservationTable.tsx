@@ -7,13 +7,21 @@ import {
   Th,
   Tbody,
   Text,
+  Center,
   Box,
+  Spinner,
 } from "@/app/common/components";
 import { useIsPc } from "@/Hooks/useIsPc";
 import { ReservationState } from "@/mockData/ReservationData";
-import { ReservationSchedule } from "@/pages/api/reservation/[...date]";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import useSWR from "swr";
+
+export type ReservationSchedule = {
+  id: number;
+  seat: number;
+  period: number;
+  studentIds: string[];
+};
 
 type ReservationTableProps = {
   onCellClick: (period: number, seat: number) => void;
@@ -38,7 +46,17 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   );
 
   if (isPc === undefined || data === undefined || error) {
-    return <></>;
+    return (
+      <Center>
+        <Spinner
+          thickness="4px"
+          speed="1.0s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Center>
+    );
   }
   return (
     <>
