@@ -104,7 +104,6 @@ const reservationStateText: Record<ReservationState, string> = {
 const PCReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
-  console.log(reservationSchedule);
   return (
     <Box minW={"900px"} maxW={"1100px"} margin="auto" textAlign={"center"}>
       <TableContainer>

@@ -3,7 +3,10 @@ import { DisplayTime } from "@/components/display_time/DisplayTime";
 import { ReservationDeleteForm } from "@/components/reservation_form/ReservationDeleteForm";
 import { ReservationForm } from "@/components/reservation_form/ReservationForm";
 import { ReservationTable } from "@/components/reservation_table/ReservationTable";
-import { useState } from "react";
+import { userState } from "@/state/user";
+import { useCallback, useState } from "react";
+import { useRecoilState } from "recoil";
+import { useToast } from "./common/components";
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
   const [isOpenReservationDeleteForm, setIsOpenReservationDeleteForm] =
@@ -13,21 +16,38 @@ export default function Home() {
   const [reservationId, setReservationId] = useState<number | undefined>(
     undefined
   );
+  const toast = useToast();
+  const [user, _] = useRecoilState(userState);
+  const handleClick = useCallback(
+    (
+      i: number,
+      j: number,
+      isReserved: boolean,
+      reservationId: number | undefined
+    ) => {
+      if (user.id && user.role) {
+        toast({
+          title: "予約を変更したい場合はログインが必要です",
+          status: "info",
+          duration: 2000,
+        });
+        return;
+      }
+      if (isReserved) {
+        setIsOpenReservationDeleteForm(true);
+      } else {
+        setIsOpenReservationForm(true);
+      }
+      setSeat(i);
+      setPeriod(j);
+      setReservationId(reservationId);
+    },
+    [user]
+  );
   return (
     <main>
       {/* <DisplayTime /> */}
-      <ReservationTable
-        onCellClick={(i, j, isReserved, reservationId) => {
-          if (isReserved) {
-            setIsOpenReservationDeleteForm(true);
-          } else {
-            setIsOpenReservationForm(true);
-          }
-          setSeat(i);
-          setPeriod(j);
-          setReservationId(reservationId);
-        }}
-      />
+      <ReservationTable onCellClick={handleClick} />
 
       {isOpenReservationForm && (
         <ReservationForm
