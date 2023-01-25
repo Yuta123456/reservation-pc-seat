@@ -12,10 +12,12 @@ import {
   Box,
   Input,
   useToast,
+  IconButton,
 } from "../../app/common/components";
 
 import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 const DisplayPeriod: Record<number, string> = {
   0: "1時限目",
@@ -76,7 +78,10 @@ export const ReservationForm: FC<ReservationFormProps> = ({
               );
             })}
             <Box display={"flex"} justifyContent="flex-end" marginTop={"10px"}>
-              <Button
+              {/* <Button */}
+              <IconButton
+                aria-label="add"
+                icon={<AddIcon />}
                 onClick={() => {
                   setNumberOfForm((n) => {
                     return n + 1;
@@ -88,12 +93,15 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                     return newStudentIds;
                   });
                 }}
-                colorScheme="teal"
+                // colorScheme="teal"
                 marginRight="5px"
-              >
-                利用者を追加
-              </Button>
-              <Button
+              />
+              {/* 利用者を追加 */}
+
+              {/* </Button> */}
+              <IconButton
+                aria-label="minus"
+                icon={<MinusIcon />}
                 isDisabled={studentsIds.length <= 1}
                 onClick={() => {
                   setNumberOfForm((n) => {
@@ -105,10 +113,8 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                     return newStudentIds;
                   });
                 }}
-                colorScheme="red"
-              >
-                利用者を削除
-              </Button>
+                // colorScheme="red"
+              />
             </Box>
           </Box>
         </ModalBody>

@@ -36,8 +36,7 @@ const getHandler = async (
 ) => {
   const { date } = req.query;
   if (date === undefined || typeof date === "string" || date.length !== 3) {
-    res.status(400).end();
-    return;
+    return res.status(400).end();
   }
   const [year, monthIndex, day] = date;
   // ここはTimeZoneの変換がいらない。リクエストの時点で日本時間になっているから
