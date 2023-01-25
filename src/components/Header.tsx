@@ -1,6 +1,6 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Text } from "../app/common/components";
+import { Box, Button, Text } from "../app/common/components";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
@@ -52,6 +52,11 @@ const SPHeader = () => {
         <Text fontSize={"1rem"} fontFamily="fantasy">
           Learning Commons PC 予約
         </Text>
+      </Box>
+      <Box alignItems={"right"}>
+        <Button colorScheme="red" variant="putline">
+          Login
+        </Button>
       </Box>
     </Box>
   );
