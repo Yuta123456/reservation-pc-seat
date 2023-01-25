@@ -13,5 +13,7 @@ export const userState = atom<User>({
     id: "",
     role: "",
   },
-  effects_UNSTABLE: [persistAtom],
+  // NOTE: state永続化で簡単にログインセッション出来ると思ったが、そんなことない。
+  // localStorageに保存しているので、このままやると誰でもログイン可能になる
+  // effects_UNSTABLE: [persistAtom],
 });
