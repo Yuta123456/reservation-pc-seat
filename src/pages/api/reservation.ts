@@ -7,7 +7,7 @@ type Data = {
   reservation: Reservation;
 };
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
@@ -27,7 +27,7 @@ export default function handler(
     res.status(400).end();
     return;
   }
-  handler
+  await handler
     .then(async () => {
       await prisma.$disconnect();
     })

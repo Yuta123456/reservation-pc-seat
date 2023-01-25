@@ -1,19 +1,39 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Text } from "../app/common/components";
+import { Box, Button, Link, Text } from "../app/common/components";
+import NextLink from "next/link";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/user";
+import { FC } from "react";
+import { usePathname } from "next/navigation";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
+  const [user, _] = useRecoilState(userState);
+  const pathname = usePathname();
+  const isHiddenButton =
+    (user.id !== "" && user.role !== "") || pathname === "/login";
   if (isPc === undefined) {
     return <></>;
   }
-  return <>{isPc ? <PCHeader></PCHeader> : <SPHeader></SPHeader>}</>;
+  return (
+    <>
+      {isPc ? (
+        <PCHeader isHiddenButton={isHiddenButton}></PCHeader>
+      ) : (
+        <SPHeader isHiddenButton={isHiddenButton}></SPHeader>
+      )}
+    </>
+  );
 };
 
-const PCHeader = () => {
+type HeaderProps = {
+  isHiddenButton: boolean;
+};
+const PCHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
   return (
     <Box
-      bg="teal"
+      bg="teal.700"
       w="100vw"
       color="white"
       h="100px"
@@ -27,15 +47,28 @@ const PCHeader = () => {
         display={"flex"}
         alignItems="center"
       >
-        <Text fontSize={"1.5rem"}>Learning Commons PC Reservation</Text>
+        <Text fontSize={"1.5rem"} fontFamily="fantasy">
+          <Link as={NextLink} href={"/"}>
+            Learning Commons PC 予約
+          </Link>
+        </Text>
+        {!isHiddenButton && (
+          <Box alignItems={"right"}>
+            <Button colorScheme="red" variant="putline">
+              <Link as={NextLink} href={"/login"}>
+                Login
+              </Link>
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );
 };
-const SPHeader = () => {
+const SPHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
   return (
     <Box
-      bg="teal"
+      bg="teal.700"
       w="100vw"
       color="white"
       h="50px"
@@ -50,9 +83,20 @@ const SPHeader = () => {
         justifyContent="center"
       >
         <Text fontSize={"1rem"} fontFamily="fantasy">
-          Learning Commons PC 予約
+          <Link as={NextLink} href={"/"}>
+            Learning Commons PC 予約
+          </Link>
         </Text>
       </Box>
+      {!isHiddenButton && (
+        <Box alignItems={"right"}>
+          <Button colorScheme="red" variant="putline">
+            <Link as={NextLink} href={"/login"}>
+              Login
+            </Link>
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
