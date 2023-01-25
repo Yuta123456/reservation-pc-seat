@@ -7,12 +7,12 @@ import { utcToZonedTime } from "date-fns-tz";
 type Data = {
   reservationSchedule: ReservationSchedule[][];
 };
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
   const prisma = new PrismaClient();
-  getHandler(req, res, prisma)
+  await getHandler(req, res, prisma)
     .then(async () => {
       await prisma.$disconnect();
     })
