@@ -77,7 +77,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 />
               );
             })}
-            <Box display={"flex"} justifyContent="flex-end" marginTop={"10px"}>
+            <Box display={"flex"} justifyContent="flex-start" marginTop={"10px"}>
               <IconButton
                 aria-label="minus"
                 icon={<MinusIcon />}

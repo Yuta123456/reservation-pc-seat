@@ -41,20 +41,26 @@ const PCHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
       display={"flex"}
     >
       <Box
-        maxW={"900px"}
+        maxW={"1100px"}
         w="100%"
         margin={"auto"}
         display={"flex"}
         alignItems="center"
       >
-        <Text fontSize={"1.5rem"} fontFamily="fantasy">
+        <Text fontSize={"1.5rem"} fontFamily="fantasy" whiteSpace={"nowrap"}>
           <Link as={NextLink} href={"/"}>
             Learning Commons PC 予約
           </Link>
         </Text>
         {!isHiddenButton && (
-          <Box alignItems={"right"}>
-            <Button colorScheme="red" variant="putline">
+          <Box w="100%" display={"flex"} justifyContent="flex-end">
+            <Button
+              colorScheme="red"
+              variant="putline"
+              display="flex"
+              justifyContent={"flex-end"}
+              size="lg"
+            >
               <Link as={NextLink} href={"/login"}>
                 Login
               </Link>
