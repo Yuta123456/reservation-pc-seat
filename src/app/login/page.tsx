@@ -1,7 +1,7 @@
 "use client";
 
-import { userState } from "@/state/user";
-import { useRouter } from "next/router";
+import { User, userState } from "@/state/user";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
@@ -20,7 +20,8 @@ export default function Home() {
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
-    if (user) {
+    console.log(user);
+    if (user.id && user.role) {
       router.push("/");
     }
   }, [user]);
@@ -39,10 +40,15 @@ export default function Home() {
         password,
       }),
     })
-      .then((res) => {
-        console.log(res);
+      .then(async (res) => {
+        const { user }: { user: User } = await res.json();
+        setUser({
+          id: user.id,
+          role: user.role,
+        });
       })
       .catch((err) => {
+        console.log(err);
         toast({
           title: "ログインに失敗しました",
           status: "error",
@@ -55,26 +61,26 @@ export default function Home() {
 
   return (
     <>
-      <Center bg="teal.300" width={"100vw"} height={"100vh"}>
-        <Center bg="teal.300" flexFlow={"column"}>
-          <Heading color="white">Login</Heading>
+      <Center width={"100vw"}>
+        <Center flexFlow={"column"}>
+          <Heading color="teal.200">Login</Heading>
           <FormControl>
-            <FormLabel color="white">Email address</FormLabel>
+            <FormLabel color="teal.200">Email address</FormLabel>
             <Input
               type="email"
               placeholder="example@hoge.com"
               isRequired
               id="email"
               ref={emailRef}
-              color="White"
+              color="teal.200"
             />
-            <FormLabel color="white">Password</FormLabel>
+            <FormLabel color="teal.200">Password</FormLabel>
             <Input
               type="password"
               id="password"
               isRequired
               ref={passwordRef}
-              color="White"
+              color="teal.200"
             />
             <Button mt={4} onClick={handleSubmit}>
               Login

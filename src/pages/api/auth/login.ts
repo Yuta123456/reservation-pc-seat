@@ -12,12 +12,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  // console.log(process.env.NEXT_PUBLIC_SUPABASE_URL);
   const { email, password } = JSON.parse(req.body);
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
+  // console.log(email, password, data, error);
   if (!error && data.user) {
-    res.status(200).json({ user: data.user });
+    return res.status(200).json({ user: data.user });
   }
+  return res.status(500).end();
 }

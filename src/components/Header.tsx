@@ -35,7 +35,7 @@ const PCHeader = () => {
 const SPHeader = () => {
   return (
     <Box
-      bg="teal"
+      bg="teal.200"
       w="100vw"
       color="white"
       h="50px"
