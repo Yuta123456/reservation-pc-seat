@@ -78,27 +78,6 @@ export const ReservationForm: FC<ReservationFormProps> = ({
               );
             })}
             <Box display={"flex"} justifyContent="flex-end" marginTop={"10px"}>
-              {/* <Button */}
-              <IconButton
-                aria-label="add"
-                icon={<AddIcon />}
-                onClick={() => {
-                  setNumberOfForm((n) => {
-                    return n + 1;
-                  });
-                  // TODO: disable追加
-                  setStudentsIds((prevStudentIds) => {
-                    const newStudentIds = [...prevStudentIds];
-                    newStudentIds.push("");
-                    return newStudentIds;
-                  });
-                }}
-                // colorScheme="teal"
-                marginRight="5px"
-              />
-              {/* 利用者を追加 */}
-
-              {/* </Button> */}
               <IconButton
                 aria-label="minus"
                 icon={<MinusIcon />}
@@ -113,7 +92,23 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                     return newStudentIds;
                   });
                 }}
-                // colorScheme="red"
+                marginRight="5px"
+              />
+              <IconButton
+                aria-label="add"
+                icon={<AddIcon />}
+                isDisabled={studentsIds.length >= 6}
+                onClick={() => {
+                  setNumberOfForm((n) => {
+                    return n + 1;
+                  });
+                  // TODO: disable追加
+                  setStudentsIds((prevStudentIds) => {
+                    const newStudentIds = [...prevStudentIds];
+                    newStudentIds.push("");
+                    return newStudentIds;
+                  });
+                }}
               />
             </Box>
           </Box>

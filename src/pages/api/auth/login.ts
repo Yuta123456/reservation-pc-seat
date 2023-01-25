@@ -23,7 +23,7 @@ export default async function handler(
     email,
     password,
   });
-  console.log(email, password, data, error);
+  // console.log(email, password, data, error);
   if (!error && data.user) {
     return res.status(200).json({ user: data.user });
   }
