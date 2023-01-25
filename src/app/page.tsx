@@ -25,7 +25,7 @@ export default function Home() {
       isReserved: boolean,
       reservationId: number | undefined
     ) => {
-      if (user.id && user.role) {
+      if (!(user.id && user.role)) {
         toast({
           title: "予約を変更したい場合はログインが必要です",
           status: "info",

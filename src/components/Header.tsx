@@ -13,7 +13,6 @@ export const Header = () => {
   const pathname = usePathname();
   const isHiddenButton =
     (user.id !== "" && user.role !== "") || pathname === "/login";
-  console.log(pathname);
   if (isPc === undefined) {
     return <></>;
   }

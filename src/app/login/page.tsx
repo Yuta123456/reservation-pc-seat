@@ -20,7 +20,6 @@ export default function Home() {
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
-    console.log(user);
     if (user.id && user.role) {
       router.push("/");
     }
