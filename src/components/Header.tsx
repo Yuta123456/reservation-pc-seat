@@ -77,32 +77,33 @@ const SPHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
       bg="teal.700"
       w="100vw"
       color="white"
-      h="50px"
-      alignItems="center"
+      h="70px"
       display={"flex"}
+      alignItems="center"
     >
-      <Box
-        maxW={"900px"}
-        w="100%"
-        margin={"auto"}
-        display={"flex"}
-        justifyContent="center"
-      >
-        <Text fontSize={"1rem"} fontFamily="fantasy">
-          <Link as={NextLink} href={"/"}>
-            Learning Commons PC 予約
-          </Link>
-        </Text>
-      </Box>
-      {!isHiddenButton && (
-        <Box alignItems={"right"}>
-          <Button colorScheme="red" variant="putline">
-            <Link as={NextLink} href={"/login"}>
-              Login
+      <Box maxW={"90vw"} w="100%" margin={"auto"} display={"flex"}>
+        <Box display={"flex"} alignItems="center">
+          <Text
+            fontSize={"1rem"}
+            fontFamily="fantasy"
+            alignItems="center"
+            whiteSpace={"nowrap"}
+          >
+            <Link as={NextLink} href={"/"}>
+              Learning Commons PC 予約
             </Link>
-          </Button>
+          </Text>
         </Box>
-      )}
+        {!isHiddenButton && (
+          <Box justifyContent={"flex-end"} display="flex" w="100%">
+            <Button colorScheme="red" variant="putline">
+              <Link as={NextLink} href={"/login"}>
+                Login
+              </Link>
+            </Button>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };
