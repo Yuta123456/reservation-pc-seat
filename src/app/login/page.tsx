@@ -14,14 +14,14 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
   useToast,
 } from "../common/components";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { FaBeer } from "react-icons/fa";
+
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
   const [hiddenPassword, setHiddenPassword] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function Home() {
     if (!email || !password) {
       return;
     }
+    setIsLoading(true);
     fetch("api/auth/login", {
       method: "POST",
       body: JSON.stringify({
@@ -50,6 +51,11 @@ export default function Home() {
           id: user.id,
           role: user.role,
         });
+        toast({
+          title: "ログインに成功しました",
+          status: "success",
+          duration: 2000,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -58,6 +64,9 @@ export default function Home() {
           status: "error",
           duration: 2000,
         });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   const emailRef = useRef<HTMLInputElement>(null);
@@ -92,16 +101,13 @@ export default function Home() {
                   h="1.75rem"
                   size="sm"
                   onClick={() => {
-                    console.log(hiddenPassword)
                     setHiddenPassword((v) => {
                       return !v;
                     });
                   }}
                 >
                   <Icon
-                    as={
-                      hiddenPassword ? AiOutlineEye : AiOutlineEyeInvisible
-                    }
+                    as={hiddenPassword ? AiOutlineEye : AiOutlineEyeInvisible}
                   />
                 </Button>
               </InputRightElement>
@@ -112,6 +118,7 @@ export default function Home() {
               onClick={handleSubmit}
               variant="solid"
               color={"teal.700"}
+              isLoading={isLoading}
             >
               Login
             </Button>
