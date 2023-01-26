@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { supabase } from "./supabase";
+import { supabase } from "../../../app/login/supabase";
 import { User } from "@supabase/supabase-js";
 
 type Data = {

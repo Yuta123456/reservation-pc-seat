@@ -2,9 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
-import { utcToZonedTime } from "date-fns-tz";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-
+import { supabase } from "../../../../../app/login/supabase";
 type Data = {
   reservationSchedule: ReservationSchedule[][];
 };
@@ -40,13 +38,13 @@ const getHandler = async (
   if (typeof jwt !== "string") {
     return res.status(400).end();
   }
-  const supabaseServerClient = createServerSupabaseClient({
-    req,
-    res,
-  });
+
+  if (supabase === "" || supabase === undefined) {
+    return res.status(500).end();
+  }
   const {
     data: { user },
-  } = await supabaseServerClient.auth.getUser(jwt);
+  } = await supabase.auth.getUser(jwt);
 
   console.log(user);
   const today = new Date();

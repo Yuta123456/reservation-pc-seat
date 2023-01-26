@@ -17,7 +17,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { supabase } from "@/pages/api/auth/supabase";
+import { supabase } from "@/app/login/supabase";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
