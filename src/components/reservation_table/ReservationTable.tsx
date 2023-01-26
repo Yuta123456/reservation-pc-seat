@@ -105,7 +105,7 @@ const PCReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
   return (
-    <Box minW={"900px"} maxW={"1100px"} margin="auto" textAlign={"center"}>
+    <Box maxW={"90vw"} margin="auto" textAlign={"center"}>
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -162,7 +162,7 @@ const PCReservationTable: FC<
                             );
                           }}
                         >
-                          <Text fontSize={"1.5em"}>
+                          <Text fontSize={"1.5em"} textAlign="center">
                             {
                               reservationStateText[
                                 isReserved ? "isReserved" : "available"
@@ -187,7 +187,7 @@ const SPReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
   return (
-    <Box maxW={"100vw"} textAlign={"center"}>
+    <Box maxW={"95vw"} textAlign={"center"}>
       <TableContainer>
         <Table variant="simple">
           <Thead>

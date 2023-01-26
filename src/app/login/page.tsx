@@ -10,13 +10,18 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input,
-  Text,
+  InputGroup,
+  InputRightElement,
   useToast,
 } from "../common/components";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
+  const [hiddenPassword, setHiddenPassword] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
@@ -32,6 +37,7 @@ export default function Home() {
     if (!email || !password) {
       return;
     }
+    setIsLoading(true);
     fetch("api/auth/login", {
       method: "POST",
       body: JSON.stringify({
@@ -45,6 +51,11 @@ export default function Home() {
           id: user.id,
           role: user.role,
         });
+        toast({
+          title: "ログインに成功しました",
+          status: "success",
+          duration: 2000,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -53,6 +64,9 @@ export default function Home() {
           status: "error",
           duration: 2000,
         });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   const emailRef = useRef<HTMLInputElement>(null);
@@ -62,26 +76,50 @@ export default function Home() {
     <>
       <Center width={"100vw"}>
         <Center flexFlow={"column"}>
-          <Heading color="teal.200">Login</Heading>
+          <Heading color="teal.700">Login</Heading>
           <FormControl>
-            <FormLabel color="teal.200">Email address</FormLabel>
+            <FormLabel color="teal.700">Email address</FormLabel>
             <Input
               type="email"
               placeholder="example@hoge.com"
               isRequired
               id="email"
               ref={emailRef}
-              color="teal.200"
+              color="black"
             />
-            <FormLabel color="teal.200">Password</FormLabel>
-            <Input
-              type="password"
-              id="password"
-              isRequired
-              ref={passwordRef}
-              color="teal.200"
-            />
-            <Button mt={4} onClick={handleSubmit}>
+            <FormLabel color="teal.700">Password</FormLabel>
+            <InputGroup>
+              <Input
+                id="password"
+                isRequired
+                ref={passwordRef}
+                color="black"
+                type={hiddenPassword ? "password" : "text"}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="sm"
+                  onClick={() => {
+                    setHiddenPassword((v) => {
+                      return !v;
+                    });
+                  }}
+                >
+                  <Icon
+                    as={hiddenPassword ? AiOutlineEye : AiOutlineEyeInvisible}
+                  />
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
+            <Button
+              mt={4}
+              onClick={handleSubmit}
+              variant="solid"
+              color={"teal.700"}
+              isLoading={isLoading}
+            >
               Login
             </Button>
           </FormControl>
