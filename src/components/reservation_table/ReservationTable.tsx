@@ -15,6 +15,8 @@ import { useIsPc } from "@/Hooks/useIsPc";
 import { ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 import useSWR from "swr";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/user";
 
 export type ReservationSchedule = {
   id: number;
@@ -41,10 +43,19 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
   const isPc = useIsPc(undefined);
+  const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
-  const { data, error } = useSWR(`api/reservation/today`, fetcher, {
-    refreshInterval: 1000,
-  });
+  const { data, error } = useSWR(
+    `api/${
+      user.accessToken
+        ? "auth/reservation/today/" + user.accessToken
+        : "reservation/today"
+    }`,
+    fetcher,
+    {
+      refreshInterval: 1000,
+    }
+  );
 
   if (isPc === undefined || data === undefined || error) {
     return (

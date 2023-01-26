@@ -35,13 +35,19 @@ const getHandler = async (
   res: NextApiResponse<Data>,
   prisma: PrismaClient
 ) => {
+  const { jwt } = req.query;
+  console.log(jwt);
+  if (typeof jwt !== "string") {
+    return res.status(400).end();
+  }
   const supabaseServerClient = createServerSupabaseClient({
     req,
     res,
   });
   const {
     data: { user },
-  } = await supabaseServerClient.auth.getUser();
+  } = await supabaseServerClient.auth.getUser(jwt);
+
   console.log(user);
   const today = new Date();
 
