@@ -105,7 +105,7 @@ const PCReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
   return (
-    <Box minW={"900px"} maxW={"1100px"} margin="auto" textAlign={"center"}>
+    <Box maxW={"90vw"} margin="auto" textAlign={"center"}>
       <TableContainer>
         <Table variant="simple">
           <Thead>

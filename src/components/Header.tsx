@@ -34,14 +34,14 @@ const PCHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
   return (
     <Box
       bg="teal.700"
-      w="100vw"
+      w="100%"
       color="white"
       h="100px"
       alignItems="center"
       display={"flex"}
     >
       <Box
-        maxW={"1100px"}
+        maxW={"90vw"}
         w="100%"
         margin={"auto"}
         display={"flex"}
