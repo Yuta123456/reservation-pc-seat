@@ -1,6 +1,6 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Button, Link, Text } from "../app/common/components";
+import { Box, Button, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";

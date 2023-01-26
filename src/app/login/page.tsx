@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
-} from "../common/components";
+} from "@chakra-ui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function Home() {

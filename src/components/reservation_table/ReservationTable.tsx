@@ -10,12 +10,11 @@ import {
   Center,
   Box,
   Spinner,
-} from "@/app/common/components";
+} from "@chakra-ui/react";
 import { useIsPc } from "@/Hooks/useIsPc";
 import { ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 import useSWR from "swr";
-import { utcToZonedTime } from "date-fns-tz";
 
 export type ReservationSchedule = {
   id: number;

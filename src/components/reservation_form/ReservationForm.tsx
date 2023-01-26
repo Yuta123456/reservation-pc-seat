@@ -13,7 +13,7 @@ import {
   Input,
   useToast,
   IconButton,
-} from "../../app/common/components";
+} from "@chakra-ui/react";
 
 import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
