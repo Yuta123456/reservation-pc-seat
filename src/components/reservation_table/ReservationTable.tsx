@@ -42,15 +42,10 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
   const isPc = useIsPc(undefined);
-  const today = utcToZonedTime(new Date(), "Asia/Tokyo");
   // TODO: ここ、頑張らないと予約の書き換えが起こる
-  const { data, error } = useSWR(
-    `api/reservation/${today.getFullYear()}/${today.getMonth()}/${today.getDate()}`,
-    fetcher,
-    {
-      refreshInterval: 1000,
-    }
-  );
+  const { data, error } = useSWR(`api/reservation/today`, fetcher, {
+    refreshInterval: 1000,
+  });
 
   if (isPc === undefined || data === undefined || error) {
     return (

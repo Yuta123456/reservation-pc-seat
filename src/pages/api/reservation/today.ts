@@ -34,13 +34,7 @@ const getHandler = async (
   res: NextApiResponse<Data>,
   prisma: PrismaClient
 ) => {
-  const { date } = req.query;
-  if (date === undefined || typeof date === "string" || date.length !== 3) {
-    return res.status(400).end();
-  }
-  const [year, monthIndex, day] = date;
-  // ここはTimeZoneの変換がいらない。リクエストの時点で日本時間になっているから
-  const today = new Date(Number(year), Number(monthIndex), Number(day));
+  const today = new Date();
 
   // 今日にされた予約を全て取得
   const todayReservation = await prisma.reservation.findMany({
