@@ -49,7 +49,6 @@ export default function Home() {
       })
       .then(async (res) => {
         const user = res.data.user;
-        console.log(res);
         if (user !== null) {
           setUser({
             id: user.id,

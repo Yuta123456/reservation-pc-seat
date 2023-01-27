@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
-import { supabase } from "../../../../../app/login/supabase";
+import { supabase } from "../supabase";
 type Data = {
   reservationSchedule: ReservationSchedule[][];
 };
@@ -33,7 +33,7 @@ const getHandler = async (
   res: NextApiResponse<Data>,
   prisma: PrismaClient
 ) => {
-  const { jwt } = req.query;
+  const jwt = req.headers.authorization;
   console.log(jwt);
   if (typeof jwt !== "string") {
     return res.status(400).end();
@@ -46,7 +46,10 @@ const getHandler = async (
     data: { user },
   } = await supabase.auth.getUser(jwt);
 
-  console.log(user);
+  if (!user) {
+    // accessTokenが無効
+    return res.status(401).end();
+  }
   const today = new Date();
 
   // 今日にされた予約を全て取得

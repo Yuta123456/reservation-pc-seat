@@ -34,8 +34,12 @@ type ReservationTableProps = {
   ) => void;
 };
 
-const fetcher = (url: string) =>
-  fetch(url)
+const fetcher = (url: string, accessToken: string | undefined) =>
+  fetch(url, {
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  })
     .then(async (res) => await res.json())
     .then((res) => res.reservationSchedule);
 
@@ -46,11 +50,12 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
   const { data, error } = useSWR(
-    `api/${
-      user.accessToken
-        ? "auth/reservation/today/" + user.accessToken
-        : "reservation/today"
-    }`,
+    [
+      `api/${
+        user.accessToken ? "auth/reservation/today" : "reservation/today"
+      }`,
+      user.accessToken,
+    ],
     fetcher,
     {
       refreshInterval: 1000,
