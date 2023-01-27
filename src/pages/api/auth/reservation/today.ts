@@ -1,10 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
+import { ReservationScheduleWithAuth } from "@/components/reservation_table/ReservationTable";
 import { supabase } from "../supabase";
 type Data = {
-  reservationSchedule: ReservationSchedule[][];
+  reservationSchedule: ReservationScheduleWithAuth[][];
 };
 export default async function handler(
   req: NextApiRequest,
@@ -74,14 +74,16 @@ const getHandler = async (
     },
   });
 
-  const reservationList: ReservationSchedule[] = todayReservation.map((res) => {
-    return {
-      id: res.id,
-      seat: res.seat,
-      period: res.period,
-      studentIds: res.ReservationStudent.map((rs) => rs.student.studentId),
-    };
-  });
+  const reservationList: ReservationScheduleWithAuth[] = todayReservation.map(
+    (res) => {
+      return {
+        id: res.id,
+        seat: res.seat,
+        period: res.period,
+        studentIds: res.ReservationStudent.map((rs) => rs.student.studentId),
+      };
+    }
+  );
 
   // TODO: マジックナンバー削除。PC席の個数
   const reservationSchedule = [...Array(5)].map((_, i) => {

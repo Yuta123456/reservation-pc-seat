@@ -2,7 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
-import { utcToZonedTime } from "date-fns-tz";
 
 type Data = {
   reservationSchedule: ReservationSchedule[][];
@@ -47,15 +46,6 @@ const getHandler = async (
       id: true,
       seat: true,
       period: true,
-      ReservationStudent: {
-        select: {
-          student: {
-            select: {
-              studentId: true,
-            },
-          },
-        },
-      },
     },
   });
 
@@ -64,7 +54,6 @@ const getHandler = async (
       id: res.id,
       seat: res.seat,
       period: res.period,
-      studentIds: res.ReservationStudent.map((rs) => rs.student.studentId),
     };
   });
 

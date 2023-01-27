@@ -18,11 +18,17 @@ import useSWR from "swr";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 
-export type ReservationSchedule = {
+export type ReservationScheduleWithAuth = {
   id: number;
   seat: number;
   period: number;
   studentIds: string[];
+};
+
+export type ReservationSchedule = {
+  id: number;
+  seat: number;
+  period: number;
 };
 
 type ReservationTableProps = {
@@ -49,9 +55,9 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
-  console.log(`api/${
-    user.accessToken ? "auth/reservation/today" : "reservation/today"
-  }`);
+  console.log(
+    `api/${user.accessToken ? "auth/reservation/today" : "reservation/today"}`
+  );
   const { data, error } = useSWR(
     [
       `api/${
