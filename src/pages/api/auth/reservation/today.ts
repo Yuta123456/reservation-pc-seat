@@ -33,8 +33,7 @@ const getHandler = async (
   res: NextApiResponse<Data>,
   prisma: PrismaClient
 ) => {
-  const jwt = req.headers.authorization;
-  console.log(jwt);
+  const jwt = req.headers.authorization?.slice(7);
   if (typeof jwt !== "string") {
     return res.status(400).end();
   }
