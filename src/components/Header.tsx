@@ -89,11 +89,7 @@ const PCHeader: FC<HeaderProps> = ({
               </Link>
             </Button>
           ) : (
-            <IconButton
-              aria-label="search"
-              icon={<AiOutlineSearch />}
-              onClick={setIsOpenSearchReservation}
-            />
+            <Button onClick={setIsOpenSearchReservation}>予約検索</Button>
           )}
         </Box>
       </Box>
@@ -134,11 +130,7 @@ const SPHeader: FC<HeaderProps> = ({
               </Link>
             </Button>
           ) : (
-            <IconButton
-              aria-label="search"
-              icon={<AiOutlineSearch />}
-              onClick={setIsOpenSearchReservation}
-            />
+            <Button onClick={setIsOpenSearchReservation}>予約検索</Button>
           )}
         </Box>
       </Box>
