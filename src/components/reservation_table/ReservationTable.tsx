@@ -50,7 +50,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
-  const { data, error } = useSWR("api/resercation/today", fetcher, {
+  const { data, error } = useSWR("api/reservation/today", fetcher, {
     refreshInterval: 1000,
   });
 

@@ -97,7 +97,6 @@ const getHandler = async (
     });
     return reservationInSeatI;
   });
-
   // TODO: データの形式が絶対に正しくない
   res.status(200).json({ reservationSchedule });
 };

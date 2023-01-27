@@ -7,6 +7,7 @@ import { userState } from "@/state/user";
 import { useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useToast } from "@chakra-ui/react";
+import { SearchReservation } from "@/components/search_reservation/SearchReservation";
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
   const [isOpenReservationDeleteForm, setIsOpenReservationDeleteForm] =
@@ -47,7 +48,7 @@ export default function Home() {
   return (
     <main>
       {/* <DisplayTime /> */}
-
+      <SearchReservation />
       <ReservationTable onCellClick={handleClick} />
 
       {isOpenReservationForm && (
