@@ -1,3 +1,4 @@
+import { useIsPc } from "@/Hooks/useIsPc";
 import { userState } from "@/state/user";
 import {
   Box,
@@ -58,9 +59,17 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
         setResult(targetReservation);
       });
   };
+  const isPc = useIsPc(undefined);
+  if (isPc === undefined) {
+    return <></>;
+  }
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
-      <ModalOverlay />
+      <ModalOverlay
+        {...(!isPc && {
+          maxW: "90vw",
+        })}
+      />
       <ModalContent maxW="90vw">
         <ModalHeader>学籍番号検索</ModalHeader>
         <ModalCloseButton />
