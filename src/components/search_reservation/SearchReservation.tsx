@@ -45,7 +45,7 @@ export const SearchReservation = () => {
       });
   };
   return (
-    <Box width={"100%"} textAlign="center" padding={"15px"}>
+    <Box maxW={"90vw"} margin="auto" textAlign={"center"}>
       <Text>学籍番号検索</Text>
       <InputGroup>
         <InputLeftElement>
