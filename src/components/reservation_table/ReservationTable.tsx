@@ -10,18 +10,24 @@ import {
   Center,
   Box,
   Spinner,
-} from "@/app/common/components";
+} from "@chakra-ui/react";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 import useSWR from "swr";
-import { utcToZonedTime } from "date-fns-tz";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/user";
+
+export type ReservationScheduleWithAuth = {
+  id: number;
+  seat: number;
+  period: number;
+  studentIds: string[];
+};
 
 export type ReservationSchedule = {
   id: number;
   seat: number;
   period: number;
-  studentIds: string[];
 };
 
 type ReservationTableProps = {
@@ -42,15 +48,11 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
   const isPc = useIsPc(undefined);
-  const today = utcToZonedTime(new Date(), "Asia/Tokyo");
+  const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
-  const { data, error } = useSWR(
-    `api/reservation/${today.getFullYear()}/${today.getMonth()}/${today.getDate()}`,
-    fetcher,
-    {
-      refreshInterval: 1000,
-    }
-  );
+  const { data, error } = useSWR("api/reservation/today", fetcher, {
+    refreshInterval: 1000,
+  });
 
   if (isPc === undefined || data === undefined || error) {
     return (
@@ -81,7 +83,15 @@ export const ReservationTable: FC<ReservationTableProps> = ({
     </>
   );
 };
-
+export type ReservationState = "isReserved" | "available" | "occupied";
+export const DisplayPriod = [
+  "1時限目",
+  "2時限目",
+  "昼休み",
+  "3時限目",
+  "4時限目",
+  "5時限目",
+];
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
     bgColor: "teal.200",

@@ -1,16 +1,19 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Button, Link, Text } from "../app/common/components";
+import { Box, Button, IconButton, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { usePathname } from "next/navigation";
+import { SearchReservationModal } from "./search_reservation/SearchReservation";
+import { AiOutlineSearch } from "react-icons/ai";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   const pathname = usePathname();
+  const [isOpenSearchReservation, setIsOpenSearchReservation] = useState(false);
   const isHiddenButton =
     (user.id !== "" && user.role !== "") || pathname === "/login";
   if (isPc === undefined) {
@@ -19,9 +22,25 @@ export const Header = () => {
   return (
     <>
       {isPc ? (
-        <PCHeader isHiddenButton={isHiddenButton}></PCHeader>
+        <PCHeader
+          isHiddenButton={isHiddenButton}
+          setIsOpenSearchReservation={() =>
+            setIsOpenSearchReservation((prev) => !prev)
+          }
+        ></PCHeader>
       ) : (
-        <SPHeader isHiddenButton={isHiddenButton}></SPHeader>
+        <SPHeader
+          isHiddenButton={isHiddenButton}
+          setIsOpenSearchReservation={() =>
+            setIsOpenSearchReservation((prev) => !prev)
+          }
+        ></SPHeader>
+      )}
+      {isOpenSearchReservation && (
+        <SearchReservationModal
+          isOpen={isOpenSearchReservation}
+          onClose={() => setIsOpenSearchReservation(false)}
+        />
       )}
     </>
   );
@@ -29,8 +48,13 @@ export const Header = () => {
 
 type HeaderProps = {
   isHiddenButton: boolean;
+  setIsOpenSearchReservation: () => void;
 };
-const PCHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
+const PCHeader: FC<HeaderProps> = ({
+  isHiddenButton,
+  setIsOpenSearchReservation,
+}) => {
+  const [user, _] = useRecoilState(userState);
   return (
     <Box
       bg="teal.700"
@@ -52,10 +76,9 @@ const PCHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
             Learning Commons PC 予約
           </Link>
         </Text>
-        {!isHiddenButton && (
-          <Box w="100%" display={"flex"} justifyContent="flex-end">
+        <Box w="100%" display={"flex"} justifyContent="flex-end">
+          {!isHiddenButton && (
             <Button
-              colorScheme="red"
               variant="putline"
               display="flex"
               justifyContent={"flex-end"}
@@ -65,13 +88,22 @@ const PCHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
                 Login
               </Link>
             </Button>
-          </Box>
-        )}
+          )}
+          {user.id && (
+            <Button onClick={setIsOpenSearchReservation} variant="putline">
+              予約検索
+            </Button>
+          )}
+        </Box>
       </Box>
     </Box>
   );
 };
-const SPHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
+const SPHeader: FC<HeaderProps> = ({
+  isHiddenButton,
+  setIsOpenSearchReservation,
+}) => {
+  const [user, _] = useRecoilState(userState);
   return (
     <Box
       bg="teal.700"
@@ -94,15 +126,20 @@ const SPHeader: FC<HeaderProps> = ({ isHiddenButton }) => {
             </Link>
           </Text>
         </Box>
-        {!isHiddenButton && (
-          <Box justifyContent={"flex-end"} display="flex" w="100%">
-            <Button colorScheme="red" variant="putline">
+        <Box justifyContent={"flex-end"} display="flex" w="100%">
+          {!isHiddenButton && (
+            <Button variant="putline">
               <Link as={NextLink} href={"/login"}>
                 Login
               </Link>
             </Button>
-          </Box>
-        )}
+          )}
+          {user.id && (
+            <Button onClick={setIsOpenSearchReservation} variant="putline">
+              予約検索
+            </Button>
+          )}
+        </Box>
       </Box>
     </Box>
   );

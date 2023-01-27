@@ -20,12 +20,12 @@ export default async function main(email: string, password: string) {
     email,
     password,
   });
-  // console.log(email, password, data, error);
+
   if (!error && data.user) {
     console.log(error);
     return;
   }
-  console.log("create success");
+
   return;
 }
 

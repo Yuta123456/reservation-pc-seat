@@ -15,8 +15,9 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
-} from "../common/components";
+} from "@chakra-ui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { supabase } from "@/app/login/supabase";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
@@ -37,20 +38,24 @@ export default function Home() {
     if (!email || !password) {
       return;
     }
+    if (supabase === undefined || supabase === "") {
+      return;
+    }
     setIsLoading(true);
-    fetch("api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
+    supabase.auth
+      .signInWithPassword({
         email,
         password,
-      }),
-    })
+      })
       .then(async (res) => {
-        const { user }: { user: User } = await res.json();
-        setUser({
-          id: user.id,
-          role: user.role,
-        });
+        const user = res.data.user;
+        if (user !== null) {
+          setUser({
+            id: user.id,
+            role: user.role,
+            accessToken: res.data.session?.access_token,
+          });
+        }
         toast({
           title: "ログインに成功しました",
           status: "success",

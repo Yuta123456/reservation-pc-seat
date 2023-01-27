@@ -1,6 +1,6 @@
 "use client";
 import { useTime } from "@/Hooks/useTime";
-import { Text, Box } from "../../app/common/components";
+import { Text, Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 export const DisplayTime = () => {
   const time = useTime(1000);

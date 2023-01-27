@@ -1,11 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { ReservationSchedule } from "@/components/reservation_table/ReservationTable";
-import { utcToZonedTime } from "date-fns-tz";
-
+import { ReservationScheduleWithAuth } from "@/components/reservation_table/ReservationTable";
+import { supabase } from "../supabase";
 type Data = {
-  reservationSchedule: ReservationSchedule[][];
+  reservationSchedule: ReservationScheduleWithAuth[][];
 };
 export default async function handler(
   req: NextApiRequest,
@@ -34,13 +33,23 @@ const getHandler = async (
   res: NextApiResponse<Data>,
   prisma: PrismaClient
 ) => {
-  const { date } = req.query;
-  if (date === undefined || typeof date === "string" || date.length !== 3) {
+  const jwt = req.headers.authorization?.slice(7);
+  if (typeof jwt !== "string") {
     return res.status(400).end();
   }
-  const [year, monthIndex, day] = date;
-  // ここはTimeZoneの変換がいらない。リクエストの時点で日本時間になっているから
-  const today = new Date(Number(year), Number(monthIndex), Number(day));
+
+  if (supabase === "" || supabase === undefined) {
+    return res.status(500).end();
+  }
+  const {
+    data: { user },
+  } = await supabase.auth.getUser(jwt);
+
+  if (!user) {
+    // accessTokenが無効
+    return res.status(401).end();
+  }
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
 
   // 今日にされた予約を全て取得
   const todayReservation = await prisma.reservation.findMany({
@@ -65,14 +74,16 @@ const getHandler = async (
     },
   });
 
-  const reservationList: ReservationSchedule[] = todayReservation.map((res) => {
-    return {
-      id: res.id,
-      seat: res.seat,
-      period: res.period,
-      studentIds: res.ReservationStudent.map((rs) => rs.student.studentId),
-    };
-  });
+  const reservationList: ReservationScheduleWithAuth[] = todayReservation.map(
+    (res) => {
+      return {
+        id: res.id,
+        seat: res.seat,
+        period: res.period,
+        studentIds: res.ReservationStudent.map((rs) => rs.student.studentId),
+      };
+    }
+  );
 
   // TODO: マジックナンバー削除。PC席の個数
   const reservationSchedule = [...Array(5)].map((_, i) => {
