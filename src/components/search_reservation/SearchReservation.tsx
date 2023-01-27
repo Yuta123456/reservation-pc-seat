@@ -65,12 +65,12 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
-      <ModalOverlay
+      <ModalOverlay />
+      <ModalContent
         {...(!isPc && {
           maxW: "90vw",
         })}
-      />
-      <ModalContent maxW="90vw">
+      >
         <ModalHeader>学籍番号検索</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
