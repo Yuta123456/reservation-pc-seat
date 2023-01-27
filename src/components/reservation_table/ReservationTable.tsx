@@ -12,7 +12,6 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { ReservationState } from "@/mockData/ReservationData";
 import { FC } from "react";
 import useSWR from "swr";
 import { useRecoilState } from "recoil";
@@ -40,12 +39,8 @@ type ReservationTableProps = {
   ) => void;
 };
 
-const fetcher = ([url, accessToken]: [string, string | undefined]) =>
-  fetch(url, {
-    // headers: {
-    //   Authorization: "Bearer " + accessToken,
-    // },
-  })
+const fetcher = (url: string) =>
+  fetch(url)
     .then(async (res) => await res.json())
     .then((res) => res.reservationSchedule);
 
@@ -55,19 +50,9 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
-  const { data, error } = useSWR(
-    [
-      // `api/${
-      //   user.accessToken ? "auth/reservation/today" : "reservation/today"
-      // }`,
-      "api/resercation/today",
-      user.accessToken,
-    ],
-    fetcher,
-    {
-      refreshInterval: 1000,
-    }
-  );
+  const { data, error } = useSWR("api/resercation/today", fetcher, {
+    refreshInterval: 1000,
+  });
 
   if (isPc === undefined || data === undefined || error) {
     return (
@@ -98,7 +83,15 @@ export const ReservationTable: FC<ReservationTableProps> = ({
     </>
   );
 };
-
+export type ReservationState = "isReserved" | "available" | "occupied";
+export const DisplayPriod = [
+  "1時限目",
+  "2時限目",
+  "昼休み",
+  "3時限目",
+  "4時限目",
+  "5時限目",
+];
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
     bgColor: "teal.200",
