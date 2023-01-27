@@ -6,8 +6,10 @@ import { ReservationTable } from "@/components/reservation_table/ReservationTabl
 import { userState } from "@/state/user";
 import { useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useToast } from "@chakra-ui/react";
+import { Button, IconButton, useToast } from "@chakra-ui/react";
 import { SearchReservation } from "@/components/search_reservation/SearchReservation";
+import { AiOutlineSearch } from "react-icons/ai";
+
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
   const [isOpenReservationDeleteForm, setIsOpenReservationDeleteForm] =
@@ -17,6 +19,7 @@ export default function Home() {
   const [reservationId, setReservationId] = useState<number | undefined>(
     undefined
   );
+  const [isOpenSearchReservation, setIsOpenSearchReservation] = useState(true);
   const toast = useToast();
   const [user, _] = useRecoilState(userState);
   const handleClick = useCallback(
@@ -48,7 +51,14 @@ export default function Home() {
   return (
     <main>
       {/* <DisplayTime /> */}
-      {user.id && <SearchReservation />}
+      {
+        <IconButton
+          aria-label="search"
+          icon={<AiOutlineSearch />}
+          onClick={() => setIsOpenSearchReservation((prev) => !prev)}
+        ></IconButton>
+      }
+      {isOpenSearchReservation && <SearchReservation />}
       <ReservationTable onCellClick={handleClick} />
 
       {isOpenReservationForm && (
