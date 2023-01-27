@@ -48,7 +48,9 @@ export const SearchReservation = () => {
     <Box width={"100%"} textAlign="center" padding={"15px"}>
       <Text>学籍番号検索</Text>
       <InputGroup>
-        <InputLeftElement children={<AiOutlineSearch color="gray.300" />} />
+        <InputLeftElement>
+          <AiOutlineSearch color="gray.300" />
+        </InputLeftElement>
         <Input
           type="text"
           value={studentId}
