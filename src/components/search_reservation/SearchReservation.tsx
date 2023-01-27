@@ -67,7 +67,7 @@ export const SearchReservation = () => {
             <Stack divider={<StackDivider />} spacing="4">
               {result.map((reservation) => {
                 return (
-                  <Box>
+                  <Box key={reservation.id}>
                     <Text pt="2" fontSize="sm">
                       {DisplayPriod[reservation.period]} の PC
                       {reservation.seat + 1}を予約しています。
