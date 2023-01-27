@@ -54,6 +54,7 @@ const PCHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
 }) => {
+  const [user, _] = useRecoilState(userState);
   return (
     <Box
       bg="teal.700"
@@ -76,9 +77,8 @@ const PCHeader: FC<HeaderProps> = ({
           </Link>
         </Text>
         <Box w="100%" display={"flex"} justifyContent="flex-end">
-          {!isHiddenButton ? (
+          {!isHiddenButton && (
             <Button
-              colorScheme="red"
               variant="putline"
               display="flex"
               justifyContent={"flex-end"}
@@ -88,8 +88,11 @@ const PCHeader: FC<HeaderProps> = ({
                 Login
               </Link>
             </Button>
-          ) : (
-            <Button onClick={setIsOpenSearchReservation}>予約検索</Button>
+          )}
+          {user.id && (
+            <Button onClick={setIsOpenSearchReservation} variant="putline">
+              予約検索
+            </Button>
           )}
         </Box>
       </Box>
@@ -100,6 +103,7 @@ const SPHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
 }) => {
+  const [user, _] = useRecoilState(userState);
   return (
     <Box
       bg="teal.700"
@@ -123,14 +127,17 @@ const SPHeader: FC<HeaderProps> = ({
           </Text>
         </Box>
         <Box justifyContent={"flex-end"} display="flex" w="100%">
-          {!isHiddenButton ? (
-            <Button colorScheme="red" variant="putline">
+          {!isHiddenButton && (
+            <Button variant="putline">
               <Link as={NextLink} href={"/login"}>
                 Login
               </Link>
             </Button>
-          ) : (
-            <Button onClick={setIsOpenSearchReservation}>予約検索</Button>
+          )}
+          {user.id && (
+            <Button onClick={setIsOpenSearchReservation} variant="putline">
+              予約検索
+            </Button>
           )}
         </Box>
       </Box>
