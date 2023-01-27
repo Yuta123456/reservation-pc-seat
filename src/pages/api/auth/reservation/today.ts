@@ -49,7 +49,7 @@ const getHandler = async (
     // accessTokenが無効
     return res.status(401).end();
   }
-  const today = new Date();
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
 
   // 今日にされた予約を全て取得
   const todayReservation = await prisma.reservation.findMany({
@@ -97,6 +97,7 @@ const getHandler = async (
     });
     return reservationInSeatI;
   });
+
   // TODO: データの形式が絶対に正しくない
   res.status(200).json({ reservationSchedule });
 };

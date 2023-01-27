@@ -48,7 +48,7 @@ export default function Home() {
   return (
     <main>
       {/* <DisplayTime /> */}
-      <SearchReservation />
+      {user.id && <SearchReservation />}
       <ReservationTable onCellClick={handleClick} />
 
       {isOpenReservationForm && (

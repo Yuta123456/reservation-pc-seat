@@ -33,7 +33,7 @@ const getHandler = async (
   res: NextApiResponse<Data>,
   prisma: PrismaClient
 ) => {
-  const today = new Date();
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
 
   // 今日にされた予約を全て取得
   const todayReservation = await prisma.reservation.findMany({
