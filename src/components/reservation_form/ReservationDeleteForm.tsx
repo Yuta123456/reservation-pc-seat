@@ -15,6 +15,8 @@ import {
 
 import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
+import { userState } from "../../state/user";
+import { useRecoilState } from "recoil";
 
 type ReservationFormProps = {
   isOpen: boolean;
@@ -43,6 +45,7 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
   const toast = useToast();
   const isPc = useIsPc(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, _] = useRecoilState(userState);
   if (isPc === undefined) {
     return <></>;
   }
@@ -70,16 +73,30 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
               fetch("api/reservation", {
                 method: "DELETE",
                 body: JSON.stringify({ id }),
-              }).then(async (res) => {
-                setIsLoading(false);
-                onClose();
-                toast({
-                  title: "削除しました",
-                  status: "success",
-                  duration: 2000,
-                  isClosable: true,
+                // TODO: もうちょいいい感じに。
+                headers: {
+                  authorization: "Bearer " + user.session?.access_token || "",
+                },
+              })
+                .then(async (res) => {
+                  setIsLoading(false);
+                  onClose();
+                  toast({
+                    title: "削除しました",
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                  });
+                })
+                .catch((e) => {
+                  console.log(e);
+                  toast({
+                    title: "削除に失敗しました",
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                  });
                 });
-              });
             }}
           >
             削除する
