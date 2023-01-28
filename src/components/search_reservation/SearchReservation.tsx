@@ -44,7 +44,7 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
   const onClickSearch = () => {
     fetch("api/auth/reservation/today", {
       headers: {
-        Authorization: "Bearer " + user.accessToken,
+        Authorization: "Bearer " + user.session?.access_token,
       },
     })
       .then((res) => res.json())

@@ -1,9 +1,10 @@
 "use client";
 
-import { User, userState } from "@/state/user";
+import { UserState, userState } from "@/state/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
+import { User, Session } from "@supabase/supabase-js";
 import {
   Button,
   Center,
@@ -17,7 +18,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { supabase } from "@/app/login/supabase";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
@@ -26,7 +26,7 @@ export default function Home() {
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
-    if (user.id && user.role) {
+    if (user.user && user.session) {
       router.push("/");
     }
   }, [user]);
@@ -38,23 +38,26 @@ export default function Home() {
     if (!email || !password) {
       return;
     }
-    if (supabase === undefined || supabase === "") {
-      return;
-    }
     setIsLoading(true);
-    supabase.auth
-      .signInWithPassword({
+    fetch("api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
         email,
         password,
-      })
+      }),
+    })
       .then(async (res) => {
-        const user = res.data.user;
-        if (user !== null) {
-          setUser({
-            id: user.id,
-            role: user.role,
-            accessToken: res.data.session?.access_token,
-          });
+        const {
+          authResponce,
+        }: {
+          authResponce: { user: User | null; session: Session | null };
+        } = await res.json();
+        if (authResponce.session !== null && authResponce.user !== null) {
+          const newUser: UserState = {
+            user: authResponce.user,
+            session: authResponce.session,
+          };
+          setUser(newUser);
         }
         toast({
           title: "ログインに成功しました",

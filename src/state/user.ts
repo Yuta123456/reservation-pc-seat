@@ -1,19 +1,18 @@
+import { User, Session } from "@supabase/supabase-js";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
-export type User = {
-  id: string;
-  role: string | undefined;
-  accessToken: string | undefined;
+export type UserState = {
+  user: User | null;
+  session: Session | null;
 };
-export const userState = atom<User>({
+export const userState = atom<UserState>({
   key: "user",
   default: {
-    id: "",
-    role: undefined,
-    accessToken: undefined,
+    user: null,
+    session: null,
   },
   // NOTE: state永続化で簡単にログインセッション出来ると思ったが、そんなことない。
   // localStorageに保存しているので、このままやると誰でもログイン可能になる

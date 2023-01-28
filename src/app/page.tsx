@@ -6,9 +6,7 @@ import { ReservationTable } from "@/components/reservation_table/ReservationTabl
 import { userState } from "@/state/user";
 import { useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
-import { Button, IconButton, useToast } from "@chakra-ui/react";
-import { SearchReservationModal } from "@/components/search_reservation/SearchReservation";
-import { AiOutlineSearch } from "react-icons/ai";
+import { useToast } from "@chakra-ui/react";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
@@ -28,7 +26,7 @@ export default function Home() {
       isReserved: boolean,
       reservationId: number | undefined
     ) => {
-      if (!(user.id && user.role)) {
+      if (!(user.user && user.session)) {
         toast({
           title: "予約を変更したい場合はログインが必要です",
           status: "info",
