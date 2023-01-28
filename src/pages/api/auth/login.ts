@@ -20,6 +20,37 @@ export default async function handler(
   if (supabase === undefined || supabase === "") {
     return res.status(500).end();
   }
+  const { access_token, refresh_token } = JSON.parse(req.body);
+
+  // access tokenがある場合はそれでuserを返す
+  if (access_token) {
+    const { data, error } = await supabase.auth.getUser(access_token);
+    if (error) {
+      return res.status(400).end();
+    }
+    return res.status(200).json({
+      authResponce: {
+        user: data.user,
+        session: null,
+      },
+    });
+  }
+
+  // もしrefresh tokenが存在している場合
+  if (refresh_token) {
+    const { data, error } = await supabase.auth.refreshSession(refresh_token);
+    if (error) {
+      return res.status(400).end();
+    }
+    return res.status(200).json({
+      authResponce: {
+        user: data.user,
+        session: data.session,
+      },
+    });
+  }
+
+  // もしそれ以外の場合は、普通にemailとpasswordでログイン
   const { email, password } = JSON.parse(req.body);
   const { data, error } = await supabase.auth.signInWithPassword({
     email,

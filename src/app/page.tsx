@@ -4,9 +4,11 @@ import { ReservationDeleteForm } from "@/components/reservation_form/Reservation
 import { ReservationForm } from "@/components/reservation_form/ReservationForm";
 import { ReservationTable } from "@/components/reservation_table/ReservationTable";
 import { userState } from "@/state/user";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useToast } from "@chakra-ui/react";
+import { login } from "@/utils/login";
+import { LoginInfo } from "../utils/login";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
@@ -17,8 +19,12 @@ export default function Home() {
   const [reservationId, setReservationId] = useState<number | undefined>(
     undefined
   );
+
   const toast = useToast();
-  const [user, _] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
+  useEffect(() => {
+    login(undefined, (newUser) => setUser(newUser));
+  }, []);
   const handleClick = useCallback(
     (
       i: number,

@@ -18,6 +18,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { login } from "@/utils/login";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
@@ -39,26 +40,16 @@ export default function Home() {
       return;
     }
     setIsLoading(true);
-    fetch("api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
+    login(
+      {
         email,
         password,
-      }),
-    })
-      .then(async (res) => {
-        const {
-          authResponce,
-        }: {
-          authResponce: { user: User | null; session: Session | null };
-        } = await res.json();
-        if (authResponce.session !== null && authResponce.user !== null) {
-          const newUser: UserState = {
-            user: authResponce.user,
-            session: authResponce.session,
-          };
-          setUser(newUser);
-        }
+      },
+      (newUser) => {
+        setUser(newUser);
+      }
+    )
+      .then(() => {
         toast({
           title: "ログインに成功しました",
           status: "success",
