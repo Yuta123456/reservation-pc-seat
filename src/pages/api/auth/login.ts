@@ -27,7 +27,6 @@ export default async function handler(
   if (access_token) {
     const { data, error } = await supabase.auth.getUser(access_token);
     if (error) {
-      console.log(req.headers.authorization, access_token, data, error);
       return res.status(400).end();
     }
     return res.status(200).json({
@@ -42,7 +41,6 @@ export default async function handler(
   if (refresh_token) {
     const { data, error } = await supabase.auth.refreshSession(refresh_token);
     if (error) {
-      console.log(data, error);
       return res.status(400).end();
     }
     return res.status(200).json({
@@ -59,7 +57,6 @@ export default async function handler(
     email,
     password,
   });
-  console.log(email, password, data, error);
   if (!error && data.user && data.session) {
     return res.status(200).json({ authResponce: data });
   }

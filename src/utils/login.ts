@@ -13,7 +13,6 @@ export const login = async (
 ) => {
   const sessionStr = sessionStorage.getItem("session");
   const session: Session = JSON.parse(sessionStr !== null ? sessionStr : "{}");
-  console.log("access_token: ", session.access_token);
   if (
     !session.access_token &&
     (!loginInfo || !loginInfo.email || !loginInfo.password)

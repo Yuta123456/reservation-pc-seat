@@ -23,7 +23,7 @@ export default function Home() {
   const toast = useToast();
   const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
-    login(undefined, setUser).then(() => console.log(user));
+    login(undefined, setUser);
   }, []);
   const handleClick = useCallback(
     (
