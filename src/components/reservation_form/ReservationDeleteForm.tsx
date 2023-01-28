@@ -70,7 +70,7 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
             colorScheme="red"
             onClick={() => {
               setIsLoading(true);
-              fetch("api/reservation", {
+              fetch("api/auth/reservation", {
                 method: "DELETE",
                 body: JSON.stringify({ id }),
                 // TODO: もうちょいいい感じに。

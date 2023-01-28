@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Reservation, Student } from "@prisma/client";
 import { utcToZonedTime } from "date-fns-tz";
-import { supabase } from "../supabase";
+import { supabase } from "./supabase";
 
 type Data = {
   reservation: Reservation;

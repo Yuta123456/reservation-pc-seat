@@ -20,12 +20,14 @@ export default async function handler(
   if (supabase === undefined || supabase === "") {
     return res.status(500).end();
   }
-  const { access_token, refresh_token } = JSON.parse(req.body);
+  const access_token = req.headers.authorization?.slice(7);
+  const { refresh_token } = JSON.parse(req.body);
 
   // access tokenがある場合はそれでuserを返す
   if (access_token) {
     const { data, error } = await supabase.auth.getUser(access_token);
     if (error) {
+      console.log(req.headers.authorization, access_token, data, error);
       return res.status(400).end();
     }
     return res.status(200).json({
@@ -40,6 +42,7 @@ export default async function handler(
   if (refresh_token) {
     const { data, error } = await supabase.auth.refreshSession(refresh_token);
     if (error) {
+      console.log(data, error);
       return res.status(400).end();
     }
     return res.status(200).json({

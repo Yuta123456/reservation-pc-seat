@@ -27,7 +27,7 @@ export default function Home() {
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
-    if (user.user && user.session) {
+    if (user.user) {
       router.push("/");
     }
   }, [user]);
@@ -45,9 +45,7 @@ export default function Home() {
         email,
         password,
       },
-      (newUser) => {
-        setUser(newUser);
-      }
+      setUser
     )
       .then(() => {
         toast({

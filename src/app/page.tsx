@@ -23,7 +23,7 @@ export default function Home() {
   const toast = useToast();
   const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
-    login(undefined, (newUser) => setUser(newUser));
+    login(undefined, setUser).then(() => console.log(user));
   }, []);
   const handleClick = useCallback(
     (
@@ -32,7 +32,7 @@ export default function Home() {
       isReserved: boolean,
       reservationId: number | undefined
     ) => {
-      if (!(user.user && user.session)) {
+      if (!user.user) {
         toast({
           title: "予約を変更したい場合はログインが必要です",
           status: "info",

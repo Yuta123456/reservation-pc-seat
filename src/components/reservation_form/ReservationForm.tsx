@@ -128,7 +128,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
             isDisabled={studentsIds.some((v) => v.length === 0)}
             onClick={() => {
               setIsLoading(true);
-              fetch("api/reservation", {
+              fetch("api/auth/reservation", {
                 method: "POST",
                 body: JSON.stringify({ seat, period, studentsIds }),
                 // TODO: もうちょいいい感じに。

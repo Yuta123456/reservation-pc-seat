@@ -13,8 +13,7 @@ export const Header = () => {
   const [user, _] = useRecoilState(userState);
   const pathname = usePathname();
   const [isOpenSearchReservation, setIsOpenSearchReservation] = useState(false);
-  const isHiddenButton =
-    (user.user !== null && user.session !== null) || pathname === "/login";
+  const isHiddenButton = user.user !== null || pathname === "/login";
   if (isPc === undefined) {
     return <></>;
   }
