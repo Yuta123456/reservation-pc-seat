@@ -4,7 +4,6 @@ import { UserState, userState } from "@/state/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { User, Session } from "@supabase/supabase-js";
 import {
   Button,
   Center,
