@@ -18,6 +18,8 @@ import {
 import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/user";
 
 const DisplayPeriod: Record<number, string> = {
   0: "1時限目",
@@ -45,6 +47,8 @@ export const ReservationForm: FC<ReservationFormProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const isPc = useIsPc(undefined);
+  const [user, _] = useRecoilState(userState);
+
   if (isPc === undefined) {
     return <></>;
   }
@@ -77,7 +81,11 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 />
               );
             })}
-            <Box display={"flex"} justifyContent="flex-start" marginTop={"10px"}>
+            <Box
+              display={"flex"}
+              justifyContent="flex-start"
+              marginTop={"10px"}
+            >
               <IconButton
                 aria-label="minus"
                 icon={<MinusIcon />}
@@ -120,9 +128,13 @@ export const ReservationForm: FC<ReservationFormProps> = ({
             isDisabled={studentsIds.some((v) => v.length === 0)}
             onClick={() => {
               setIsLoading(true);
-              fetch("api/reservation", {
+              fetch("api/auth/reservation", {
                 method: "POST",
                 body: JSON.stringify({ seat, period, studentsIds }),
+                // TODO: もうちょいいい感じに。
+                headers: {
+                  authorization: "Bearer " + user.session?.access_token || "",
+                },
               }).then(async (res) => {
                 setIsLoading(false);
                 onClose();

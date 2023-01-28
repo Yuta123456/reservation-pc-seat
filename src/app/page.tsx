@@ -4,11 +4,11 @@ import { ReservationDeleteForm } from "@/components/reservation_form/Reservation
 import { ReservationForm } from "@/components/reservation_form/ReservationForm";
 import { ReservationTable } from "@/components/reservation_table/ReservationTable";
 import { userState } from "@/state/user";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { Button, IconButton, useToast } from "@chakra-ui/react";
-import { SearchReservationModal } from "@/components/search_reservation/SearchReservation";
-import { AiOutlineSearch } from "react-icons/ai";
+import { useToast } from "@chakra-ui/react";
+import { login } from "@/utils/login";
+import { LoginInfo } from "../utils/login";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
@@ -19,8 +19,12 @@ export default function Home() {
   const [reservationId, setReservationId] = useState<number | undefined>(
     undefined
   );
+
   const toast = useToast();
-  const [user, _] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
+  useEffect(() => {
+    login(undefined, setUser);
+  }, []);
   const handleClick = useCallback(
     (
       i: number,
@@ -28,7 +32,7 @@ export default function Home() {
       isReserved: boolean,
       reservationId: number | undefined
     ) => {
-      if (!(user.id && user.role)) {
+      if (!user.user) {
         toast({
           title: "予約を変更したい場合はログインが必要です",
           status: "info",

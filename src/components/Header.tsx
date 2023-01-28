@@ -1,21 +1,19 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Button, IconButton, Link, Text } from "@chakra-ui/react";
+import { Box, Button, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 import { FC, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SearchReservationModal } from "./search_reservation/SearchReservation";
-import { AiOutlineSearch } from "react-icons/ai";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   const pathname = usePathname();
   const [isOpenSearchReservation, setIsOpenSearchReservation] = useState(false);
-  const isHiddenButton =
-    (user.id !== "" && user.role !== "") || pathname === "/login";
+  const isHiddenButton = user.user !== null || pathname === "/login";
   if (isPc === undefined) {
     return <></>;
   }
@@ -89,7 +87,7 @@ const PCHeader: FC<HeaderProps> = ({
               </Link>
             </Button>
           )}
-          {user.id && (
+          {user.user && (
             <Button onClick={setIsOpenSearchReservation} variant="putline">
               予約検索
             </Button>
@@ -134,7 +132,7 @@ const SPHeader: FC<HeaderProps> = ({
               </Link>
             </Button>
           )}
-          {user.id && (
+          {user.user && (
             <Button onClick={setIsOpenSearchReservation} variant="putline">
               予約検索
             </Button>
