@@ -29,13 +29,9 @@ CREATE TABLE "ReservationStudent" (
 CREATE TABLE "StudentLedger" (
     "id" INTEGER NOT NULL,
     "studentId" INTEGER NOT NULL,
-    "studentLedget" INTEGER NOT NULL,
 
     CONSTRAINT "StudentLedger_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "Student_studentId_key" ON "Student"("studentId");
 
 -- AddForeignKey
 ALTER TABLE "ReservationStudent" ADD CONSTRAINT "ReservationStudent_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "Student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
