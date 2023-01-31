@@ -84,7 +84,7 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   );
 };
 export type ReservationState = "isReserved" | "available" | "occupied";
-export const DisplayPriod = [
+export const DisplayPeriod = [
   "1時限目",
   "2時限目",
   "昼休み",
@@ -120,23 +120,23 @@ const PCReservationTable: FC<
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th></Th>
-              <Th>
+              <Th textAlign={"center"}></Th>
+              <Th textAlign={"center"}>
                 <Text fontSize={"1.5em"}>1時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text fontSize={"1.5em"}>2時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text fontSize={"1.5em"}>昼休み</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text fontSize={"1.5em"}>3時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text fontSize={"1.5em"}>4時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text fontSize={"1.5em"}>5時限目</Text>
               </Th>
             </Tr>
@@ -146,7 +146,7 @@ const PCReservationTable: FC<
               return (
                 <Tr key={seat}>
                   <>
-                    <Th>
+                    <Th textAlign={"center"}>
                       <Text fontSize={"1.5em"}>PC{seat + 1}</Text>
                     </Th>
                     {/* TODO: マジックナンバー削除。6はperiodのかず */}
@@ -203,22 +203,22 @@ const SPReservationTable: FC<
           <Thead>
             <Tr>
               <Th></Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text>1時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text>2時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text>昼休み</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text>3時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text>4時限目</Text>
               </Th>
-              <Th>
+              <Th textAlign={"center"}>
                 <Text>5時限目</Text>
               </Th>
             </Tr>

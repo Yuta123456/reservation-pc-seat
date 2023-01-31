@@ -8,11 +8,8 @@ import {
   InputLeftElement,
   Button,
   Card,
-  CardHeader,
-  Heading,
   CardBody,
   Stack,
-  StackDivider,
   Modal,
   ModalOverlay,
   ModalHeader,
@@ -24,7 +21,7 @@ import { FC, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useRecoilState } from "recoil";
 import {
-  DisplayPriod,
+  DisplayPeriod,
   ReservationScheduleWithAuth,
 } from "../reservation_table/ReservationTable";
 
@@ -99,7 +96,7 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
                     <Card key={reservation.id} bg="gray.100">
                       <CardBody>
                         <Text pt="2" fontSize="sm" fontWeight={600}>
-                          {DisplayPriod[reservation.period]} の PC
+                          {DisplayPeriod[reservation.period]} の PC
                           {reservation.seat + 1}を予約しています。
                         </Text>
                       </CardBody>
