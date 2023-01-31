@@ -8,6 +8,7 @@ import { useCallback, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useToast } from "@chakra-ui/react";
 import { login } from "@/utils/login";
+import { DisplayTime } from "@/components/display_time/DisplayTime";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
@@ -52,7 +53,7 @@ export default function Home() {
   );
   return (
     <main>
-      {/* <DisplayTime /> */}
+      <DisplayTime />
       <ReservationTable onCellClick={handleClick} />
 
       {isOpenReservationForm && (
