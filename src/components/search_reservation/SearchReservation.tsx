@@ -38,10 +38,12 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
 }) => {
   const [studentId, setStudentId] = useState("");
   const [user, _] = useRecoilState(userState);
+  const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<
     ReservationScheduleWithAuth[] | undefined
   >();
   const onClickSearch = () => {
+    setIsLoading(true);
     fetch("api/auth/reservation/today", {
       headers: {
         Authorization: "Bearer " + user.session?.access_token,
@@ -53,10 +55,10 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
         const targetReservation = res
           .flat()
           .filter((res) => res.studentIds.includes(studentId));
-        if (targetReservation.length === 0) {
-          return;
-        }
         setResult(targetReservation);
+      })
+      .then(() => {
+        setIsLoading(false);
       });
   };
   const isPc = useIsPc(undefined);
@@ -74,7 +76,7 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
         <ModalHeader>学籍番号検索</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <InputGroup>
+          <InputGroup paddingBottom="10px">
             <InputLeftElement>
               <AiOutlineSearch color="gray.300" />
             </InputLeftElement>
@@ -85,28 +87,34 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
                 setStudentId(e.target.value);
               }}
             />
-            <Button onClick={onClickSearch}>検索</Button>
+            <Button onClick={onClickSearch} isLoading={isLoading}>
+              検索
+            </Button>
           </InputGroup>
           {result && (
-            <Card>
-              <CardHeader>
-                <Heading size="md">予約一覧</Heading>
-              </CardHeader>
-              <CardBody>
-                <Stack divider={<StackDivider />} spacing="4">
-                  {result.map((reservation) => {
-                    return (
-                      <Box key={reservation.id}>
-                        <Text pt="2" fontSize="sm">
+            <Box>
+              <Stack spacing="4" paddingBottom="15px">
+                {result.map((reservation) => {
+                  return (
+                    <Card key={reservation.id} bg="gray.100">
+                      <CardBody>
+                        <Text pt="2" fontSize="sm" fontWeight={600}>
                           {DisplayPriod[reservation.period]} の PC
                           {reservation.seat + 1}を予約しています。
                         </Text>
-                      </Box>
-                    );
-                  })}
-                </Stack>
-              </CardBody>
-            </Card>
+                      </CardBody>
+                    </Card>
+                  );
+                })}
+                {result.length === 0 && (
+                  <Box>
+                    <Text pt="2" fontSize="sm">
+                      予約が見つかりませんでした。
+                    </Text>
+                  </Box>
+                )}
+              </Stack>
+            </Box>
           )}
         </ModalBody>
       </ModalContent>
