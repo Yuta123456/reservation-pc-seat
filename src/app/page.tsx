@@ -8,7 +8,6 @@ import { useCallback, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useToast } from "@chakra-ui/react";
 import { login } from "@/utils/login";
-import { LoginInfo } from "../utils/login";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
@@ -24,7 +23,7 @@ export default function Home() {
   const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
     login(undefined, setUser);
-  }, []);
+  }, [setUser]);
   const handleClick = useCallback(
     (
       i: number,
@@ -49,7 +48,7 @@ export default function Home() {
       setPeriod(j);
       setReservationId(reservationId);
     },
-    [user]
+    [toast, user.user]
   );
   return (
     <main>
