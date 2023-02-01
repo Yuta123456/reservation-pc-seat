@@ -110,40 +110,35 @@ const SPHeader: FC<HeaderProps> = ({
       bg="teal.700"
       w="100vw"
       color="white"
-      h="70px"
-      display={"flex"}
       alignItems="center"
+      display={"flex"}
     >
-      <Box maxW={"90vw"} w="100%" margin={"auto"} display={"flex"}>
-        <Box display={"flex"} alignItems="center">
-          <Heading
-            fontSize={"1rem"}
-            fontFamily="fantasy"
-            alignItems="center"
-            whiteSpace={"nowrap"}
-          >
-            <Link as={NextLink} href={"/"}>
-              Learning Commons PC 予約
-            </Link>
+      <Box maxW={"90vw"} w="100%" margin={"auto"}>
+        <Box display={"flex"} alignItems="center" pt="20px">
+          <Heading alignItems="center" whiteSpace={"nowrap"}>
+            <NextLink href={"/"}>LC PC 予約</NextLink>
           </Heading>
+          <Box justifyContent={"flex-end"} display="flex" w="100%">
+            {!isHiddenButton && (
+              <Button variant="putline">
+                <Link as={NextLink} href={"/login"}>
+                  Login
+                </Link>
+              </Button>
+            )}
+            {user.user && (
+              <IconButton
+                aria-label="search"
+                onClick={setIsOpenSearchReservation}
+                variant="putline"
+                fontSize="2rem"
+                icon={<AiOutlineSearch />}
+              />
+            )}
+          </Box>
         </Box>
-        <Box justifyContent={"flex-end"} display="flex" w="100%">
-          {!isHiddenButton && (
-            <Button variant="putline">
-              <Link as={NextLink} href={"/login"}>
-                Login
-              </Link>
-            </Button>
-          )}
-          {user.user && (
-            <IconButton
-              aria-label="search"
-              onClick={setIsOpenSearchReservation}
-              variant="putline"
-              fontSize="2rem"
-              icon={<AiOutlineSearch />}
-            />
-          )}
+        <Box>
+          <Navbar />
         </Box>
       </Box>
     </Box>
