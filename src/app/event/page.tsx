@@ -1,28 +1,35 @@
 "use client";
-import { FC } from "react";
-import { EventDetail, mockdata } from "./mockdata";
+import { FC, useEffect, useState } from "react";
+import { EventDetail } from "./mockdata";
 import {
   Box,
   Card,
   CardBody,
-  CardHeader,
   Container,
   Heading,
-  Button,
-  CardFooter,
   Text,
-  WrapItem,
   Avatar,
   Stack,
   Badge,
 } from "@chakra-ui/react";
 
 export default function Home() {
+  const [events, setEvents] = useState<EventDetail[]>([]);
+
+  useEffect(() => {
+    fetch("api/event/event")
+      .then((res) => res.json())
+      .then((res) => res.events)
+      .then((res) => {
+        console.log(res);
+        setEvents(res);
+      });
+  }, []);
   return (
     <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
       <Heading>開催中のイベント</Heading>
       <Stack paddingTop="15px">
-        {mockdata.map((eventDetail) => (
+        {events.map((eventDetail) => (
           <EventDetailCard key={eventDetail.id} {...eventDetail} />
         ))}
       </Stack>
