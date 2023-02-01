@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-const urls = ["/", "shift", "event"];
+const urls = ["/", "/shift", "/event"];
 
 const tabStyle = {
   fontSize: "1.2rem",
@@ -19,13 +19,16 @@ const tabStyle = {
   fontcolor: "gray.200",
 };
 export const Navbar = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const router = useRouter();
   const pathname = usePathname();
+  const [tabIndex, setTabIndex] = useState(0);
+
+  useEffect(() => {
+    setTabIndex(urls.indexOf(pathname || "/"));
+  }, [pathname]);
+  const router = useRouter();
   useEffect(() => {
     router.push(urls[tabIndex]);
   }, [tabIndex, router]);
-
   if (!pathname || !urls.includes(pathname)) {
     return <></>;
   }
@@ -42,6 +45,7 @@ export const Navbar = () => {
         onChange={(index) => setTabIndex(index)}
         w={"100%"}
         colorScheme="teal"
+        index={tabIndex}
       >
         <TabList>
           <Tab {...tabStyle}>PC席予約</Tab>
