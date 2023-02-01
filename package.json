@@ -47,6 +47,5 @@
   },
   "prisma": {
     "seed": "dotenv -e .env.development -- node --loader ts-node/esm prisma/seed.ts"
-  },
-  "type": "module"
+  }
 }
