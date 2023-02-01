@@ -9,7 +9,7 @@ import {
   useFocusEffect,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const urls = ["/", "shift", "event"];
 
@@ -21,9 +21,14 @@ const tabStyle = {
 export const Navbar = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
     router.push(urls[tabIndex]);
   }, [tabIndex, router]);
+
+  if (!pathname || !urls.includes(pathname)) {
+    return <></>;
+  }
   return (
     <Box
       w="100%"
