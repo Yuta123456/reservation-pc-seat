@@ -28,9 +28,9 @@ export default function Home() {
       });
   }, []);
   return (
-    <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
+    <Container maxW={"90vw"} margin="auto" padding="3rem 0">
       <Heading>開催中のイベント</Heading>
-      <SimpleGrid minChildWidth="340px" spacing="40px">
+      <SimpleGrid minChildWidth="340px" spacing="20px" paddingTop={"15px"}>
         {events.map((eventDetail) => (
           <EventDetailCard key={eventDetail.id} {...eventDetail} />
         ))}
@@ -57,7 +57,6 @@ const EventDetailCard: FC<EventDetail> = ({
           src={eventImgUrl || ""}
         />
         <Heading size="md">{name}</Heading>
-
         <Text py="2">{description}</Text>
       </CardBody>
     </Card>
