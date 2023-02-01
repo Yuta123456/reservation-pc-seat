@@ -8,6 +8,7 @@ import { FC, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { SearchReservationModal } from "./search_reservation/SearchReservation";
 import { AiOutlineSearch } from "react-icons/ai";
+import { Navbar } from "./Tabs";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
@@ -59,42 +60,41 @@ const PCHeader: FC<HeaderProps> = ({
       bg="teal.700"
       w="100%"
       color="white"
-      h="100px"
       alignItems="center"
       display={"flex"}
     >
-      <Box
-        maxW={"90vw"}
-        w="100%"
-        margin={"auto"}
-        display={"flex"}
-        alignItems="center"
-      >
-        <Heading fontSize={"1.5rem"} whiteSpace={"nowrap"}>
-          <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
-        </Heading>
-        <Box w="100%" display={"flex"} justifyContent="flex-end">
-          {!isHiddenButton && (
-            <Button
-              variant="putline"
-              display="flex"
-              justifyContent={"flex-end"}
-              size="lg"
-            >
-              <Link as={NextLink} href={"/login"}>
-                Login
-              </Link>
-            </Button>
-          )}
-          {user.user && (
-            <IconButton
-              aria-label="search"
-              onClick={setIsOpenSearchReservation}
-              variant="putline"
-              fontSize="2rem"
-              icon={<AiOutlineSearch />}
-            />
-          )}
+      <Box maxW={"90vw"} w="100%" margin={"auto"}>
+        <Box display={"flex"} alignItems="center" pt="20px">
+          <Heading fontSize={"1.5rem"} whiteSpace={"nowrap"}>
+            <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
+          </Heading>
+          <Box w="100%" display={"flex"} justifyContent="flex-end">
+            {/* TODO: ここ三項演算子にしてくれ */}
+            {!isHiddenButton && (
+              <Button
+                variant="putline"
+                display="flex"
+                justifyContent={"flex-end"}
+                size="lg"
+              >
+                <Link as={NextLink} href={"/login"}>
+                  Login
+                </Link>
+              </Button>
+            )}
+            {user.user && (
+              <IconButton
+                aria-label="search"
+                onClick={setIsOpenSearchReservation}
+                variant="putline"
+                fontSize="2rem"
+                icon={<AiOutlineSearch />}
+              />
+            )}
+          </Box>
+        </Box>
+        <Box>
+          <Navbar />
         </Box>
       </Box>
     </Box>

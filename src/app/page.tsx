@@ -55,7 +55,6 @@ export default function Home() {
     <main>
       <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
         <Heading>PC席予定表</Heading>
-        <DisplayTime />
         <ReservationTable onCellClick={handleClick} />
 
         {isOpenReservationForm && (

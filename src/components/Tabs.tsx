@@ -16,7 +16,7 @@ const urls = ["/", "/shift", "/event"];
 const tabStyle = {
   fontSize: "1.2rem",
   fontWeight: "600",
-  fontcolor: "gray.200",
+  color: "gray.200",
 };
 export const Navbar = () => {
   const pathname = usePathname();
@@ -44,15 +44,17 @@ export const Navbar = () => {
       display={"flex"}
       maxW={"90vw"}
       margin={"auto"}
-      padding="10px 0"
+      paddingTop="10px"
+      paddingBottom={"5px"}
     >
       <Tabs
         onChange={(index) => setTabIndex(index)}
         w={"100%"}
-        colorScheme="teal"
+        colorScheme="whatsapp"
         index={tabIndex}
+        color="gray.100"
       >
-        <TabList>
+        <TabList borderBottom={"none"}>
           <Tab {...tabStyle}>PC席予約</Tab>
           <Tab {...tabStyle}>シフト</Tab>
           <Tab {...tabStyle}>イベント</Tab>
