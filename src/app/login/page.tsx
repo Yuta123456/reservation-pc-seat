@@ -29,7 +29,7 @@ export default function Home() {
     if (user.user) {
       router.push("/");
     }
-  }, [user]);
+  }, [router, user]);
 
   const handleSubmit = async () => {
     const email = emailRef.current?.value;
