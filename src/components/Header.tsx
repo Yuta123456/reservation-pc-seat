@@ -1,11 +1,11 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Button, IconButton, Link, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, IconButton, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 import { FC, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { SearchReservationModal } from "./search_reservation/SearchReservation";
 import { AiOutlineSearch } from "react-icons/ai";
 
@@ -70,11 +70,9 @@ const PCHeader: FC<HeaderProps> = ({
         display={"flex"}
         alignItems="center"
       >
-        <Text fontSize={"1.5rem"} fontFamily="fantasy" whiteSpace={"nowrap"}>
-          <Link as={NextLink} href={"/"}>
-            Learning Commons PC 予約
-          </Link>
-        </Text>
+        <Heading fontSize={"1.5rem"} whiteSpace={"nowrap"}>
+          <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
+        </Heading>
         <Box w="100%" display={"flex"} justifyContent="flex-end">
           {!isHiddenButton && (
             <Button
@@ -118,7 +116,7 @@ const SPHeader: FC<HeaderProps> = ({
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"} display={"flex"}>
         <Box display={"flex"} alignItems="center">
-          <Text
+          <Heading
             fontSize={"1rem"}
             fontFamily="fantasy"
             alignItems="center"
@@ -127,7 +125,7 @@ const SPHeader: FC<HeaderProps> = ({
             <Link as={NextLink} href={"/"}>
               Learning Commons PC 予約
             </Link>
-          </Text>
+          </Heading>
         </Box>
         <Box justifyContent={"flex-end"} display="flex" w="100%">
           {!isHiddenButton && (
