@@ -10,3 +10,4 @@
 - `npm run migrate:dev`
     - もし `seed`で落ちた場合は、修正後に`npx prisma db seed`を実行
 - GUIで確認したい場合は `npm run prisma-studio`
+- `SyntaxError: Cannot use import statement outside a module`で落ちる場合には `package.json`に `"type": "module"`を追加。これも誰か直したら教えてください。
