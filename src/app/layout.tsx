@@ -1,4 +1,5 @@
 import { Header } from "@/components/Header";
+import { Navbar } from "@/components/Tabs";
 import Provider from "./Provider";
 
 export default function RootLayout({
@@ -16,6 +17,7 @@ export default function RootLayout({
       <body>
         <Provider>
           <Header />
+          <Navbar />
           {children}
         </Provider>
       </body>
