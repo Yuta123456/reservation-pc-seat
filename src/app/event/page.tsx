@@ -11,6 +11,7 @@ import {
   Avatar,
   Stack,
   Badge,
+  Image,
 } from "@chakra-ui/react";
 
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
   return (
     <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
       <Heading>開催中のイベント</Heading>
-      <Stack paddingTop="15px">
+      <Stack paddingTop="15px" flexWrap="wrap" flexDirection={"row"}>
         {events.map((eventDetail) => (
           <EventDetailCard key={eventDetail.id} {...eventDetail} />
         ))}
@@ -46,20 +47,17 @@ const EventDetailCard: FC<EventDetail> = ({
   description,
 }) => {
   return (
-    <Card>
+    <Card maxW="sm" minW="sm">
       <CardBody>
-        <Box display={"flex"}>
-          <Avatar
-            size="xl"
-            name="Dan Abrahmov"
-            src={eventImgUrl || ""}
-            marginRight={"30px"}
-          />
-          <Box>
-            <Heading size="md">{name}</Heading>
-            <Text py="2">{description}</Text>
-          </Box>
-        </Box>
+        <Image
+          alt="イベント画像"
+          marginRight={"30px"}
+          borderRadius="lg"
+          boxSize="300px"
+          src={eventImgUrl || ""}
+        />
+        <Heading size="md">{name}</Heading>
+        <Text py="2">{description}</Text>
       </CardBody>
     </Card>
   );
