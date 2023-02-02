@@ -1,5 +1,6 @@
 "use client";
 
+import { pageHeadline } from "@/style/style";
 import {
   Box,
   Card,
@@ -21,7 +22,7 @@ import { LearningAssistantInfo, mockdata } from "./mockdata";
 export default function Home() {
   return (
     <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-      <Heading>勤務中のLA</Heading>
+      <Heading fontSize={pageHeadline}>勤務中のLA</Heading>
       <Stack paddingTop="15px">
         {mockdata.map((laInfo) => (
           <LAIntroCard key={laInfo.id} {...laInfo} />

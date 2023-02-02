@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { SearchReservationModal } from "./search_reservation/SearchReservation";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Navbar } from "./Tabs";
+import { headingStyle } from "@/style/style";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
@@ -65,7 +66,7 @@ const PCHeader: FC<HeaderProps> = ({
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
         <Box display={"flex"} alignItems="center" pt="20px">
-          <Heading fontSize={"1.5rem"} whiteSpace={"nowrap"}>
+          <Heading fontSize={headingStyle} whiteSpace={"nowrap"}>
             <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
           </Heading>
           <Box w="100%" display={"flex"} justifyContent="flex-end">

@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import { Container, useToast, Heading } from "@chakra-ui/react";
 import { login } from "@/utils/login";
 import { DisplayTime } from "@/components/display_time/DisplayTime";
+import { pageHeadline } from "@/style/style";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
@@ -54,7 +55,7 @@ export default function Home() {
   return (
     <main>
       <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-        <Heading>PC席予定表</Heading>
+        <Heading fontSize={pageHeadline}>PC席予定表</Heading>
         <ReservationTable onCellClick={handleClick} />
 
         {isOpenReservationForm && (
