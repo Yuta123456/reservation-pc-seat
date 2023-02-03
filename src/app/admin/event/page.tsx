@@ -20,9 +20,6 @@ import { CreateEventModal } from "./createEventModal";
 
 export default function Home() {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
-  const handleSubmit = () => {
-    console.log("submit");
-  };
   const { data, error, isLoading } = useSWR<{ events: EventDetail[] }>(
     "/api/event/event"
   );

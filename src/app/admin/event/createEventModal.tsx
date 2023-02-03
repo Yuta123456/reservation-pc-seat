@@ -63,6 +63,7 @@ export const CreateEventModal: FC<CreateEventModalProps> = ({
           status: "success",
           duration: 2000,
         });
+        onClose();
       })
       .catch((e) => {
         console.log(e);
