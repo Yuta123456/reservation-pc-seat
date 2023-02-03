@@ -12,7 +12,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const prisma = new PrismaClient();
-  checkAdmin(req, prisma)
+  return checkAdmin(req, prisma)
     .then((r: boolean) => {
       res.status(200).json({
         isAdmin: r,
