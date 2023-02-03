@@ -27,7 +27,7 @@ export default function Home() {
   const toast = useToast();
   useEffect(() => {
     if (user.user) {
-      router.push("/");
+      router.back();
     }
   }, [router, user]);
 

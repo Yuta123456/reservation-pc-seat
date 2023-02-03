@@ -18,10 +18,11 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
-    router.push("/login");
     if (user.user === null) {
       // access_tokenでログイン促し、それでもログイン出来なければ admin/loginへリダイレクト
-      login(undefined, setUser).catch((e) => {});
+      login(undefined, setUser).catch((e) => {
+        router.push("/login");
+      });
     } else {
       // userが初期化されていた場合
       if (user.isAdmin === undefined) {
