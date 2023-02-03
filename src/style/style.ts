@@ -17,3 +17,9 @@ export const headingStyle = {
 export const pageHeadline = {
   base: "2.1rem",
 };
+
+export const imageSizeStyle = {
+  base: "100px",
+  lg: "150px",
+  xl: "300px",
+};
