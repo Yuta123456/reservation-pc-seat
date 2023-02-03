@@ -5,13 +5,9 @@ import {
   Box,
   Card,
   CardBody,
-  CardHeader,
   Container,
   Heading,
-  Button,
-  CardFooter,
   Text,
-  WrapItem,
   Avatar,
   Stack,
   Badge,
@@ -22,10 +18,7 @@ import { LearningAssistantInfo, mockdata } from "./mockdata";
 
 export default function Home() {
   // NOTE: lg以上であれば描画するコンポーネントを変更するHooks
-  const LAIntroCardLayout = useBreakpointValue(
-    { base: SPLAIntroCard, lg: PCLAIntroCard },
-    { ssr: false }
-  );
+  const LAIntroCardLayout = useBreakpointValue({ base: "sp", lg: "pc" });
 
   if (LAIntroCardLayout === undefined) {
     return;
@@ -34,9 +27,13 @@ export default function Home() {
     <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
       <Heading fontSize={pageHeadline}>勤務中のLA</Heading>
       <Stack paddingTop="15px">
-        {mockdata.map((laInfo) => (
-          <LAIntroCardLayout key={laInfo.id} {...laInfo} />
-        ))}
+        {LAIntroCardLayout === "sp"
+          ? mockdata.map((laInfo) => (
+              <SPLAIntroCard key={laInfo.id} {...laInfo} />
+            ))
+          : mockdata.map((laInfo) => (
+              <PCLAIntroCard key={laInfo.id} {...laInfo} />
+            ))}
       </Stack>
     </Container>
   );

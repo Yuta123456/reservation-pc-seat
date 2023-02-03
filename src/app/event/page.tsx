@@ -8,12 +8,9 @@ import {
   Container,
   Heading,
   Text,
-  Avatar,
   Stack,
-  Badge,
   Image,
   SimpleGrid,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import { imageSizeStyle, pageHeadline } from "@/style/style";
 
