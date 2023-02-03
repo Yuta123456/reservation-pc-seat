@@ -10,11 +10,13 @@ import { Container, useToast, Heading } from "@chakra-ui/react";
 import { login } from "@/utils/login";
 import { DisplayTime } from "@/components/display_time/DisplayTime";
 import { pageHeadline } from "@/style/style";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
   const [isOpenReservationDeleteForm, setIsOpenReservationDeleteForm] =
     useState(false);
+  const router = useRouter();
   const [seat, setSeat] = useState(0);
   const [period, setPeriod] = useState(0);
   const [reservationId, setReservationId] = useState<number | undefined>(
@@ -24,7 +26,9 @@ export default function Home() {
   const toast = useToast();
   const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
-    login(undefined, setUser);
+    login(undefined, setUser).catch((e) => {
+      console.log("access token login failed");
+    });
   }, [setUser]);
   const handleClick = useCallback(
     (

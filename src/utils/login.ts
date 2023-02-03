@@ -17,9 +17,8 @@ export const login = async (
     !session.access_token &&
     (!loginInfo || !loginInfo.email || !loginInfo.password)
   ) {
-    return;
+    throw new Error("login failed");
   }
-
   const requestBody = {
     email: loginInfo?.email,
     password: loginInfo?.password,
@@ -30,7 +29,7 @@ export const login = async (
         : undefined,
   };
 
-  await fetch("api/auth/login", {
+  return fetch("api/auth/login", {
     method: "POST",
     headers: session.access_token
       ? {
@@ -38,23 +37,45 @@ export const login = async (
         }
       : {},
     body: JSON.stringify(requestBody),
-  })
-    .then(async (res) => {
-      const {
-        authResponce,
-      }: {
-        authResponce: { user: User | null; session: Session | null };
-      } = await res.json();
+  }).then(async (res) => {
+    const {
+      authResponse: authResponse,
+    }: {
+      authResponse: { user: User | null; session: Session | null };
+    } = await res.json();
+    if (authResponse.session !== null) {
+      sessionStorage.setItem("session", JSON.stringify(authResponse.session));
+    }
+    const admin = await isAdmin(authResponse.user?.id);
+    setUser((oldUser) => {
+      return {
+        user: authResponse.user || oldUser.user,
+        session: authResponse.session || oldUser.session || session,
+        isAdmin: admin,
+      };
+    });
+  });
+};
 
-      if (authResponce.session !== null) {
-        sessionStorage.setItem("session", JSON.stringify(authResponce.session));
-      }
-      setUser((oldUser) => {
-        return {
-          user: authResponce.user || oldUser.user,
-          session: authResponce.session || oldUser.session || session,
-        };
-      });
-    })
-    .catch((e) => console.log(e));
+export const isAdmin: (id: string | undefined) => Promise<boolean> = async (
+  id: string | undefined
+) => {
+  if (!id) {
+    return false;
+  }
+  const sessionStr = sessionStorage.getItem("session");
+  const session: Session = JSON.parse(sessionStr !== null ? sessionStr : "{}");
+  const res = await fetch("api/auth/is-admin", {
+    method: "POST",
+    headers: session.access_token
+      ? {
+          Authorization: "Bearer " + session.access_token,
+        }
+      : {},
+    body: JSON.stringify({
+      id,
+    }),
+  });
+  const res_1 = await res.json();
+  return res_1.isAdmin;
 };

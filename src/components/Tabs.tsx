@@ -25,19 +25,22 @@ const tabStyle = {
 const tabsName = ["PC席予約", "シフト", "イベント"];
 export const Navbar = () => {
   const pathname = usePathname();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState<number | undefined>(0);
 
   // NOTE: この辺かなり危うい。urlsに入っていないpathに入るときもこのuseEffectが走る
   //       今はurlsに入っていない場合はstateを更新しないことで二つ目のuseEffectが発火しないようにしている。
+  //       routerが更新されたときも発火するのできつい
   useEffect(() => {
     const newTabIndex = urls.indexOf(pathname || "/");
     if (newTabIndex !== -1) {
-      setTabIndex(newTabIndex);
+      setTabIndex(undefined);
     }
   }, [pathname]);
   const router = useRouter();
   useEffect(() => {
-    router.push(urls[tabIndex]);
+    if (tabIndex) {
+      router.push(urls[tabIndex]);
+    }
   }, [tabIndex, router]);
   if (!pathname || !urls.includes(pathname)) {
     return <></>;
