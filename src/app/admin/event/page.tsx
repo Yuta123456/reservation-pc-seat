@@ -12,19 +12,14 @@ import {
   Stack,
   Image,
   SimpleGrid,
+  Button,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import { FC, useState } from "react";
+import { CreateEventModal } from "./createEventModal";
 
-// model Event {
-//   id          Int      @id @default(autoincrement())
-//   name        String
-//   eventImgUrl String
-//   description String
-//   startDate   DateTime
-//   endDate     DateTime
-// }
 export default function Home() {
+  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const handleSubmit = () => {
     console.log("submit");
   };
@@ -36,14 +31,37 @@ export default function Home() {
     return;
   }
   return (
-    <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-      <Heading fontSize={pageHeadline}>開催中のイベント</Heading>
-      <SimpleGrid minChildWidth="340px" spacing="20px" paddingTop={"15px"}>
-        {data.events.map((eventDetail: EventDetail) => (
-          <EventDetailCard key={eventDetail.id} {...eventDetail} />
-        ))}
-      </SimpleGrid>
-    </Container>
+    <>
+      <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
+        <Box display={"flex"}>
+          <Heading fontSize={pageHeadline} whiteSpace="nowrap">
+            開催中のイベント
+          </Heading>
+          <Box display="flex" w="100%" justifyContent={"right"}>
+            <Button
+              color={"white"}
+              bg="teal.700"
+              onClick={() => {
+                setShowCreateEventModal(true);
+              }}
+            >
+              新しいイベントを追加
+            </Button>
+          </Box>
+        </Box>
+        <SimpleGrid minChildWidth="340px" spacing="20px" paddingTop={"15px"}>
+          {data.events.map((eventDetail: EventDetail) => (
+            <EventDetailCard key={eventDetail.id} {...eventDetail} />
+          ))}
+        </SimpleGrid>
+      </Container>
+      {showCreateEventModal && (
+        <CreateEventModal
+          isOpen={showCreateEventModal}
+          onClose={() => setShowCreateEventModal(false)}
+        />
+      )}
+    </>
   );
 }
 
