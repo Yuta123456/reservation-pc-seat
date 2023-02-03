@@ -30,6 +30,7 @@ export default function AdminLayout({
       }
     }
   }, [router, user.user, setUser, user.isAdmin]);
+
   if (pathname !== "admin/not-admin" && user.user === null) {
     return <></>;
   }

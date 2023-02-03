@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/user";
 
 const userUrls = ["/", "/shift", "/event"];
 
@@ -30,6 +32,7 @@ export const Navbar = () => {
   const [tabIndex, setTabIndex] = useState<number | undefined>(0);
   const [urls, setUrls] = useState(userUrls);
   const router = useRouter();
+  const [user, setUser] = useRecoilState(userState);
   // NOTE: この辺かなり危うい。urlsに入っていないpathに入るときもこのuseEffectが走る
   //       今はurlsに入っていない場合はstateを更新しないことで二つ目のuseEffectが発火しないようにしている。
   //       routerが更新されたときも発火するのできつい
