@@ -15,7 +15,9 @@ export const Header = () => {
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   const pathname = usePathname();
+  // そのうちLA検索やいべんとの検索が出来るようにしたい
   const [isOpenSearchReservation, setIsOpenSearchReservation] = useState(false);
+  const isPCReservePage = pathname === "/";
   const isHiddenButton = user.user !== null || pathname === "/login";
   if (isPc === undefined) {
     return <></>;
@@ -28,6 +30,7 @@ export const Header = () => {
           setIsOpenSearchReservation={() =>
             setIsOpenSearchReservation((prev) => !prev)
           }
+          isPCReservePage={isPCReservePage}
         ></PCHeader>
       ) : (
         <SPHeader
@@ -35,6 +38,7 @@ export const Header = () => {
           setIsOpenSearchReservation={() =>
             setIsOpenSearchReservation((prev) => !prev)
           }
+          isPCReservePage={isPCReservePage}
         ></SPHeader>
       )}
       {isOpenSearchReservation && (
@@ -50,10 +54,12 @@ export const Header = () => {
 type HeaderProps = {
   isHiddenButton: boolean;
   setIsOpenSearchReservation: () => void;
+  isPCReservePage: boolean;
 };
 const PCHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
+  isPCReservePage,
 }) => {
   const [user, _] = useRecoilState(userState);
   return (
@@ -83,7 +89,7 @@ const PCHeader: FC<HeaderProps> = ({
                 </Link>
               </Button>
             )}
-            {user.user && (
+            {user.user && isPCReservePage && (
               <IconButton
                 aria-label="search"
                 onClick={setIsOpenSearchReservation}
@@ -104,6 +110,7 @@ const PCHeader: FC<HeaderProps> = ({
 const SPHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
+  isPCReservePage,
 }) => {
   const [user, _] = useRecoilState(userState);
   return (
@@ -127,7 +134,7 @@ const SPHeader: FC<HeaderProps> = ({
                 </Link>
               </Button>
             )}
-            {user.user && (
+            {user.user && isPCReservePage && (
               <IconButton
                 aria-label="search"
                 onClick={setIsOpenSearchReservation}
