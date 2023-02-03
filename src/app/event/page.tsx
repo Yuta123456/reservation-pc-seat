@@ -13,25 +13,21 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import { imageSizeStyle, pageHeadline } from "@/style/style";
-
+import useSWR, { useSWRConfig } from "swr";
 export default function Home() {
-  const [events, setEvents] = useState<EventDetail[]>([]);
+  // 型付け怪しいかも
+  const { data, error, isLoading } = useSWR<{ events: EventDetail[] }>(
+    "api/event/event"
+  );
 
-  useEffect(() => {
-    fetch("api/event/event")
-      .then((res) => res.json())
-      .then((res) => res.events)
-      .then((res) => {
-        console.log(res);
-        setEvents(res);
-      });
-  }, []);
-
+  if (error || isLoading || !data) {
+    return;
+  }
   return (
     <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
       <Heading fontSize={pageHeadline}>開催中のイベント</Heading>
       <SimpleGrid minChildWidth="340px" spacing="20px" paddingTop={"15px"}>
-        {events.map((eventDetail) => (
+        {data.events.map((eventDetail) => (
           <EventDetailCard key={eventDetail.id} {...eventDetail} />
         ))}
       </SimpleGrid>
