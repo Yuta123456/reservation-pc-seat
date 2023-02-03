@@ -71,7 +71,7 @@ const PCHeader: FC<HeaderProps> = ({
       display={"flex"}
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
-        <Box display={"flex"} alignItems="center" pt="20px">
+        <Box display={"flex"} alignItems="center" py="20px">
           <Heading fontSize={headingStyle} whiteSpace={"nowrap"}>
             <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
           </Heading>
@@ -122,7 +122,7 @@ const SPHeader: FC<HeaderProps> = ({
       display={"flex"}
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
-        <Box display={"flex"} alignItems="center" pt="20px">
+        <Box display={"flex"} alignItems="center" py="20px">
           <Heading alignItems="center" whiteSpace={"nowrap"}>
             <NextLink href={"/"}>LC PC 予約</NextLink>
           </Heading>
