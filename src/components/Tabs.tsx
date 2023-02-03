@@ -14,10 +14,15 @@ import { usePathname, useRouter } from "next/navigation";
 const urls = ["/", "/shift", "/event"];
 
 const tabStyle = {
-  fontSize: "1.2rem",
   fontWeight: "600",
-  fontcolor: "gray.200",
+  color: "gray.200",
+  fontSize: {
+    base: "14px",
+    xl: "16px",
+  },
 };
+
+const tabsName = ["PC席予約", "シフト", "イベント"];
 export const Navbar = () => {
   const pathname = usePathname();
   const [tabIndex, setTabIndex] = useState(0);
@@ -44,18 +49,22 @@ export const Navbar = () => {
       display={"flex"}
       maxW={"90vw"}
       margin={"auto"}
-      padding="10px 0"
+      paddingTop="10px"
+      paddingBottom={"5px"}
     >
       <Tabs
         onChange={(index) => setTabIndex(index)}
         w={"100%"}
-        colorScheme="teal"
+        colorScheme="whatsapp"
         index={tabIndex}
+        color="gray.100"
       >
-        <TabList>
-          <Tab {...tabStyle}>PC席予約</Tab>
-          <Tab {...tabStyle}>シフト</Tab>
-          <Tab {...tabStyle}>イベント</Tab>
+        <TabList borderBottom={"none"}>
+          {tabsName.map((name, i) => (
+            <Tab key={i} {...tabStyle}>
+              {name}
+            </Tab>
+          ))}
         </TabList>
       </Tabs>
     </Box>
