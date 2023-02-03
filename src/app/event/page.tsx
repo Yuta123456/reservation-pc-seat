@@ -28,7 +28,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Container maxW={"90vw"} margin="auto" padding="3rem 0">
+    <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
       <Heading fontSize={pageHeadline}>開催中のイベント</Heading>
       <SimpleGrid minChildWidth="340px" spacing="20px" paddingTop={"15px"}>
         {events.map((eventDetail) => (
