@@ -29,7 +29,7 @@ export const login = async (
         : undefined,
   };
 
-  return fetch("api/auth/login", {
+  return fetch("/api/auth/login", {
     method: "POST",
     headers: session.access_token
       ? {
@@ -65,7 +65,7 @@ export const isAdmin: (id: string | undefined) => Promise<boolean> = async (
   }
   const sessionStr = sessionStorage.getItem("session");
   const session: Session = JSON.parse(sessionStr !== null ? sessionStr : "{}");
-  const res = await fetch("api/auth/is-admin", {
+  const res = await fetch("/api/auth/is-admin", {
     method: "POST",
     headers: session.access_token
       ? {

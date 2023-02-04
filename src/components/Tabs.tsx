@@ -10,8 +10,12 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/user";
 
-const urls = ["/", "/shift", "/event"];
+const userUrls = ["/", "/shift", "/event"];
+
+const adminUrls = ["/admin", "/admin/shift", "/admin/event"];
 
 const tabStyle = {
   fontWeight: "600",
@@ -26,22 +30,36 @@ const tabsName = ["PC席予約", "シフト", "イベント"];
 export const Navbar = () => {
   const pathname = usePathname();
   const [tabIndex, setTabIndex] = useState<number | undefined>(0);
-
+  const [urls, setUrls] = useState(userUrls);
+  const router = useRouter();
+  const [user, setUser] = useRecoilState(userState);
   // NOTE: この辺かなり危うい。urlsに入っていないpathに入るときもこのuseEffectが走る
   //       今はurlsに入っていない場合はstateを更新しないことで二つ目のuseEffectが発火しないようにしている。
   //       routerが更新されたときも発火するのできつい
   useEffect(() => {
-    const newTabIndex = urls.indexOf(pathname || "/");
-    if (newTabIndex !== -1) {
+    if (pathname === null) {
       setTabIndex(undefined);
+      return;
     }
-  }, [pathname]);
-  const router = useRouter();
+    const newTabIndex = urls.indexOf(pathname);
+    if (newTabIndex !== -1) {
+      setTabIndex(newTabIndex);
+    }
+  }, [pathname, urls]);
+
   useEffect(() => {
-    if (tabIndex) {
+    if (tabIndex !== undefined) {
       router.push(urls[tabIndex]);
     }
-  }, [tabIndex, router]);
+  }, [tabIndex, router, urls]);
+
+  useEffect(() => {
+    if (pathname?.indexOf("admin") !== -1) {
+      setUrls(adminUrls);
+    } else {
+      setUrls(userUrls);
+    }
+  }, [pathname]);
   if (!pathname || !urls.includes(pathname)) {
     return <></>;
   }
