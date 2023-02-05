@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { useIsPc } from "@/Hooks/useIsPc";
 import { FC } from "react";
-import useSWR from "swr";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 
@@ -37,19 +36,24 @@ type ReservationTableProps = {
     isReserved: boolean,
     reservationId: number | undefined
   ) => void;
+  data:
+    | {
+        reservationSchedule: ReservationSchedule[][];
+      }
+    | undefined;
+  isLoading: boolean;
+  // TODO: ここどうすればいいのかちょっとわかんない
+  error: any;
 };
 
 export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
+  data,
+  isLoading,
+  error,
 }) => {
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
-  // TODO: ここ、頑張らないと予約の書き換えが起こる
-  const { data, error, isLoading } = useSWR<{
-    reservationSchedule: ReservationSchedule[][];
-  }>("api/reservation/today", {
-    refreshInterval: 1000,
-  });
 
   if (isPc === undefined || isLoading || error || !data) {
     return (
@@ -108,9 +112,20 @@ const reservationStateText: Record<ReservationState, string> = {
   isReserved: "予約済",
   occupied: "使用中",
 };
-const PCReservationTable: FC<
-  ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
-> = ({ onCellClick, reservationSchedule }) => {
+
+type ReservationTableComponent = {
+  onCellClick: (
+    period: number,
+    seat: number,
+    isReserved: boolean,
+    reservationId: number | undefined
+  ) => void;
+  reservationSchedule: ReservationSchedule[][];
+};
+const PCReservationTable: FC<ReservationTableComponent> = ({
+  onCellClick,
+  reservationSchedule,
+}) => {
   return (
     <Box textAlign={"center"} w="100%">
       <TableContainer>
@@ -190,9 +205,10 @@ const PCReservationTable: FC<
   );
 };
 
-const SPReservationTable: FC<
-  ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
-> = ({ onCellClick, reservationSchedule }) => {
+const SPReservationTable: FC<ReservationTableComponent> = ({
+  onCellClick,
+  reservationSchedule,
+}) => {
   return (
     <Box textAlign={"center"}>
       <TableContainer>
