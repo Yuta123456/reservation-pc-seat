@@ -12,7 +12,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { name, description, startDate, endDate } = JSON.parse(req.body);
   const jwt = req.headers.authorization?.slice(7);
   if (typeof jwt !== "string") {
     return res.status(400).end();
@@ -32,6 +31,40 @@ export default async function handler(
 
   const prisma = new PrismaClient();
 
+  let handler = undefined;
+  switch (req.method) {
+    case "POST":
+      handler = postHandler(req, res, prisma);
+      break;
+    case "DELETE":
+      handler = deleteHandler(req, res, prisma);
+    case "PUT":
+      handler = updateHandler(req, res, prisma);
+    default:
+      break;
+  }
+  if (handler === undefined) {
+    console.warn("No handler for this method.");
+    res.status(400).end();
+    return;
+  }
+  await handler
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+      res.status(500).end();
+    });
+}
+
+const postHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Data>,
+  prisma: PrismaClient
+) => {
+  const { name, description, startDate, endDate } = JSON.parse(req.body);
   const event = await prisma.event.create({
     data: {
       name,
@@ -44,4 +77,38 @@ export default async function handler(
     },
   });
   res.status(200).json({ event });
-}
+};
+
+const deleteHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Data>,
+  prisma: PrismaClient
+) => {
+  const { id } = JSON.parse(req.body);
+  const event = await prisma.event.delete({
+    where: {
+      id,
+    },
+  });
+  res.status(200).json({ event });
+};
+
+const updateHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Data>,
+  prisma: PrismaClient
+) => {
+  const { id, name, description, startDate, endDate } = JSON.parse(req.body);
+  const event = await prisma.event.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
+      description,
+      startDate,
+      endDate,
+    },
+  });
+  res.status(200).json({ event });
+};
