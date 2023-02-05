@@ -164,7 +164,6 @@ function getDateString(originalDate: Date | undefined) {
   if (originalDate === undefined) {
     return "";
   }
-  console.log(typeof originalDate);
   const year = originalDate.getFullYear();
   const month = originalDate.getMonth() + 1;
   const date = originalDate.getDate();
