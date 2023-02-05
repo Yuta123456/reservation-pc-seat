@@ -36,16 +36,6 @@ export const Navbar = () => {
   // NOTE: この辺かなり危うい。urlsに入っていないpathに入るときもこのuseEffectが走る
   //       今はurlsに入っていない場合はstateを更新しないことで二つ目のuseEffectが発火しないようにしている。
   //       routerが更新されたときも発火するのできつい
-  useEffect(() => {
-    if (pathname === null) {
-      setTabIndex(undefined);
-      return;
-    }
-    const newTabIndex = urls.indexOf(pathname);
-    if (newTabIndex !== -1) {
-      setTabIndex(newTabIndex);
-    }
-  }, [pathname, urls]);
 
   useEffect(() => {
     if (tabIndex !== undefined) {
