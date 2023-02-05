@@ -38,12 +38,18 @@ export const Navbar = () => {
   //       routerが更新されたときも発火するのできつい
 
   useEffect(() => {
+    console.log("router.push :", tabIndex, urls);
     if (tabIndex !== undefined) {
       router.push(urls[tabIndex]);
     }
   }, [tabIndex, router, urls]);
 
   useEffect(() => {
+    // loginだった場合は更新するべきではない
+    if (pathname?.indexOf("login") !== -1) {
+      return;
+    }
+
     if (pathname?.indexOf("admin") !== -1) {
       setUrls(adminUrls);
     } else {
