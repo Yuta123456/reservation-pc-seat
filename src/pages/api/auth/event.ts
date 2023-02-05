@@ -38,7 +38,7 @@ export default async function handler(
       break;
     case "DELETE":
       handler = deleteHandler(req, res, prisma);
-    case "UPDATE":
+    case "PUT":
       handler = updateHandler(req, res, prisma);
     default:
       break;
