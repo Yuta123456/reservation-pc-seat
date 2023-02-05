@@ -17,9 +17,12 @@ import {
 import useSWR from "swr";
 import { FC, useState } from "react";
 import { CreateEventModal } from "./createEventModal";
+import { UpdateEventModal } from "./updateEventModal";
 
 export default function Home() {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+  const [showUpdateEventModal, setShowUpdateEventModal] = useState(false);
+  const [eventId, setEventId] = useState<undefined | number>(undefined);
   const { data, error, isLoading } = useSWR<{ events: EventDetail[] }>(
     "/api/event/event"
   );
@@ -48,7 +51,14 @@ export default function Home() {
         </Box>
         <SimpleGrid minChildWidth="340px" spacing="20px" paddingTop={"15px"}>
           {data.events.map((eventDetail: EventDetail) => (
-            <EventDetailCard key={eventDetail.id} {...eventDetail} />
+            <EventDetailCard
+              key={eventDetail.id}
+              {...eventDetail}
+              onCardClick={() => {
+                setShowUpdateEventModal(true);
+                setEventId(eventDetail.id);
+              }}
+            />
           ))}
         </SimpleGrid>
       </Container>
@@ -58,21 +68,33 @@ export default function Home() {
           onClose={() => setShowCreateEventModal(false)}
         />
       )}
+      {showUpdateEventModal && (
+        <UpdateEventModal
+          isOpen={showUpdateEventModal}
+          onClose={() => setShowUpdateEventModal(false)}
+          eventDetail={data.events.find((event) => event.id === eventId)}
+        />
+      )}
     </>
   );
 }
 
-const EventDetailCard: FC<EventDetail> = ({
+const EventDetailCard: FC<EventDetail & { onCardClick: () => void }> = ({
   id,
   name,
   eventImgUrl,
   startDate,
   endDate,
   description,
+  onCardClick,
 }) => {
   return (
     <Card>
-      <Stack direction={{ base: "row", xl: "column" }} overflow="hidden">
+      <Stack
+        direction={{ base: "row", xl: "column" }}
+        overflow="hidden"
+        onClick={onCardClick}
+      >
         <Box alignItems={"center"} display="flex" justifyContent={"center"}>
           <Image
             alt="イベント画像"
