@@ -23,7 +23,7 @@ export default function Home() {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const [showUpdateEventModal, setShowUpdateEventModal] = useState(false);
   const [eventId, setEventId] = useState<undefined | number>(undefined);
-  const { data, error, isLoading } = useSWR<{ events: EventDetail[] }>(
+  const { data, error, isLoading, mutate } = useSWR<{ events: EventDetail[] }>(
     "/api/event/event"
   );
 
@@ -65,13 +65,19 @@ export default function Home() {
       {showCreateEventModal && (
         <CreateEventModal
           isOpen={showCreateEventModal}
-          onClose={() => setShowCreateEventModal(false)}
+          onClose={() => {
+            setShowCreateEventModal(false);
+            mutate();
+          }}
         />
       )}
       {showUpdateEventModal && (
         <UpdateEventModal
           isOpen={showUpdateEventModal}
-          onClose={() => setShowUpdateEventModal(false)}
+          onClose={() => {
+            setShowUpdateEventModal(false);
+            mutate();
+          }}
           eventDetail={data.events.find((event) => event.id === eventId)}
         />
       )}

@@ -12,18 +12,13 @@ import {
   Box,
   Input,
   useToast,
-  IconButton,
   Textarea,
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
 
-import { FC, useRef, useState } from "react";
-import { useIsPc } from "@/Hooks/useIsPc";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { useRecoilState } from "recoil";
-import { userState } from "@/state/user";
-import { createEvent, updateEvent } from "@/utils/event";
+import { FC, useState } from "react";
+import { updateEvent, deleteEvent } from "@/utils/event";
 import { EventDetail } from "@/app/event/mockdata";
 
 // model Event {
@@ -56,7 +51,7 @@ export const UpdateEventModal: FC<UpdateEventModalProps> = ({
     getDateString(new Date(eventDetail?.endDate || ""))
   );
 
-  const update = () => {
+  const onClickUpdate = () => {
     // TODO: バリデーション
     updateEvent(eventDetail?.id, name, description, startDate, endDate)
       .then(() => {
@@ -71,6 +66,27 @@ export const UpdateEventModal: FC<UpdateEventModalProps> = ({
         console.log(e);
         toast({
           title: "イベントの更新に失敗しました",
+          status: "error",
+          duration: 2000,
+        });
+      });
+  };
+
+  const onClickDelete = () => {
+    // TODO: バリデーション
+    deleteEvent(eventDetail?.id)
+      .then(() => {
+        toast({
+          title: "イベントを削除しました",
+          status: "success",
+          duration: 2000,
+        });
+        onClose();
+      })
+      .catch((e) => {
+        console.log(e);
+        toast({
+          title: "イベントの削除に失敗しました",
           status: "error",
           duration: 2000,
         });
@@ -127,8 +143,16 @@ export const UpdateEventModal: FC<UpdateEventModalProps> = ({
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button color={"white"} bg="teal.700" onClick={update}>
+          <Button
+            colorScheme={"teal"}
+            bg="teal.700"
+            onClick={onClickUpdate}
+            marginRight="15px"
+          >
             変更する
+          </Button>
+          <Button colorScheme={"red"} bg="red.500" onClick={onClickDelete}>
+            削除する
           </Button>
         </ModalFooter>
       </ModalContent>
