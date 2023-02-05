@@ -21,7 +21,6 @@ export default function AdminLayout({
   useEffect(() => {
     if (user.user === null) {
       // access_tokenでログイン促し、それでもログイン出来なければ admin/loginへリダイレクト
-      console.log("user.user === null");
       login(undefined, setUser).catch((e) => {
         toast({
           title: "管理画面を使う場合はログインしてください",
@@ -30,7 +29,6 @@ export default function AdminLayout({
         });
       });
     } else {
-      console.log("user.user !== null", user.user);
       // userが初期化されていた場合
       if (user.isAdmin === undefined) {
         toast({

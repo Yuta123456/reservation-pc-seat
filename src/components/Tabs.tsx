@@ -38,7 +38,6 @@ export const Navbar = () => {
   //       routerが更新されたときも発火するのできつい
 
   useEffect(() => {
-    console.log("router.push :", tabIndex, urls);
     if (tabIndex !== undefined) {
       router.push(urls[tabIndex]);
     }

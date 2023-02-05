@@ -92,13 +92,7 @@ export const CreateEventModal: FC<CreateEventModalProps> = ({
               <FormLabel>イベントの説明</FormLabel>
               <Textarea placeholder="イベントの説明" ref={description} />
               <FormLabel>開始日</FormLabel>
-              <Input
-                type="date"
-                onChange={(e) => {
-                  console.log(e.target.value);
-                }}
-                ref={startDate}
-              ></Input>
+              <Input type="date" ref={startDate}></Input>
               <FormLabel>終了日</FormLabel>
               <Input type="date" ref={endDate}></Input>
             </FormControl>
