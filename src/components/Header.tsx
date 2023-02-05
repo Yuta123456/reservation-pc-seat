@@ -1,19 +1,23 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Button, IconButton, Link, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, IconButton, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 import { FC, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { SearchReservationModal } from "./search_reservation/SearchReservation";
 import { AiOutlineSearch } from "react-icons/ai";
+import { Navbar } from "./Tabs";
+import { headingStyle } from "@/style/style";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   const pathname = usePathname();
+  // そのうちLA検索やいべんとの検索が出来るようにしたい
   const [isOpenSearchReservation, setIsOpenSearchReservation] = useState(false);
+  const isPCReservePage = pathname === "/";
   const isHiddenButton = user.user !== null || pathname === "/login";
   if (isPc === undefined) {
     return <></>;
@@ -26,6 +30,7 @@ export const Header = () => {
           setIsOpenSearchReservation={() =>
             setIsOpenSearchReservation((prev) => !prev)
           }
+          isPCReservePage={isPCReservePage}
         ></PCHeader>
       ) : (
         <SPHeader
@@ -33,6 +38,7 @@ export const Header = () => {
           setIsOpenSearchReservation={() =>
             setIsOpenSearchReservation((prev) => !prev)
           }
+          isPCReservePage={isPCReservePage}
         ></SPHeader>
       )}
       {isOpenSearchReservation && (
@@ -48,10 +54,12 @@ export const Header = () => {
 type HeaderProps = {
   isHiddenButton: boolean;
   setIsOpenSearchReservation: () => void;
+  isPCReservePage: boolean;
 };
 const PCHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
+  isPCReservePage,
 }) => {
   const [user, _] = useRecoilState(userState);
   return (
@@ -59,44 +67,41 @@ const PCHeader: FC<HeaderProps> = ({
       bg="teal.700"
       w="100%"
       color="white"
-      h="100px"
       alignItems="center"
       display={"flex"}
     >
-      <Box
-        maxW={"90vw"}
-        w="100%"
-        margin={"auto"}
-        display={"flex"}
-        alignItems="center"
-      >
-        <Text fontSize={"1.5rem"} fontFamily="fantasy" whiteSpace={"nowrap"}>
-          <Link as={NextLink} href={"/"}>
-            Learning Commons PC 予約
-          </Link>
-        </Text>
-        <Box w="100%" display={"flex"} justifyContent="flex-end">
-          {!isHiddenButton && (
-            <Button
-              variant="putline"
-              display="flex"
-              justifyContent={"flex-end"}
-              size="lg"
-            >
-              <Link as={NextLink} href={"/login"}>
-                Login
-              </Link>
-            </Button>
-          )}
-          {user.user && (
-            <IconButton
-              aria-label="search"
-              onClick={setIsOpenSearchReservation}
-              variant="putline"
-              fontSize="2rem"
-              icon={<AiOutlineSearch />}
-            />
-          )}
+      <Box maxW={"90vw"} w="100%" margin={"auto"}>
+        <Box display={"flex"} alignItems="center" pt="20px">
+          <Heading fontSize={headingStyle} whiteSpace={"nowrap"}>
+            <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
+          </Heading>
+          <Box w="100%" display={"flex"} justifyContent="flex-end">
+            {/* TODO: ここ三項演算子にしてくれ */}
+            {!isHiddenButton && (
+              <Button
+                variant="putline"
+                display="flex"
+                justifyContent={"flex-end"}
+                size="lg"
+              >
+                <Link as={NextLink} href={"/login"}>
+                  Login
+                </Link>
+              </Button>
+            )}
+            {user.user && isPCReservePage && (
+              <IconButton
+                aria-label="search"
+                onClick={setIsOpenSearchReservation}
+                variant="putline"
+                fontSize="2rem"
+                icon={<AiOutlineSearch />}
+              />
+            )}
+          </Box>
+        </Box>
+        <Box>
+          <Navbar />
         </Box>
       </Box>
     </Box>
@@ -105,6 +110,7 @@ const PCHeader: FC<HeaderProps> = ({
 const SPHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
+  isPCReservePage,
 }) => {
   const [user, _] = useRecoilState(userState);
   return (
@@ -112,40 +118,35 @@ const SPHeader: FC<HeaderProps> = ({
       bg="teal.700"
       w="100vw"
       color="white"
-      h="70px"
-      display={"flex"}
       alignItems="center"
+      display={"flex"}
     >
-      <Box maxW={"90vw"} w="100%" margin={"auto"} display={"flex"}>
-        <Box display={"flex"} alignItems="center">
-          <Text
-            fontSize={"1rem"}
-            fontFamily="fantasy"
-            alignItems="center"
-            whiteSpace={"nowrap"}
-          >
-            <Link as={NextLink} href={"/"}>
-              Learning Commons PC 予約
-            </Link>
-          </Text>
+      <Box maxW={"90vw"} w="100%" margin={"auto"}>
+        <Box display={"flex"} alignItems="center" pt="20px">
+          <Heading alignItems="center" whiteSpace={"nowrap"}>
+            <NextLink href={"/"}>LC PC 予約</NextLink>
+          </Heading>
+          <Box justifyContent={"flex-end"} display="flex" w="100%">
+            {!isHiddenButton && (
+              <Button variant="putline">
+                <Link as={NextLink} href={"/login"}>
+                  Login
+                </Link>
+              </Button>
+            )}
+            {user.user && isPCReservePage && (
+              <IconButton
+                aria-label="search"
+                onClick={setIsOpenSearchReservation}
+                variant="putline"
+                fontSize="2rem"
+                icon={<AiOutlineSearch />}
+              />
+            )}
+          </Box>
         </Box>
-        <Box justifyContent={"flex-end"} display="flex" w="100%">
-          {!isHiddenButton && (
-            <Button variant="putline">
-              <Link as={NextLink} href={"/login"}>
-                Login
-              </Link>
-            </Button>
-          )}
-          {user.user && (
-            <IconButton
-              aria-label="search"
-              onClick={setIsOpenSearchReservation}
-              variant="putline"
-              fontSize="2rem"
-              icon={<AiOutlineSearch />}
-            />
-          )}
+        <Box>
+          <Navbar />
         </Box>
       </Box>
     </Box>

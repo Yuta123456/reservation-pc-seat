@@ -69,58 +69,56 @@ export default function Home() {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   return (
-    <>
-      <Center width={"100vw"}>
-        <Center flexFlow={"column"}>
-          <Heading color="teal.700">Login</Heading>
-          <FormControl>
-            <FormLabel color="teal.700">Email address</FormLabel>
+    <Center width={"100vw"} padding="3.5rem 0">
+      <Center flexFlow={"column"}>
+        <Heading color="teal.700">Login</Heading>
+        <FormControl>
+          <FormLabel color="teal.700">Email address</FormLabel>
+          <Input
+            type="email"
+            placeholder="example@hoge.com"
+            isRequired
+            id="email"
+            ref={emailRef}
+            color="black"
+          />
+          <FormLabel color="teal.700">Password</FormLabel>
+          <InputGroup>
             <Input
-              type="email"
-              placeholder="example@hoge.com"
+              id="password"
               isRequired
-              id="email"
-              ref={emailRef}
+              ref={passwordRef}
               color="black"
+              type={hiddenPassword ? "password" : "text"}
             />
-            <FormLabel color="teal.700">Password</FormLabel>
-            <InputGroup>
-              <Input
-                id="password"
-                isRequired
-                ref={passwordRef}
-                color="black"
-                type={hiddenPassword ? "password" : "text"}
-              />
-              <InputRightElement width="4.5rem">
-                <Button
-                  h="1.75rem"
-                  size="sm"
-                  onClick={() => {
-                    setHiddenPassword((v) => {
-                      return !v;
-                    });
-                  }}
-                >
-                  <Icon
-                    as={hiddenPassword ? AiOutlineEye : AiOutlineEyeInvisible}
-                  />
-                </Button>
-              </InputRightElement>
-            </InputGroup>
+            <InputRightElement width="4.5rem">
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={() => {
+                  setHiddenPassword((v) => {
+                    return !v;
+                  });
+                }}
+              >
+                <Icon
+                  as={hiddenPassword ? AiOutlineEye : AiOutlineEyeInvisible}
+                />
+              </Button>
+            </InputRightElement>
+          </InputGroup>
 
-            <Button
-              mt={4}
-              onClick={handleSubmit}
-              variant="solid"
-              color={"teal.700"}
-              isLoading={isLoading}
-            >
-              Login
-            </Button>
-          </FormControl>
-        </Center>
+          <Button
+            mt={4}
+            onClick={handleSubmit}
+            variant="solid"
+            color={"teal.700"}
+            isLoading={isLoading}
+          >
+            Login
+          </Button>
+        </FormControl>
       </Center>
-    </>
+    </Center>
   );
 }

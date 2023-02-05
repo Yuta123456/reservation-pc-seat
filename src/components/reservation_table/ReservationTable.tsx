@@ -39,22 +39,19 @@ type ReservationTableProps = {
   ) => void;
 };
 
-const fetcher = (url: string) =>
-  fetch(url)
-    .then(async (res) => await res.json())
-    .then((res) => res.reservationSchedule);
-
 export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
   const isPc = useIsPc(undefined);
   const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
-  const { data, error } = useSWR("api/reservation/today", fetcher, {
+  const { data, error, isLoading } = useSWR<{
+    reservationSchedule: ReservationSchedule[][];
+  }>("api/reservation/today", {
     refreshInterval: 1000,
   });
 
-  if (isPc === undefined || data === undefined || error) {
+  if (isPc === undefined || isLoading || error || !data) {
     return (
       <Center>
         <Spinner
@@ -72,12 +69,12 @@ export const ReservationTable: FC<ReservationTableProps> = ({
       {isPc ? (
         <PCReservationTable
           onCellClick={onCellClick}
-          reservationSchedule={data}
+          reservationSchedule={data.reservationSchedule}
         />
       ) : (
         <SPReservationTable
           onCellClick={onCellClick}
-          reservationSchedule={data}
+          reservationSchedule={data.reservationSchedule}
         />
       )}
     </>
@@ -115,7 +112,7 @@ const PCReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
   return (
-    <Box maxW={"90vw"} margin="auto" textAlign={"center"}>
+    <Box textAlign={"center"} w="100%">
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -197,7 +194,7 @@ const SPReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
   return (
-    <Box maxW={"95vw"} textAlign={"center"}>
+    <Box textAlign={"center"}>
       <TableContainer>
         <Table variant="simple">
           <Thead>

@@ -38,3 +38,12 @@ model StudentLedger {
   studentId     Int
   studentLedget Int
 }
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  name        String
+  eventImgUrl String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+}

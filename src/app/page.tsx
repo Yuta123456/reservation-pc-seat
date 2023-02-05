@@ -6,9 +6,10 @@ import { ReservationTable } from "@/components/reservation_table/ReservationTabl
 import { userState } from "@/state/user";
 import { useCallback, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { useToast } from "@chakra-ui/react";
+import { Container, useToast, Heading } from "@chakra-ui/react";
 import { login } from "@/utils/login";
 import { DisplayTime } from "@/components/display_time/DisplayTime";
+import { pageHeadline } from "@/style/style";
 
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
@@ -53,30 +54,32 @@ export default function Home() {
   );
   return (
     <main>
-      <DisplayTime />
-      <ReservationTable onCellClick={handleClick} />
+      <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
+        <Heading fontSize={pageHeadline}>PC席予定表</Heading>
+        <ReservationTable onCellClick={handleClick} />
 
-      {isOpenReservationForm && (
-        <ReservationForm
-          isOpen={isOpenReservationForm}
-          onClose={() => {
-            setIsOpenReservationForm(false);
-          }}
-          seat={seat}
-          period={period}
-        />
-      )}
-      {isOpenReservationDeleteForm && reservationId && (
-        <ReservationDeleteForm
-          isOpen={isOpenReservationDeleteForm}
-          onClose={() => {
-            setIsOpenReservationDeleteForm(false);
-          }}
-          seat={seat}
-          period={period}
-          id={reservationId}
-        />
-      )}
+        {isOpenReservationForm && (
+          <ReservationForm
+            isOpen={isOpenReservationForm}
+            onClose={() => {
+              setIsOpenReservationForm(false);
+            }}
+            seat={seat}
+            period={period}
+          />
+        )}
+        {isOpenReservationDeleteForm && reservationId && (
+          <ReservationDeleteForm
+            isOpen={isOpenReservationDeleteForm}
+            onClose={() => {
+              setIsOpenReservationDeleteForm(false);
+            }}
+            seat={seat}
+            period={period}
+            id={reservationId}
+          />
+        )}
+      </Container>
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import { Header } from "@/components/Header";
+import { Navbar } from "@/components/Tabs";
 import Provider from "./Provider";
 
 export default function RootLayout({

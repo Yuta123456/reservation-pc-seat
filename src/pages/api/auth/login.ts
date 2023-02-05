@@ -22,33 +22,32 @@ export default async function handler(
   }
   const access_token = req.headers.authorization?.slice(7);
   const { refresh_token } = JSON.parse(req.body);
-
   // access tokenがある場合はそれでuserを返す
   if (access_token) {
     const { data, error } = await supabase.auth.getUser(access_token);
-    if (error) {
-      return res.status(400).end();
+    if (!error) {
+      return res.status(200).json({
+        authResponce: {
+          user: data.user,
+          session: null,
+        },
+      });
     }
-    return res.status(200).json({
-      authResponce: {
-        user: data.user,
-        session: null,
-      },
-    });
   }
 
   // もしrefresh tokenが存在している場合
   if (refresh_token) {
-    const { data, error } = await supabase.auth.refreshSession(refresh_token);
-    if (error) {
-      return res.status(400).end();
-    }
-    return res.status(200).json({
-      authResponce: {
-        user: data.user,
-        session: data.session,
-      },
+    const { data, error } = await supabase.auth.refreshSession({
+      refresh_token,
     });
+    if (!error) {
+      return res.status(200).json({
+        authResponce: {
+          user: data.user,
+          session: data.session,
+        },
+      });
+    }
   }
 
   // もしそれ以外の場合は、普通にemailとpasswordでログイン
