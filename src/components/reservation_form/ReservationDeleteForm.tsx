@@ -75,7 +75,7 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
                 body: JSON.stringify({ id }),
                 // TODO: もうちょいいい感じに。
                 headers: {
-                  authorization: "Bearer " + user.session?.access_token || "",
+                  authorization: `Bearer ${user.session?.access_token}` || "",
                 },
               })
                 .then(async (res) => {

@@ -129,7 +129,7 @@ export const UpdateEventModal: FC<UpdateEventModalProps> = ({
                   setStartDate(newStartDate);
                 }}
                 value={startDate || ""}
-              ></Input>
+              />
               <FormLabel>終了日</FormLabel>
               <Input
                 type="date"
@@ -138,7 +138,7 @@ export const UpdateEventModal: FC<UpdateEventModalProps> = ({
                   const newEndDate = getDateString(new Date(e.target.value));
                   setEndDate(newEndDate);
                 }}
-              ></Input>
+              />
             </FormControl>
           </Box>
         </ModalBody>
@@ -164,15 +164,11 @@ function getDateString(originalDate: Date | undefined) {
   if (originalDate === undefined) {
     return "";
   }
-  console.log(typeof originalDate);
   const year = originalDate.getFullYear();
   const month = originalDate.getMonth() + 1;
   const date = originalDate.getDate();
-  const dateString =
-    new String(year) +
-    "-" +
-    ("00" + new String(month)).slice(-2) +
-    "-" +
-    ("00" + new String(date)).slice(-2);
+  const dateString = `${new String(year)}-${`00${new String(month)}`.slice(
+    -2
+  )}-${`00${new String(date)}`.slice(-2)}`;
   return dateString;
 }

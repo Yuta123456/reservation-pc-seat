@@ -35,7 +35,7 @@ export default function Home() {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
-    if (!email || !password) {
+    if (!(email && password)) {
       return;
     }
     setIsLoading(true);

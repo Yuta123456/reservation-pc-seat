@@ -132,7 +132,7 @@ const PCReservationTable: FC<ReservationTableComponent> = ({
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th textAlign={"center"}></Th>
+              <Th textAlign={"center"} />
               <Th textAlign={"center"}>
                 <Text fontSize={"1.5em"}>1時限目</Text>
               </Th>
@@ -215,7 +215,7 @@ const SPReservationTable: FC<ReservationTableComponent> = ({
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th></Th>
+              <Th />
               <Th textAlign={"center"}>
                 <Text>1時限目</Text>
               </Th>

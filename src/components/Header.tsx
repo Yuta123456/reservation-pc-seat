@@ -31,7 +31,7 @@ export const Header = () => {
             setIsOpenSearchReservation((prev) => !prev)
           }
           isPCReservePage={isPCReservePage}
-        ></PCHeader>
+        />
       ) : (
         <SPHeader
           isHiddenButton={isHiddenButton}
@@ -39,7 +39,7 @@ export const Header = () => {
             setIsOpenSearchReservation((prev) => !prev)
           }
           isPCReservePage={isPCReservePage}
-        ></SPHeader>
+        />
       )}
       {isOpenSearchReservation && (
         <SearchReservationModal
