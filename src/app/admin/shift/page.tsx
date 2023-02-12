@@ -9,11 +9,17 @@ import {
   Container,
   Heading,
   Stack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import { FC, useState } from "react";
 
 export default function Home() {
+  const LAIntroCardLayout = useBreakpointValue({ base: "sp", lg: "pc" });
+
+  if (LAIntroCardLayout === undefined) {
+    return;
+  }
   return (
     <>
       <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">

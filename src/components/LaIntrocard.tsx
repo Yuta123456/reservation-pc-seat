@@ -16,7 +16,7 @@ import { LearningAssistantInfo } from "../app/shift/mockdata";
 
 type LaIntrocardProps = {
   laInfo: LearningAssistantInfo;
-  onClick: () => void;
+  onClick?: () => void;
 };
 export const PCLAIntroCard: FC<LaIntrocardProps> = ({ laInfo, onClick }) => {
   const { id, studentId, name, avatarURL, description, expert, hobby } = {
