@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import { FC, useState } from "react";
+import { mockdata } from "./mockdata";
+import { PCLAIntroCard, SPLAIntroCard } from "@/components/LaIntrocard";
 
 export default function Home() {
   const LAIntroCardLayout = useBreakpointValue({ base: "sp", lg: "pc" });
@@ -30,10 +32,10 @@ export default function Home() {
           <Stack paddingTop="15px">
             {LAIntroCardLayout === "sp"
               ? mockdata.map((laInfo) => (
-                  <SPLAIntroCard key={laInfo.id} {...laInfo} />
+                  <SPLAIntroCard key={laInfo.id} laInfo={laInfo} />
                 ))
               : mockdata.map((laInfo) => (
-                  <PCLAIntroCard key={laInfo.id} {...laInfo} />
+                  <PCLAIntroCard key={laInfo.id} laInfo={laInfo} />
                 ))}
           </Stack>
         </Box>
