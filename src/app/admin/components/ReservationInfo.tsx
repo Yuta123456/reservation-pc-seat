@@ -59,7 +59,7 @@ export const ReservationInfoModal: FC<ReservationInfoModalProps> = ({
   useEffect(() => {
     fetch("/api/auth/reservation/today", {
       headers: {
-        Authorization: "Bearer " + user.session?.access_token,
+        Authorization: `Bearer ${user.session?.access_token}`,
       },
     })
       .then((res) => res.json())
@@ -91,19 +91,17 @@ export const ReservationInfoModal: FC<ReservationInfoModalProps> = ({
         <ModalBody>
           <Box>
             <Stack spacing="4" paddingBottom="15px">
-              {reservations &&
-                reservations.studentIds &&
-                reservations.studentIds.map((id) => {
-                  return (
-                    <Card key={id} bg="gray.100">
-                      <CardBody>
-                        <Text pt="2" fontSize="sm" fontWeight={600}>
-                          {id}
-                        </Text>
-                      </CardBody>
-                    </Card>
-                  );
-                })}
+              {reservations?.studentIds?.map((id) => {
+                return (
+                  <Card key={id} bg="gray.100">
+                    <CardBody>
+                      <Text pt="2" fontSize="sm" fontWeight={600}>
+                        {id}
+                      </Text>
+                    </CardBody>
+                  </Card>
+                );
+              })}
             </Stack>
           </Box>
         </ModalBody>

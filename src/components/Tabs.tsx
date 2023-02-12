@@ -55,7 +55,7 @@ export const Navbar = () => {
       setUrls(userUrls);
     }
   }, [pathname]);
-  if (!pathname || !urls.includes(pathname)) {
+  if (!(pathname && urls.includes(pathname))) {
     return <></>;
   }
   return (
