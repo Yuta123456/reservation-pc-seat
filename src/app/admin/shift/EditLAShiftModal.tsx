@@ -16,6 +16,12 @@ import {
   Textarea,
   FormControl,
   FormLabel,
+  Text,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 
 import { FC, useRef, useState } from "react";
@@ -46,64 +52,81 @@ export const EditLAShiftModal: FC<EditLAShiftModalProps> = ({
   const toast = useToast();
   const nameRef = useRef<HTMLInputElement>(null);
   const description = useRef<HTMLTextAreaElement>(null);
-  const startDate = useRef<HTMLInputElement>(null);
-  const endDate = useRef<HTMLInputElement>(null);
-
-  const register = () => {
-    // TODO: バリデーション
-    createEvent(
-      nameRef.current?.value,
-      description.current?.value,
-      startDate.current?.value,
-      endDate.current?.value
-    )
-      .then(() => {
-        toast({
-          title: "イベントを作成しました",
-          status: "success",
-          duration: 2000,
-        });
-        onClose();
-      })
-      .catch((e) => {
-        console.log(e);
-        toast({
-          title: "イベントの作成に失敗しました",
-          status: "error",
-          duration: 2000,
-        });
-      });
-  };
+  const [startDate, setStartDate] = useState(
+    new Date("Mon Feb 13 2023 11:00:00")
+  );
+  const [endDate, setEndDate] = useState(new Date("Mon Feb 13 2023 13:00:00"));
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>イベント作成</ModalHeader>
+        <ModalHeader>シフト修正</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box>
-            <FormControl>
-              <FormLabel>イベント名</FormLabel>
-              <Input
-                marginBottom={"5px"}
-                placeholder="イベント名"
-                ref={nameRef}
-              />
-              <FormLabel>イベントの説明</FormLabel>
-              <Textarea placeholder="イベントの説明" ref={description} />
-              <FormLabel>開始日</FormLabel>
-              <Input type="date" ref={startDate} />
-              <FormLabel>終了日</FormLabel>
-              <Input type="date" ref={endDate} />
-            </FormControl>
+          <Box display={"flex"} flexDirection="row" alignItems={"center"}>
+            <Text whiteSpace={"nowrap"} paddingRight="10px">
+              月曜日
+            </Text>
+            <ShiftTimeEdit
+              date={startDate}
+              setDate={(date: Date) => {
+                setStartDate(date);
+              }}
+            />
+            <Text>～</Text>
+            <ShiftTimeEdit
+              date={endDate}
+              setDate={(date: Date) => {
+                setEndDate(date);
+              }}
+            />
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button color={"white"} bg="teal.700" onClick={register}>
-            登録する
+          <Button color={"white"} bg="teal.700">
+            保存する
           </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
+  );
+};
+
+const formatDateToDisplay = (date: Date) => {
+  return `${date.getHours().toString().padStart(2, "0")}:${date
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}`;
+};
+
+type ShiftTimeEditProps = {
+  date: Date;
+  setDate: (date: Date) => void;
+};
+const ShiftTimeEdit: FC<ShiftTimeEditProps> = ({ date, setDate }) => {
+  return (
+    <FormControl>
+      <NumberInput min={0} max={24} value={formatDateToDisplay(date)}>
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper
+            onClick={() => {
+              // Deep copy
+              const newDate = new Date(JSON.parse(JSON.stringify(date)));
+              newDate.setMinutes(newDate.getMinutes() + 30);
+              setDate(newDate);
+            }}
+          />
+          <NumberDecrementStepper
+            onClick={() => {
+              // Deep copy
+              const newDate = new Date(JSON.parse(JSON.stringify(date)));
+              newDate.setMinutes(newDate.getMinutes() - 30);
+              setDate(newDate);
+            }}
+          />
+        </NumberInputStepper>
+      </NumberInput>
+    </FormControl>
   );
 };
