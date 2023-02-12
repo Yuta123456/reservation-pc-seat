@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import { FC, useState } from "react";
-import { mockdata } from "./mockdata";
+import { laInfo } from "./mockdata";
 import { PCLAIntroCard, SPLAIntroCard } from "@/components/LaIntrocard";
 import { EditLAShiftModal } from "./EditLAShiftModal";
 
@@ -32,7 +32,7 @@ export default function Home() {
         <Heading fontSize={pageHeadline}>勤務中のLA</Heading>
         <Stack paddingTop={"15px"} paddingBottom="40px">
           {LAIntroCardLayout === "sp"
-            ? mockdata
+            ? laInfo
                 .slice(0, 2)
                 .map((laInfo) => (
                   <SPLAIntroCard
@@ -41,7 +41,7 @@ export default function Home() {
                     onClick={onCardClick}
                   />
                 ))
-            : mockdata
+            : laInfo
                 .slice(0, 2)
                 .map((laInfo) => (
                   <PCLAIntroCard
@@ -54,14 +54,14 @@ export default function Home() {
         <Heading fontSize={pageHeadline}>LA一覧</Heading>
         <Stack paddingTop="px">
           {LAIntroCardLayout === "sp"
-            ? mockdata.map((laInfo) => (
+            ? laInfo.map((laInfo) => (
                 <SPLAIntroCard
                   key={laInfo.id}
                   laInfo={laInfo}
                   onClick={onCardClick}
                 />
               ))
-            : mockdata.map((laInfo) => (
+            : laInfo.map((laInfo) => (
                 <PCLAIntroCard
                   key={laInfo.id}
                   laInfo={laInfo}

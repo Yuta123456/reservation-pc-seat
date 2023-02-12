@@ -1,6 +1,6 @@
 import { LearningAssistantInfo } from "@/app/shift/mockdata";
 
-export const mockdata: LearningAssistantInfo[] = [
+export const laInfo: LearningAssistantInfo[] = [
   {
     id: 1,
     studentId: "6122M21",
@@ -54,5 +54,24 @@ export const mockdata: LearningAssistantInfo[] = [
     description: "数学が得意です",
     expert: ["数学", "教職"],
     hobby: ["数学"],
+  },
+];
+
+type ShiftInfo = {
+  startDate: Date;
+  endDate: Date;
+};
+export const shiftData: ShiftInfo[] = [
+  {
+    startDate: new Date("Tue Feb 14 2023 11:00:00"),
+    endDate: new Date("Tue Feb 14 2023 13:00:00"),
+  },
+  {
+    startDate: new Date("Fri Feb 17 2023 11:00:00"),
+    endDate: new Date("Fri Feb 17 2023 13:00:00"),
+  },
+  {
+    startDate: new Date("Sun Feb 19 2023 11:00:00"),
+    endDate: new Date("Sun Feb 19 2023 13:00:00"),
   },
 ];

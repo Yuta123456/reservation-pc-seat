@@ -22,14 +22,11 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Stack,
 } from "@chakra-ui/react";
 
 import { FC, useRef, useState } from "react";
-import { useIsPc } from "@/Hooks/useIsPc";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { useRecoilState } from "recoil";
-import { userState } from "@/state/user";
-import { createEvent } from "@/utils/event";
+import { shiftData } from "./mockdata";
 
 // model Event {
 //   id          Int      @id @default(autoincrement())
@@ -50,12 +47,22 @@ export const EditLAShiftModal: FC<EditLAShiftModalProps> = ({
   onClose,
 }) => {
   const toast = useToast();
-  const nameRef = useRef<HTMLInputElement>(null);
-  const description = useRef<HTMLTextAreaElement>(null);
-  const [startDate, setStartDate] = useState(
-    new Date("Mon Feb 13 2023 11:00:00")
-  );
-  const [endDate, setEndDate] = useState(new Date("Mon Feb 13 2023 13:00:00"));
+  const [shiftArray, setShiftArray] = useState(shiftData);
+
+  // 命名がゴミすぎる
+  // もうちょい上手くやれそうな気はする
+  const updateShiftArray = (i: number, startDate: Date, endDate: Date) => {
+    const newShiftArray = JSON.parse(JSON.stringify(shiftArray)).map(
+      (str: { startDate: string; endDate: string }) => {
+        return {
+          startDate: new Date(str.startDate),
+          endDate: new Date(str.endDate),
+        };
+      }
+    );
+    newShiftArray[i] = { startDate, endDate };
+    setShiftArray(newShiftArray);
+  };
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset="scale">
       <ModalOverlay />
@@ -63,27 +70,22 @@ export const EditLAShiftModal: FC<EditLAShiftModalProps> = ({
         <ModalHeader>シフト修正</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box display={"flex"} flexDirection="row" alignItems={"center"}>
-            <Text whiteSpace={"nowrap"} paddingRight="10px">
-              月曜日
-            </Text>
-            <ShiftTimeEdit
-              date={startDate}
-              setDate={(date: Date) => {
-                setStartDate(date);
-              }}
-            />
-            <Text>～</Text>
-            <ShiftTimeEdit
-              date={endDate}
-              setDate={(date: Date) => {
-                setEndDate(date);
-              }}
-            />
-          </Box>
+          {shiftArray.map((shift, i) => {
+            return (
+              <Stack paddingTop={"15px"} paddingBottom="40px" key={i}>
+                <ShiftTimeInputForm
+                  i={i}
+                  shift={shift}
+                  onDateUpdate={(i, startDate, endDate) => {
+                    updateShiftArray(i, startDate, endDate);
+                  }}
+                />
+              </Stack>
+            );
+          })}
         </ModalBody>
         <ModalFooter>
-          <Button color={"white"} bg="teal.700">
+          <Button color={"white"} bg="teal.700" onClick={onClose}>
             保存する
           </Button>
         </ModalFooter>
@@ -101,9 +103,9 @@ const formatDateToDisplay = (date: Date) => {
 
 type ShiftTimeEditProps = {
   date: Date;
-  setDate: (date: Date) => void;
+  onChange: (date: Date) => void;
 };
-const ShiftTimeEdit: FC<ShiftTimeEditProps> = ({ date, setDate }) => {
+const ShiftTimeEdit: FC<ShiftTimeEditProps> = ({ date, onChange }) => {
   return (
     <FormControl>
       <NumberInput min={0} max={24} value={formatDateToDisplay(date)}>
@@ -114,7 +116,7 @@ const ShiftTimeEdit: FC<ShiftTimeEditProps> = ({ date, setDate }) => {
               // Deep copy
               const newDate = new Date(JSON.parse(JSON.stringify(date)));
               newDate.setMinutes(newDate.getMinutes() + 30);
-              setDate(newDate);
+              onChange(newDate);
             }}
           />
           <NumberDecrementStepper
@@ -122,7 +124,7 @@ const ShiftTimeEdit: FC<ShiftTimeEditProps> = ({ date, setDate }) => {
               // Deep copy
               const newDate = new Date(JSON.parse(JSON.stringify(date)));
               newDate.setMinutes(newDate.getMinutes() - 30);
-              setDate(newDate);
+              onChange(newDate);
             }}
           />
         </NumberInputStepper>
@@ -130,3 +132,53 @@ const ShiftTimeEdit: FC<ShiftTimeEditProps> = ({ date, setDate }) => {
     </FormControl>
   );
 };
+
+type ShiftTimeInputForm = {
+  i: number;
+  shift: {
+    startDate: Date;
+    endDate: Date;
+  };
+  onDateUpdate: (i: number, startDate: Date, endDate: Date) => void;
+};
+const ShiftTimeInputForm: FC<ShiftTimeInputForm> = ({
+  i,
+  shift,
+  onDateUpdate,
+}) => {
+  return (
+    <Box display={"flex"} flexDirection="row" alignItems={"center"}>
+      <Text whiteSpace={"nowrap"} paddingRight="10px">
+        {getShiftTimeInputForm(shift.startDate)}
+      </Text>
+      <ShiftTimeEdit
+        date={shift.startDate}
+        onChange={(date: Date) => {
+          onDateUpdate(i, date, shift.endDate);
+        }}
+      />
+      <Text>～</Text>
+      <ShiftTimeEdit
+        date={shift.endDate}
+        onChange={(date: Date) => {
+          onDateUpdate(i, shift.startDate, date);
+        }}
+      />
+    </Box>
+  );
+};
+
+const getShiftTimeInputForm = (date: Date) => {
+  return `${date.getMonth() + 1}/${date.getDate()} ${
+    displayWeekDayStr[date.getDay()]
+  }`;
+};
+const displayWeekDayStr = [
+  "日曜日",
+  "月曜日",
+  "火曜日",
+  "水曜日",
+  "木曜日",
+  "金曜日",
+  "土曜日",
+];
