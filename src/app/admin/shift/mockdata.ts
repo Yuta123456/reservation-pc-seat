@@ -38,7 +38,7 @@ export const mockdata: LearningAssistantInfo[] = [
     hobby: ["甘いもの"],
   },
   {
-    id: 4,
+    id: 5,
     studentId: "6122M23",
     name: "武和磨",
     avatarURL: "",
@@ -47,7 +47,7 @@ export const mockdata: LearningAssistantInfo[] = [
     hobby: ["サッカー"],
   },
   {
-    id: 5,
+    id: 6,
     studentId: "6122M23",
     name: "加藤楽人",
     avatarURL: "",

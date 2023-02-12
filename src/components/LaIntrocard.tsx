@@ -1,4 +1,3 @@
-import { pageHeadline } from "@/style/style";
 import {
   Box,
   Card,
@@ -16,7 +15,7 @@ import { LearningAssistantInfo } from "../app/shift/mockdata";
 
 type LaIntrocardProps = {
   laInfo: LearningAssistantInfo;
-  onClick?: () => void;
+  onClick?: (key: number) => void;
 };
 export const PCLAIntroCard: FC<LaIntrocardProps> = ({ laInfo, onClick }) => {
   const { id, studentId, name, avatarURL, description, expert, hobby } = {
@@ -25,7 +24,12 @@ export const PCLAIntroCard: FC<LaIntrocardProps> = ({ laInfo, onClick }) => {
   return (
     <Card>
       <CardBody>
-        <Box display={"flex"}>
+        <Box
+          display={"flex"}
+          onClick={() => {
+            onClick && onClick(id);
+          }}
+        >
           <Avatar
             size={{
               base: "md",
@@ -60,7 +64,7 @@ export const SPLAIntroCard: FC<LaIntrocardProps> = ({ laInfo, onClick }) => {
   return (
     <Card>
       <CardBody>
-        <Box display={"flex"}>
+        <Box display={"flex"} onClick={() => onClick && onClick(id)}>
           <Avatar
             size={{
               base: "md",
