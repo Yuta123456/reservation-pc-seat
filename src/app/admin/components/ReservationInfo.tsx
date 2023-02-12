@@ -89,13 +89,16 @@ export const ReservationInfoModal: FC<ReservationInfoModalProps> = ({
         <ModalHeader>予約情報</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          <Text pt="2" pb="3" fontSize="lg" fontWeight={600}>
+            予約中の学籍番号
+          </Text>
           <Box>
             <Stack spacing="4" paddingBottom="15px">
               {reservations?.studentIds?.map((id) => {
                 return (
                   <Card key={id} bg="gray.100">
                     <CardBody>
-                      <Text pt="2" fontSize="sm" fontWeight={600}>
+                      <Text pt="2" fontSize="lg" fontWeight={600}>
                         {id}
                       </Text>
                     </CardBody>
