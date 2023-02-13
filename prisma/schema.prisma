@@ -57,6 +57,8 @@ model Users {
 model LA {
   id                  Int      @id @default(autoincrement())
   student             Student  @relation(fields: [studentId], references: [id])
+  name                String
+  description         String
   studentId           Int
   avatarURL           String
   experts             String[]
