@@ -14,6 +14,7 @@ model Student {
   studentId          String               @unique()
   ReservationStudent ReservationStudent[]
   StudentLedger      StudentLedger[]
+  LA                 LA[]
 }
 
 model Reservation {
@@ -51,4 +52,24 @@ model Event {
 model Users {
   id       String  @id
   is_admin Boolean
+}
+
+model LA {
+  id                  Int      @id @default(autoincrement())
+  student             Student  @relation(fields: [studentId], references: [id])
+  studentId           Int
+  avatarURL           String
+  experts             String[]
+  hobbies             String[]
+  basicStartShiftTime DateTime
+  basicEndShiftTime   DateTime
+  Shift               Shift[]
+}
+
+model Shift {
+  id        Int      @id @default(autoincrement())
+  la        LA       @relation(fields: [laId], references: [id])
+  laId      Int
+  startDate DateTime
+  endDate   DateTime
 }
