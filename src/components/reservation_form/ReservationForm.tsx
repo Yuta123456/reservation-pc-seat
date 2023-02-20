@@ -133,7 +133,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 body: JSON.stringify({ seat, period, studentsIds }),
                 // TODO: もうちょいいい感じに。
                 headers: {
-                  authorization: "Bearer " + user.session?.access_token || "",
+                  authorization: `Bearer ${user.session?.access_token}` || "",
                 },
               }).then(async (res) => {
                 setIsLoading(false);

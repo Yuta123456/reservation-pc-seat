@@ -10,8 +10,12 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useRecoilState } from "recoil";
+import { userState } from "@/state/user";
 
-const urls = ["/", "/shift", "/event"];
+const userUrls = ["/", "/shift", "/event"];
+
+const adminUrls = ["/admin", "/admin/shift", "/admin/event"];
 
 const tabStyle = {
   fontWeight: "600",
@@ -25,21 +29,33 @@ const tabStyle = {
 const tabsName = ["PC席予約", "シフト", "イベント"];
 export const Navbar = () => {
   const pathname = usePathname();
-  const [tabIndex, setTabIndex] = useState(0);
-
+  const [tabIndex, setTabIndex] = useState<number | undefined>(0);
+  const [urls, setUrls] = useState(userUrls);
+  const router = useRouter();
+  const [user, setUser] = useRecoilState(userState);
   // NOTE: この辺かなり危うい。urlsに入っていないpathに入るときもこのuseEffectが走る
   //       今はurlsに入っていない場合はstateを更新しないことで二つ目のuseEffectが発火しないようにしている。
+  //       routerが更新されたときも発火するのできつい
+
   useEffect(() => {
-    const newTabIndex = urls.indexOf(pathname || "/");
-    if (newTabIndex !== -1) {
-      setTabIndex(newTabIndex);
+    if (tabIndex !== undefined) {
+      router.push(urls[tabIndex]);
+    }
+  }, [tabIndex, router, urls]);
+
+  useEffect(() => {
+    // loginだった場合は更新するべきではない
+    if (pathname?.indexOf("login") !== -1) {
+      return;
+    }
+
+    if (pathname?.indexOf("admin") !== -1) {
+      setUrls(adminUrls);
+    } else {
+      setUrls(userUrls);
     }
   }, [pathname]);
-  const router = useRouter();
-  useEffect(() => {
-    router.push(urls[tabIndex]);
-  }, [tabIndex, router]);
-  if (!pathname || !urls.includes(pathname)) {
+  if (!(pathname && urls.includes(pathname))) {
     return <></>;
   }
   return (

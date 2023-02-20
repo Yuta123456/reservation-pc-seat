@@ -43,7 +43,7 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
     setIsLoading(true);
     fetch("api/auth/reservation/today", {
       headers: {
-        Authorization: "Bearer " + user.session?.access_token,
+        Authorization: `Bearer ${user.session?.access_token}`,
       },
     })
       .then((res) => res.json())

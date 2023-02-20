@@ -47,3 +47,8 @@ model Event {
   startDate   DateTime
   endDate     DateTime
 }
+
+model Users {
+  id       String  @id
+  is_admin Boolean
+}

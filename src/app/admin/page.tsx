@@ -11,16 +11,13 @@ import { useCallback, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { Container, useToast, Heading } from "@chakra-ui/react";
 import { login } from "@/utils/login";
-import { DisplayTime } from "@/components/display_time/DisplayTime";
 import { pageHeadline } from "@/style/style";
-import { useRouter } from "next/navigation";
 import useSWR from "swr";
+import { ReservationInfoModal } from "./components/ReservationInfo";
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
-  const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
-  const [isOpenReservationDeleteForm, setIsOpenReservationDeleteForm] =
-    useState(false);
+  const [isOpenReservationInfo, setIsOpenReservationInfo] = useState(false);
   const [seat, setSeat] = useState(0);
   const [period, setPeriod] = useState(0);
   const [reservationId, setReservationId] = useState<number | undefined>(
@@ -34,11 +31,6 @@ export default function Home() {
     refreshInterval: 5000,
   });
 
-  useEffect(() => {
-    login(undefined, setUser).catch((e) => {
-      console.log("access token login failed");
-    });
-  }, [setUser]);
   const handleClick = useCallback(
     (
       i: number,
@@ -54,11 +46,7 @@ export default function Home() {
         });
         return;
       }
-      if (isReserved) {
-        setIsOpenReservationDeleteForm(true);
-      } else {
-        setIsOpenReservationForm(true);
-      }
+      setIsOpenReservationInfo(true);
       setSeat(i);
       setPeriod(j);
       setReservationId(reservationId);
@@ -76,27 +64,15 @@ export default function Home() {
           error={error}
         />
 
-        {isOpenReservationForm && (
-          <ReservationForm
-            isOpen={isOpenReservationForm}
+        {isOpenReservationInfo && (
+          <ReservationInfoModal
+            isOpen={isOpenReservationInfo}
             onClose={() => {
-              setIsOpenReservationForm(false);
+              setIsOpenReservationInfo(false);
               mutate();
             }}
             seat={seat}
             period={period}
-          />
-        )}
-        {isOpenReservationDeleteForm && reservationId && (
-          <ReservationDeleteForm
-            isOpen={isOpenReservationDeleteForm}
-            onClose={() => {
-              setIsOpenReservationDeleteForm(false);
-              mutate();
-            }}
-            seat={seat}
-            period={period}
-            id={reservationId}
           />
         )}
       </Container>
