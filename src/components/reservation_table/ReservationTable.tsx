@@ -16,7 +16,7 @@ import { FC } from "react";
 import useSWR from "swr";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
-
+import IsReserved from "./IsReserved.svg";
 export type ReservationScheduleWithAuth = {
   id: number;
   seat: number;
@@ -91,7 +91,7 @@ export const DisplayPeriod = [
 ];
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
-    bgColor: "teal.200",
+    bgColor: "#83c4bc",
     color: "white",
   },
   isReserved: {
@@ -169,13 +169,13 @@ const PCReservationTable: FC<
                             );
                           }}
                         >
-                          <Text fontSize={"1.5em"} textAlign="center">
-                            {
-                              reservationStateText[
-                                isReserved ? "isReserved" : "available"
-                              ]
-                            }
-                          </Text>
+                          {isReserved ? (
+                            <IsReserved />
+                          ) : (
+                            <Text fontSize={"1.5em"} textAlign="center">
+                              予約可
+                            </Text>
+                          )}
                         </Th>
                       );
                     })}
@@ -249,12 +249,8 @@ const SPReservationTable: FC<
                           );
                         }}
                       >
-                        <Text>
-                          {
-                            reservationStateText[
-                              isReserved ? "isReserved" : "available"
-                            ]
-                          }
+                        <Text fontSize={"1.5em"} textAlign="center">
+                          {isReserved ? <IsReserved /> : "予約可"}
                         </Text>
                       </Th>
                     );
