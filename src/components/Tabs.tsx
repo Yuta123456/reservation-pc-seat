@@ -22,6 +22,9 @@ export const Navbar = () => {
     newTabIndex === -1 ? 0 : newTabIndex
   );
   const router = useRouter();
+  useEffect(() => {
+    router.push(urls[tabIndex]);
+  }, [tabIndex, router]);
   if (!pathname || !urls.includes(pathname)) {
     return <></>;
   }
@@ -38,7 +41,6 @@ export const Navbar = () => {
       <Tabs
         onChange={(index) => {
           setTabIndex(index);
-          router.push(urls[index]);
         }}
         w={"100%"}
         colorScheme="whatsapp"
