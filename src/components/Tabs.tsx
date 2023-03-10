@@ -1,13 +1,5 @@
 "use client";
-import {
-  Tabs,
-  TabList,
-  Tab,
-  TabPanel,
-  useColorModeValue,
-  Box,
-  useFocusEffect,
-} from "@chakra-ui/react";
+import { Tabs, TabList, Tab, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -25,20 +17,11 @@ const tabStyle = {
 const tabsName = ["PC席予約", "シフト", "イベント"];
 export const Navbar = () => {
   const pathname = usePathname();
-  const [tabIndex, setTabIndex] = useState(0);
-
-  // NOTE: この辺かなり危うい。urlsに入っていないpathに入るときもこのuseEffectが走る
-  //       今はurlsに入っていない場合はstateを更新しないことで二つ目のuseEffectが発火しないようにしている。
-  useEffect(() => {
-    const newTabIndex = urls.indexOf(pathname || "/");
-    if (newTabIndex !== -1) {
-      setTabIndex(newTabIndex);
-    }
-  }, [pathname]);
+  const newTabIndex = urls.indexOf(pathname || "/");
+  const [tabIndex, setTabIndex] = useState(
+    newTabIndex === -1 ? 0 : newTabIndex
+  );
   const router = useRouter();
-  useEffect(() => {
-    router.push(urls[tabIndex]);
-  }, [tabIndex, router]);
   if (!pathname || !urls.includes(pathname)) {
     return <></>;
   }
@@ -53,7 +36,10 @@ export const Navbar = () => {
       paddingBottom={"5px"}
     >
       <Tabs
-        onChange={(index) => setTabIndex(index)}
+        onChange={(index) => {
+          setTabIndex(index);
+          router.push(urls[index]);
+        }}
         w={"100%"}
         colorScheme="whatsapp"
         index={tabIndex}
