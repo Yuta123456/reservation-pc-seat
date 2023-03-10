@@ -15,11 +15,7 @@ const nextConfig = {
         },
       },
     });
-
     return config;
-  },
-  images: {
-    disableStaticImages: true,
   },
 };
 
