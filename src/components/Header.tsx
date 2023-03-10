@@ -100,9 +100,7 @@ const PCHeader: FC<HeaderProps> = ({
             )}
           </Box>
         </Box>
-        <Box>
-          <Navbar />
-        </Box>
+        <Box>{/* <Navbar /> */}</Box>
       </Box>
     </Box>
   );
