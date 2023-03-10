@@ -112,28 +112,28 @@ const PCReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
   return (
-    <Box textAlign={"center"} w="100%">
+    <Box textAlign={"center"}>
       <TableContainer>
-        <Table variant="simple">
+        <Table variant="simple" w="">
           <Thead>
             <Tr>
-              <Th textAlign={"center"}></Th>
-              <Th textAlign={"center"}>
+              <Th textAlign={"center"} w="200px"></Th>
+              <Th textAlign={"center"} w="200px">
                 <Text fontSize={"1.5em"}>1時限目</Text>
               </Th>
-              <Th textAlign={"center"}>
+              <Th textAlign={"center"} w="200px">
                 <Text fontSize={"1.5em"}>2時限目</Text>
               </Th>
-              <Th textAlign={"center"}>
+              <Th textAlign={"center"} w="200px">
                 <Text fontSize={"1.5em"}>昼休み</Text>
               </Th>
-              <Th textAlign={"center"}>
+              <Th textAlign={"center"} w="200px">
                 <Text fontSize={"1.5em"}>3時限目</Text>
               </Th>
-              <Th textAlign={"center"}>
+              <Th textAlign={"center"} w="200px">
                 <Text fontSize={"1.5em"}>4時限目</Text>
               </Th>
-              <Th textAlign={"center"}>
+              <Th textAlign={"center"} w="200px">
                 <Text fontSize={"1.5em"}>5時限目</Text>
               </Th>
             </Tr>
@@ -143,7 +143,7 @@ const PCReservationTable: FC<
               return (
                 <Tr key={seat}>
                   <>
-                    <Th textAlign={"center"}>
+                    <Th textAlign={"center"} w="200px">
                       <Text fontSize={"1.5em"}>PC{seat + 1}</Text>
                     </Th>
                     {/* TODO: マジックナンバー削除。6はperiodのかず */}
@@ -154,8 +154,10 @@ const PCReservationTable: FC<
                       return (
                         <Th
                           key={period}
+                          w="200px"
                           sx={{
-                            height: "100px",
+                            height: "160px",
+
                             ...reservationStateStyle[
                               isReserved ? "isReserved" : "available"
                             ],

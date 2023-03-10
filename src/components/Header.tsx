@@ -56,6 +56,7 @@ type HeaderProps = {
   setIsOpenSearchReservation: () => void;
   isPCReservePage: boolean;
 };
+
 const PCHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
@@ -69,6 +70,7 @@ const PCHeader: FC<HeaderProps> = ({
       color="white"
       alignItems="center"
       display={"flex"}
+      h="120px"
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
         <Box display={"flex"} alignItems="center" pt="20px">
@@ -100,9 +102,7 @@ const PCHeader: FC<HeaderProps> = ({
             )}
           </Box>
         </Box>
-        <Box>
-          <Navbar />
-        </Box>
+        <Navbar />
       </Box>
     </Box>
   );
@@ -115,11 +115,12 @@ const SPHeader: FC<HeaderProps> = ({
   const [user, _] = useRecoilState(userState);
   return (
     <Box
-      bg="teal.700"
-      w="100vw"
+      bg="#EFB134"
+      w="100%"
       color="white"
       alignItems="center"
       display={"flex"}
+      h="120px"
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
         <Box display={"flex"} alignItems="center" pt="20px">

@@ -25,7 +25,9 @@ export default function Home() {
   }
   return (
     <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-      <Group height="200px"></Group>
+      <Box w="350px">
+        <Group />
+      </Box>
       <Stack paddingTop="15px">
         {LAIntroCardLayout === "sp"
           ? mockdata.map((laInfo) => (
