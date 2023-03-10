@@ -64,7 +64,7 @@ const PCHeader: FC<HeaderProps> = ({
   const [user, _] = useRecoilState(userState);
   return (
     <Box
-      bg="teal.700"
+      bg="#EFB134"
       w="100%"
       color="white"
       alignItems="center"
@@ -115,7 +115,7 @@ const SPHeader: FC<HeaderProps> = ({
   const [user, _] = useRecoilState(userState);
   return (
     <Box
-      bg="teal.700"
+      bg="#EFB134"
       w="100vw"
       color="white"
       alignItems="center"
