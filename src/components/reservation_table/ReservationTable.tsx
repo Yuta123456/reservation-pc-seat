@@ -172,7 +172,8 @@ const PCReservationTable: FC<
                           }}
                         >
                           {isReserved ? (
-                            <IsReserved />
+                            // <IsReserved />
+                            <></>
                           ) : (
                             <Text fontSize={"1.5em"} textAlign="center">
                               予約可
