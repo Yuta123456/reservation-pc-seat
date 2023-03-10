@@ -24,7 +24,7 @@ export const Navbar = () => {
   const router = useRouter();
   useEffect(() => {
     router.push(urls[tabIndex]);
-  }, [tabIndex, router]);
+  }, [tabIndex]);
   if (!pathname || !urls.includes(pathname)) {
     return <></>;
   }
