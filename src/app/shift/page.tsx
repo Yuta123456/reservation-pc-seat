@@ -24,8 +24,8 @@ export default function Home() {
     return;
   }
   return (
-    <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-      <Box w="350px">
+    <Container maxW={"90vw"} margin="auto" padding="0.5rem 0">
+      <Box w={LAIntroCardLayout === "pc" ? "350px" : "250px"}>
         <Group />
       </Box>
       <Stack paddingTop="15px">

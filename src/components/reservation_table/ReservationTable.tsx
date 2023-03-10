@@ -237,7 +237,8 @@ const SPReservationTable: FC<
                       <Th
                         key={period}
                         sx={{
-                          height: "60px",
+                          height: "100px",
+                          width: "100px",
                           ...reservationStateStyle[
                             isReserved ? "isReserved" : "available"
                           ],
