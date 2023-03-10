@@ -2,7 +2,7 @@
 import { Tabs, TabList, Tab, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-
+import NextLink from "next/link";
 const urls = ["/", "/shift", "/event"];
 
 const tabStyle = {
@@ -21,10 +21,6 @@ export const Navbar = () => {
   const [tabIndex, setTabIndex] = useState(
     newTabIndex === -1 ? 0 : newTabIndex
   );
-  const router = useRouter();
-  useEffect(() => {
-    router.push(urls[tabIndex]);
-  }, [tabIndex]);
   if (!pathname || !urls.includes(pathname)) {
     return <></>;
   }
@@ -48,11 +44,13 @@ export const Navbar = () => {
         color="gray.100"
       >
         <TabList borderBottom={"none"}>
-          {tabsName.map((name, i) => (
-            <Tab key={i} {...tabStyle}>
-              {name}
-            </Tab>
-          ))}
+          {tabsName.map((name, i) => {
+            return (
+              <Tab key={i} {...tabStyle}>
+                <NextLink href={urls[i]}>{name}</NextLink>
+              </Tab>
+            );
+          })}
         </TabList>
       </Tabs>
     </Box>
