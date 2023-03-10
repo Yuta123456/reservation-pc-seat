@@ -31,7 +31,7 @@ export const Header = () => {
             setIsOpenSearchReservation((prev) => !prev)
           }
           isPCReservePage={isPCReservePage}
-        ></PCHeader>
+        />
       ) : (
         <SPHeader
           isHiddenButton={isHiddenButton}
@@ -39,7 +39,7 @@ export const Header = () => {
             setIsOpenSearchReservation((prev) => !prev)
           }
           isPCReservePage={isPCReservePage}
-        ></SPHeader>
+        />
       )}
       {isOpenSearchReservation && (
         <SearchReservationModal
@@ -64,7 +64,7 @@ const PCHeader: FC<HeaderProps> = ({
   const [user, _] = useRecoilState(userState);
   return (
     <Box
-      bg="teal.700"
+      bg="#EFB134"
       w="100%"
       color="white"
       alignItems="center"
