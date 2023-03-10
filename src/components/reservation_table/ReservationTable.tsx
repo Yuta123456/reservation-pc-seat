@@ -16,7 +16,7 @@ import { FC } from "react";
 import useSWR from "swr";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
-import IsReserved from "./IsReserved.svg";
+import IsReserved from "../../../public/IsReserved.svg";
 export type ReservationScheduleWithAuth = {
   id: number;
   seat: number;

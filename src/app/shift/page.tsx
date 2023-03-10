@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { LearningAssistantInfo, mockdata } from "./mockdata";
-import Group from "./Group.svg";
+import Group from "../../../public/Group.svg";
 export default function Home() {
   // NOTE: lg以上であれば描画するコンポーネントを変更するHooks
   const LAIntroCardLayout = useBreakpointValue({ base: "sp", lg: "pc" });
