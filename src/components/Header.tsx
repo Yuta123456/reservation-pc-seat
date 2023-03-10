@@ -62,6 +62,7 @@ const PCHeader: FC<HeaderProps> = ({
   isPCReservePage,
 }) => {
   const [user, _] = useRecoilState(userState);
+  return <></>;
   return (
     <Box
       bg="teal.700"
