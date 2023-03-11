@@ -172,9 +172,9 @@ const PCReservationTable: FC<
                           }}
                         >
                           {isReserved ? (
-                            // <IsReserved />
-                            <></>
+                            <IsReserved />
                           ) : (
+                            // <></>
                             <Text fontSize={"1.5em"} textAlign="center">
                               予約可
                             </Text>
@@ -254,7 +254,7 @@ const SPReservationTable: FC<
                         }}
                       >
                         <Text fontSize={"1.5em"} textAlign="center">
-                          {isReserved ? <></> : "予約可"}
+                          {isReserved ? <IsReserved /> : "予約可"}
                         </Text>
                       </Th>
                     );
