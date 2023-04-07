@@ -158,18 +158,16 @@ const PCReservationTable: FC<
                 <Tr key={seat}>
                   <>
                     <Th textAlign={"center"} w="200px">
-                      <Text fontSize={"1.5em"}>
-                        {toSeatImagePath(seat) ? (
-                          <Image
-                            src={toSeatImagePath(seat)}
-                            alt={seat + "席のイラスト"}
-                            width="110"
-                            height="110"
-                          />
-                        ) : (
-                          <Text>PC{seat + 1}</Text>
-                        )}
-                      </Text>
+                      {toSeatImagePath(seat) ? (
+                        <Image
+                          src={toSeatImagePath(seat)}
+                          alt={seat + "席のイラスト"}
+                          width="110"
+                          height="110"
+                        />
+                      ) : (
+                        <Text>PC{seat + 1}</Text>
+                      )}
                     </Th>
                     {/* TODO: マジックナンバー削除。6はperiodのかず */}
                     {[...Array(6)].map((_, period) => {
@@ -196,27 +194,29 @@ const PCReservationTable: FC<
                             );
                           }}
                         >
-                          {isReserved ? (
-                            toImagePath(seat, isReserved) ? (
+                          <Box display={"flex"} justifyContent="center">
+                            {isReserved ? (
+                              toImagePath(seat, isReserved) ? (
+                                <Image
+                                  src={toImagePath(seat, isReserved)}
+                                  width="110"
+                                  height="110"
+                                  alt="is-reserved"
+                                />
+                              ) : (
+                                <Text>予約済み</Text>
+                              )
+                            ) : toImagePath(seat, isReserved) ? (
                               <Image
                                 src={toImagePath(seat, isReserved)}
                                 width="110"
                                 height="110"
-                                alt="is-reserved"
+                                alt="reservable"
                               />
                             ) : (
-                              <Text>予約済み</Text>
-                            )
-                          ) : toImagePath(seat, isReserved) ? (
-                            <Image
-                              src={toImagePath(seat, isReserved)}
-                              width="110"
-                              height="110"
-                              alt="reservable"
-                            />
-                          ) : (
-                            <Text>予約可</Text>
-                          )}
+                              <Text>予約可</Text>
+                            )}
+                          </Box>
                         </Th>
                       );
                     })}
