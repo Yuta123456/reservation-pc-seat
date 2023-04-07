@@ -296,6 +296,28 @@ const toImagePath = (seat: number, isReserved: boolean) => {
     return isReserved ? "/pupu-is-reserved.svg" : "/pupu-reservable.svg";
   } else if (seat === 1) {
     return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+  } else if (seat === 2) {
+    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+  } else if (seat === 3) {
+    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+  } else if (seat === 4) {
+    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+  } else {
+    return "";
+  }
+};
+
+const toSeatImagePath = (seat: number) => {
+  if (seat === 0) {
+    return "/pupu-reservable.svg";
+  } else if (seat === 1) {
+    return "/pupu-reservable.svg";
+  } else if (seat === 2) {
+    return "/pupu-reservable.svg";
+  } else if (seat === 3) {
+    return "/pupu-reservable.svg";
+  } else if (seat === 4) {
+    return "/pupu-reservable.svg";
   } else {
     return "";
   }
