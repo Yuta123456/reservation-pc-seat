@@ -10,7 +10,7 @@ import { Container, useToast, Heading } from "@chakra-ui/react";
 import { login } from "@/utils/login";
 import { DisplayTime } from "@/components/display_time/DisplayTime";
 import { pageHeadline } from "@/style/style";
-
+import Image from "next/image";
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
   const [isOpenReservationDeleteForm, setIsOpenReservationDeleteForm] =
@@ -55,9 +55,13 @@ export default function Home() {
   return (
     <main>
       <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-        <Heading fontSize={pageHeadline}>PC席予定表</Heading>
+        <Image
+          src="/pc-seat-table-title.svg"
+          width="300"
+          height="100"
+          alt="pc席予約表 イラスト"
+        ></Image>
         <ReservationTable onCellClick={handleClick} />
-
         {isOpenReservationForm && (
           <ReservationForm
             isOpen={isOpenReservationForm}

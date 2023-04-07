@@ -323,7 +323,7 @@ const toSeatImagePath = (seat: number) => {
   } else if (seat === 3) {
     return "/yuzu-seat.svg";
   } else if (seat === 4) {
-    return "";
+    return "/tapioka-seat.svg";
   } else {
     return "";
   }
