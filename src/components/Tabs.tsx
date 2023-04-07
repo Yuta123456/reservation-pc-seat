@@ -14,7 +14,8 @@ const tabStyle = {
   },
 };
 
-const tabsName = ["PC席予約", "シフト", "イベント"];
+// const tabsName = ["PC席予約", "シフト", "イベント"];
+const tabsName = ["PC席予約"];
 export const Navbar = () => {
   const pathname = usePathname();
   const newTabIndex = urls.indexOf(pathname || "/");
