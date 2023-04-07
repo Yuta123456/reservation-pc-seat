@@ -17,6 +17,8 @@ import useSWR from "swr";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 import IsReserved from "../../../public/IsReserved.svg";
+import Image from "next/image";
+import { PCImagePath } from "@/constants/imagePath";
 export type ReservationScheduleWithAuth = {
   id: number;
   seat: number;
@@ -91,11 +93,11 @@ export const DisplayPeriod = [
 ];
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
-    bgColor: "#83c4bc",
+    bgColor: "white",
     color: "white",
   },
   isReserved: {
-    bgColor: "gray.500",
+    bgColor: "gray.200",
     color: "white",
   },
   occupied: {
@@ -144,7 +146,14 @@ const PCReservationTable: FC<
                 <Tr key={seat}>
                   <>
                     <Th textAlign={"center"} w="200px">
-                      <Text fontSize={"1.5em"}>PC{seat + 1}</Text>
+                      <Text fontSize={"1.5em"}>
+                        <Image
+                          src={PCImagePath[seat]}
+                          alt="Dev Egg logo"
+                          width="100"
+                          height="100"
+                        ></Image>
+                      </Text>
                     </Th>
                     {/* TODO: マジックナンバー削除。6はperiodのかず */}
                     {[...Array(6)].map((_, period) => {
@@ -172,12 +181,25 @@ const PCReservationTable: FC<
                           }}
                         >
                           {isReserved ? (
-                            <IsReserved />
+                            toImagePath(seat, isReserved) ? (
+                              <Image
+                                src={toImagePath(seat, isReserved)}
+                                width="200"
+                                height="200"
+                                alt="is-reserved"
+                              />
+                            ) : (
+                              <Text>予約済み</Text>
+                            )
+                          ) : toImagePath(seat, isReserved) ? (
+                            <Image
+                              src={toImagePath(seat, isReserved)}
+                              width="200"
+                              height="200"
+                              alt="reservable"
+                            />
                           ) : (
-                            // <></>
-                            <Text fontSize={"1.5em"} textAlign="center">
-                              予約可
-                            </Text>
+                            <Text>予約可</Text>
                           )}
                         </Th>
                       );
@@ -267,4 +289,14 @@ const SPReservationTable: FC<
       </TableContainer>
     </Box>
   );
+};
+
+const toImagePath = (seat: number, isReserved: boolean) => {
+  if (seat === 0) {
+    return isReserved ? "/pupu-is-reserved.svg" : "/pupu-reservable.svg";
+  } else if (seat === 1) {
+    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+  } else {
+    return "";
+  }
 };
