@@ -93,7 +93,7 @@ export const DisplayPeriod = [
 ];
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
-    bgColor: "white",
+    bgColor: "yellow.100",
     color: "white",
   },
   isReserved: {
@@ -119,23 +119,23 @@ const PCReservationTable: FC<
         <Table variant="simple" w="">
           <Thead>
             <Tr>
-              <Th textAlign={"center"} w="200px"></Th>
-              <Th textAlign={"center"} w="200px">
+              <Th textAlign={"center"} w="100px"></Th>
+              <Th textAlign={"center"} w="100px">
                 <Text fontSize={"1.5em"}>1時限目</Text>
               </Th>
-              <Th textAlign={"center"} w="200px">
+              <Th textAlign={"center"} w="100px">
                 <Text fontSize={"1.5em"}>2時限目</Text>
               </Th>
-              <Th textAlign={"center"} w="200px">
+              <Th textAlign={"center"} w="100px">
                 <Text fontSize={"1.5em"}>昼休み</Text>
               </Th>
-              <Th textAlign={"center"} w="200px">
+              <Th textAlign={"center"} w="100px">
                 <Text fontSize={"1.5em"}>3時限目</Text>
               </Th>
-              <Th textAlign={"center"} w="200px">
+              <Th textAlign={"center"} w="100px">
                 <Text fontSize={"1.5em"}>4時限目</Text>
               </Th>
-              <Th textAlign={"center"} w="200px">
+              <Th textAlign={"center"} w="100px">
                 <Text fontSize={"1.5em"}>5時限目</Text>
               </Th>
             </Tr>
@@ -147,12 +147,16 @@ const PCReservationTable: FC<
                   <>
                     <Th textAlign={"center"} w="200px">
                       <Text fontSize={"1.5em"}>
-                        <Image
-                          src={PCImagePath[seat]}
-                          alt="Dev Egg logo"
-                          width="100"
-                          height="100"
-                        ></Image>
+                        {toSeatImagePath(seat) ? (
+                          <Image
+                            src={toSeatImagePath(seat)}
+                            alt={seat + "席のイラスト"}
+                            width="110"
+                            height="110"
+                          />
+                        ) : (
+                          <Text>PC{seat + 1}</Text>
+                        )}
                       </Text>
                     </Th>
                     {/* TODO: マジックナンバー削除。6はperiodのかず */}
@@ -165,7 +169,7 @@ const PCReservationTable: FC<
                           key={period}
                           w="200px"
                           sx={{
-                            height: "160px",
+                            height: "200px",
 
                             ...reservationStateStyle[
                               isReserved ? "isReserved" : "available"
@@ -184,8 +188,8 @@ const PCReservationTable: FC<
                             toImagePath(seat, isReserved) ? (
                               <Image
                                 src={toImagePath(seat, isReserved)}
-                                width="200"
-                                height="200"
+                                width="110"
+                                height="110"
                                 alt="is-reserved"
                               />
                             ) : (
@@ -194,8 +198,8 @@ const PCReservationTable: FC<
                           ) : toImagePath(seat, isReserved) ? (
                             <Image
                               src={toImagePath(seat, isReserved)}
-                              width="200"
-                              height="200"
+                              width="110"
+                              height="110"
                               alt="reservable"
                             />
                           ) : (
@@ -293,15 +297,17 @@ const SPReservationTable: FC<
 
 const toImagePath = (seat: number, isReserved: boolean) => {
   if (seat === 0) {
-    return isReserved ? "/pupu-is-reserved.svg" : "/pupu-reservable.svg";
+    return isReserved ? "/pupu-is-reserved.svg" : "/pupu-is-reservable.svg";
   } else if (seat === 1) {
-    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+    return isReserved ? "/purple-is-reserved.svg" : "/purple-is-reservable.svg";
   } else if (seat === 2) {
-    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+    return isReserved ? "/bipper-is-reserved.svg" : "/bipper-is-reservable.svg";
   } else if (seat === 3) {
-    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+    return isReserved ? "/o-dori-is-reserved.svg" : "/o-dori-is-reservable.svg";
   } else if (seat === 4) {
-    return isReserved ? "/purple-is-reserved.svg" : "/purple-reservable.svg";
+    return isReserved
+      ? "/unknown-is-reserved.svg"
+      : "/unknown-is-reservable.svg";
   } else {
     return "";
   }
@@ -309,16 +315,17 @@ const toImagePath = (seat: number, isReserved: boolean) => {
 
 const toSeatImagePath = (seat: number) => {
   if (seat === 0) {
-    return "/pupu-reservable.svg";
+    return "/sushi-seat.svg";
   } else if (seat === 1) {
-    return "/pupu-reservable.svg";
+    return "/bread-seat.svg";
   } else if (seat === 2) {
-    return "/pupu-reservable.svg";
+    return "/donuts-seat.svg";
   } else if (seat === 3) {
-    return "/pupu-reservable.svg";
+    return "/yuzu-seat.svg";
   } else if (seat === 4) {
-    return "/pupu-reservable.svg";
+    return "";
   } else {
     return "";
   }
+  // export const PCImagePath = ["sushi-seat.svg", "bread-seat.svg"];
 };
