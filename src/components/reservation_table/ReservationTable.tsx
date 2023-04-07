@@ -18,7 +18,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 import IsReserved from "../../../public/IsReserved.svg";
 import Image from "next/image";
-import { PCImagePath } from "@/constants/imagePath";
+
 export type ReservationScheduleWithAuth = {
   id: number;
   seat: number;
@@ -193,6 +193,9 @@ const PCReservationTable: FC<
                               resForPeriod.find((r) => r.period === period)?.id
                             );
                           }}
+                          borderLeftWidth="2px"
+                          borderBottomWidth="2px"
+                          borderColor="gray.200"
                         >
                           <Box display={"flex"} justifyContent="center">
                             {isReserved ? (
