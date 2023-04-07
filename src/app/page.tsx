@@ -54,13 +54,13 @@ export default function Home() {
   );
   return (
     <main>
-      <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-        <Image
+      <Container maxW={"90vw"} margin="auto" padding="1rem 0">
+        {/* <Image
           src="/pc-seat-table-title.svg"
           width="300"
           height="100"
           alt="pc席予約表 イラスト"
-        ></Image>
+        ></Image> */}
         <ReservationTable onCellClick={handleClick} />
         {isOpenReservationForm && (
           <ReservationForm

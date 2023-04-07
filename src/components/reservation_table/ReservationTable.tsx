@@ -121,22 +121,34 @@ const PCReservationTable: FC<
             <Tr>
               <Th textAlign={"center"} w="100px"></Th>
               <Th textAlign={"center"} w="100px">
-                <Text fontSize={"1.5em"}>1時限目</Text>
+                <Text fontSize={"1.5em"} color="gray.500">
+                  1時限目
+                </Text>
               </Th>
               <Th textAlign={"center"} w="100px">
-                <Text fontSize={"1.5em"}>2時限目</Text>
+                <Text fontSize={"1.5em"} color="gray.500">
+                  2時限目
+                </Text>
               </Th>
               <Th textAlign={"center"} w="100px">
-                <Text fontSize={"1.5em"}>昼休み</Text>
+                <Text fontSize={"1.5em"} color="gray.500">
+                  昼休み
+                </Text>
               </Th>
               <Th textAlign={"center"} w="100px">
-                <Text fontSize={"1.5em"}>3時限目</Text>
+                <Text fontSize={"1.5em"} color="gray.500">
+                  3時限目
+                </Text>
               </Th>
               <Th textAlign={"center"} w="100px">
-                <Text fontSize={"1.5em"}>4時限目</Text>
+                <Text fontSize={"1.5em"} color="gray.500">
+                  4時限目
+                </Text>
               </Th>
               <Th textAlign={"center"} w="100px">
-                <Text fontSize={"1.5em"}>5時限目</Text>
+                <Text fontSize={"1.5em"} color="gray.500">
+                  5時限目
+                </Text>
               </Th>
             </Tr>
           </Thead>
@@ -169,7 +181,7 @@ const PCReservationTable: FC<
                           key={period}
                           w="200px"
                           sx={{
-                            height: "200px",
+                            height: "150px",
 
                             ...reservationStateStyle[
                               isReserved ? "isReserved" : "available"

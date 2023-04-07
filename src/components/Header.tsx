@@ -75,7 +75,7 @@ const PCHeader: FC<HeaderProps> = ({
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
         <Box display={"flex"} alignItems="center" pt="20px">
           <Heading fontSize={headingStyle} whiteSpace={"nowrap"}>
-            <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
+            <NextLink href={"/"}>Learning Commons PC席予約システム</NextLink>
           </Heading>
           <Box w="100%" display={"flex"} justifyContent="flex-end">
             {/* TODO: ここ三項演算子にしてくれ */}
