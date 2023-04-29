@@ -31,7 +31,7 @@ export const Header = () => {
             setIsOpenSearchReservation((prev) => !prev)
           }
           isPCReservePage={isPCReservePage}
-        ></PCHeader>
+        />
       ) : (
         <SPHeader
           isHiddenButton={isHiddenButton}
@@ -39,7 +39,7 @@ export const Header = () => {
             setIsOpenSearchReservation((prev) => !prev)
           }
           isPCReservePage={isPCReservePage}
-        ></SPHeader>
+        />
       )}
       {isOpenSearchReservation && (
         <SearchReservationModal
@@ -56,6 +56,7 @@ type HeaderProps = {
   setIsOpenSearchReservation: () => void;
   isPCReservePage: boolean;
 };
+
 const PCHeader: FC<HeaderProps> = ({
   isHiddenButton,
   setIsOpenSearchReservation,
@@ -64,16 +65,17 @@ const PCHeader: FC<HeaderProps> = ({
   const [user, _] = useRecoilState(userState);
   return (
     <Box
-      bg="teal.700"
+      bg="#EFB134"
       w="100%"
       color="white"
       alignItems="center"
       display={"flex"}
+      h="120px"
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
         <Box display={"flex"} alignItems="center" pt="20px">
           <Heading fontSize={headingStyle} whiteSpace={"nowrap"}>
-            <NextLink href={"/"}>Learning Commons PC 予約</NextLink>
+            <NextLink href={"/"}>Learning Commons PC席予約システム</NextLink>
           </Heading>
           <Box w="100%" display={"flex"} justifyContent="flex-end">
             {/* TODO: ここ三項演算子にしてくれ */}
@@ -100,9 +102,7 @@ const PCHeader: FC<HeaderProps> = ({
             )}
           </Box>
         </Box>
-        <Box>
-          <Navbar />
-        </Box>
+        <Navbar />
       </Box>
     </Box>
   );
@@ -115,11 +115,12 @@ const SPHeader: FC<HeaderProps> = ({
   const [user, _] = useRecoilState(userState);
   return (
     <Box
-      bg="teal.700"
-      w="100vw"
+      bg="#EFB134"
+      w="100%"
       color="white"
       alignItems="center"
       display={"flex"}
+      h="120px"
     >
       <Box maxW={"90vw"} w="100%" margin={"auto"}>
         <Box display={"flex"} alignItems="center" pt="20px">
