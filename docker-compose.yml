@@ -11,3 +11,25 @@ services:
       options:
         max-size: "10k"
         max-file: "5"
+    networks:
+    - rps-network
+  web:
+    container_name: reservation_pc_seat
+    build:
+      context: .
+      dockerfile: docker/next/Dockerfile
+    volumes:
+      - .:/app
+      - next-node-modules:/node_modules
+    networks:
+      - rps-network
+    ports:
+      - "3000:3000"
+    tty: true
+    command: >
+      sh -c "npm run start"
+networks:
+  rps-network:
+
+volumes:
+  next-node-modules:
