@@ -4,7 +4,7 @@ services:
     container_name: postgres
     image: postgres:13
     ports:
-      - "54321:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=postgres
     logging:
@@ -24,7 +24,7 @@ services:
     networks:
       - rps-network
     ports:
-      - "3000:3000"
+      - "4000:3000"
     tty: true
     command: >
       sh -c "npm run start"
