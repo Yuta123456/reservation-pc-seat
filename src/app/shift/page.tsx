@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { LearningAssistantInfo, mockdata } from "./mockdata";
-
+import Group from "../../../public/Group.svg";
 export default function Home() {
   // NOTE: lg以上であれば描画するコンポーネントを変更するHooks
   const LAIntroCardLayout = useBreakpointValue({ base: "sp", lg: "pc" });
@@ -24,8 +24,10 @@ export default function Home() {
     return;
   }
   return (
-    <Container maxW={"90vw"} margin="auto" padding="3.5rem 0">
-      <Heading fontSize={pageHeadline}>勤務中のLA</Heading>
+    <Container maxW={"90vw"} margin="auto" padding="0.5rem 0">
+      <Box w={LAIntroCardLayout === "pc" ? "350px" : "250px"}>
+        <Group />
+      </Box>
       <Stack paddingTop="15px">
         {LAIntroCardLayout === "sp"
           ? mockdata.map((laInfo) => (

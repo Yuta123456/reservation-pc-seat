@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Reservation, Student } from "@prisma/client";
 import { utcToZonedTime } from "date-fns-tz";
 import { supabase } from "./supabase";
+import { prisma } from "../prisma";
 
 type Data = {
   reservation: Reservation;
@@ -28,8 +29,6 @@ export default async function handler(
     // accessTokenが無効
     return res.status(401).end();
   }
-
-  const prisma = new PrismaClient();
 
   let handler = undefined;
   switch (req.method) {

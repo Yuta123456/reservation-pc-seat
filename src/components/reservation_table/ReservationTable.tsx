@@ -16,6 +16,8 @@ import { FC } from "react";
 import useSWR from "swr";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
+import IsReserved from "../../../public/IsReserved.svg";
+import Image from "next/image";
 
 export type ReservationScheduleWithAuth = {
   id: number;
@@ -91,11 +93,11 @@ export const DisplayPeriod = [
 ];
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
-    bgColor: "teal.200",
+    bgColor: "yellow.100",
     color: "white",
   },
   isReserved: {
-    bgColor: "gray.500",
+    bgColor: "gray.200",
     color: "white",
   },
   occupied: {
@@ -112,29 +114,41 @@ const PCReservationTable: FC<
   ReservationTableProps & { reservationSchedule: ReservationSchedule[][] }
 > = ({ onCellClick, reservationSchedule }) => {
   return (
-    <Box textAlign={"center"} w="100%">
+    <Box textAlign={"center"}>
       <TableContainer>
-        <Table variant="simple">
+        <Table variant="simple" w="">
           <Thead>
             <Tr>
-              <Th textAlign={"center"}></Th>
-              <Th textAlign={"center"}>
-                <Text fontSize={"1.5em"}>1時限目</Text>
+              <Th textAlign={"center"} w="100px"></Th>
+              <Th textAlign={"center"} w="100px">
+                <Text fontSize={"1.5em"} color="gray.500">
+                  1時限目
+                </Text>
               </Th>
-              <Th textAlign={"center"}>
-                <Text fontSize={"1.5em"}>2時限目</Text>
+              <Th textAlign={"center"} w="100px">
+                <Text fontSize={"1.5em"} color="gray.500">
+                  2時限目
+                </Text>
               </Th>
-              <Th textAlign={"center"}>
-                <Text fontSize={"1.5em"}>昼休み</Text>
+              <Th textAlign={"center"} w="100px">
+                <Text fontSize={"1.5em"} color="gray.500">
+                  昼休み
+                </Text>
               </Th>
-              <Th textAlign={"center"}>
-                <Text fontSize={"1.5em"}>3時限目</Text>
+              <Th textAlign={"center"} w="100px">
+                <Text fontSize={"1.5em"} color="gray.500">
+                  3時限目
+                </Text>
               </Th>
-              <Th textAlign={"center"}>
-                <Text fontSize={"1.5em"}>4時限目</Text>
+              <Th textAlign={"center"} w="100px">
+                <Text fontSize={"1.5em"} color="gray.500">
+                  4時限目
+                </Text>
               </Th>
-              <Th textAlign={"center"}>
-                <Text fontSize={"1.5em"}>5時限目</Text>
+              <Th textAlign={"center"} w="100px">
+                <Text fontSize={"1.5em"} color="gray.500">
+                  5時限目
+                </Text>
               </Th>
             </Tr>
           </Thead>
@@ -143,8 +157,17 @@ const PCReservationTable: FC<
               return (
                 <Tr key={seat}>
                   <>
-                    <Th textAlign={"center"}>
-                      <Text fontSize={"1.5em"}>PC{seat + 1}</Text>
+                    <Th textAlign={"center"} w="200px">
+                      {toSeatImagePath(seat) ? (
+                        <Image
+                          src={toSeatImagePath(seat)}
+                          alt={seat + "席のイラスト"}
+                          width="110"
+                          height="110"
+                        />
+                      ) : (
+                        <Text>PC{seat + 1}</Text>
+                      )}
                     </Th>
                     {/* TODO: マジックナンバー削除。6はperiodのかず */}
                     {[...Array(6)].map((_, period) => {
@@ -154,8 +177,10 @@ const PCReservationTable: FC<
                       return (
                         <Th
                           key={period}
+                          w="200px"
                           sx={{
-                            height: "100px",
+                            height: "150px",
+
                             ...reservationStateStyle[
                               isReserved ? "isReserved" : "available"
                             ],
@@ -168,14 +193,33 @@ const PCReservationTable: FC<
                               resForPeriod.find((r) => r.period === period)?.id
                             );
                           }}
+                          borderLeftWidth="2px"
+                          borderBottomWidth="2px"
+                          borderColor="gray.200"
                         >
-                          <Text fontSize={"1.5em"} textAlign="center">
-                            {
-                              reservationStateText[
-                                isReserved ? "isReserved" : "available"
-                              ]
-                            }
-                          </Text>
+                          <Box display={"flex"} justifyContent="center">
+                            {isReserved ? (
+                              toImagePath(seat, isReserved) ? (
+                                <Image
+                                  src={toImagePath(seat, isReserved)}
+                                  width="110"
+                                  height="110"
+                                  alt="is-reserved"
+                                />
+                              ) : (
+                                <Text>予約済み</Text>
+                              )
+                            ) : toImagePath(seat, isReserved) ? (
+                              <Image
+                                src={toImagePath(seat, isReserved)}
+                                width="110"
+                                height="110"
+                                alt="reservable"
+                              />
+                            ) : (
+                              <Text>予約可</Text>
+                            )}
+                          </Box>
                         </Th>
                       );
                     })}
@@ -235,7 +279,8 @@ const SPReservationTable: FC<
                       <Th
                         key={period}
                         sx={{
-                          height: "60px",
+                          height: "100px",
+                          width: "100px",
                           ...reservationStateStyle[
                             isReserved ? "isReserved" : "available"
                           ],
@@ -249,12 +294,8 @@ const SPReservationTable: FC<
                           );
                         }}
                       >
-                        <Text>
-                          {
-                            reservationStateText[
-                              isReserved ? "isReserved" : "available"
-                            ]
-                          }
+                        <Text fontSize={"1.5em"} textAlign="center">
+                          {isReserved ? <IsReserved /> : "予約可"}
                         </Text>
                       </Th>
                     );
@@ -267,4 +308,39 @@ const SPReservationTable: FC<
       </TableContainer>
     </Box>
   );
+};
+
+const toImagePath = (seat: number, isReserved: boolean) => {
+  if (seat === 0) {
+    return isReserved ? "/pupu-is-reserved.svg" : "/pupu-is-reservable.svg";
+  } else if (seat === 1) {
+    return isReserved ? "/purple-is-reserved.svg" : "/purple-is-reservable.svg";
+  } else if (seat === 2) {
+    return isReserved ? "/bipper-is-reserved.svg" : "/bipper-is-reservable.svg";
+  } else if (seat === 3) {
+    return isReserved ? "/o-dori-is-reserved.svg" : "/o-dori-is-reservable.svg";
+  } else if (seat === 4) {
+    return isReserved
+      ? "/unknown-is-reserved.svg"
+      : "/unknown-is-reservable.svg";
+  } else {
+    return "";
+  }
+};
+
+const toSeatImagePath = (seat: number) => {
+  if (seat === 0) {
+    return "/sushi-seat.svg";
+  } else if (seat === 1) {
+    return "/bread-seat.svg";
+  } else if (seat === 2) {
+    return "/donuts-seat.svg";
+  } else if (seat === 3) {
+    return "/yuzu-seat.svg";
+  } else if (seat === 4) {
+    return "/tapioka-seat.svg";
+  } else {
+    return "";
+  }
+  // export const PCImagePath = ["sushi-seat.svg", "bread-seat.svg"];
 };
