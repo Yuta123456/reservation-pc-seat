@@ -4,7 +4,7 @@ import { PrismaClient, Reservation, Student } from "@prisma/client";
 import { utcToZonedTime } from "date-fns-tz";
 import { supabase } from "./supabase";
 import { prisma } from "../prisma";
-import { env } from "process";
+import { logger } from "@/utils/logger";
 
 type Data = {
   reservation: Reservation;
@@ -13,6 +13,7 @@ type Data = {
 type Error = {
   message: string;
 };
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data | Error>
@@ -51,10 +52,12 @@ export default async function handler(
   }
   await handler
     .then(async () => {
+      logger(req.method, req.body, 200, "Log");
       await prisma.$disconnect();
     })
     .catch(async (e) => {
       console.error(e);
+      logger(req.method, req.body, 500, "Error");
       await prisma.$disconnect();
       res.status(500).end();
     });
