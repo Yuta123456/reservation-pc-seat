@@ -57,7 +57,7 @@ export default async function handler(
     })
     .catch(async (e) => {
       console.error(e);
-      logger(req.method, req.body, 500, "Error");
+      logger(req.method, req.body + e?.message, 500, "Error");
       await prisma.$disconnect();
       res.status(500).end();
     });
