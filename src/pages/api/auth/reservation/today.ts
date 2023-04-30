@@ -3,6 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { ReservationScheduleWithAuth } from "@/components/reservation_table/ReservationTable";
 import { supabase } from "../supabase";
+import { prisma } from "../../prisma";
+import { logger } from "@/utils/logger";
 type Data = {
   reservationSchedule: ReservationScheduleWithAuth[][];
 };
@@ -10,13 +12,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const prisma = new PrismaClient();
   await getHandler(req, res, prisma)
     .then(async () => {
+      logger(req.method, req.body, 200, "Log");
       await prisma.$disconnect();
     })
     .catch(async (e) => {
       console.error(e);
+      logger(req.method, req.body + e?.message, 500, "Error");
       await prisma.$disconnect();
       res.status(500).end();
     });

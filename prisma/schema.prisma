@@ -48,3 +48,10 @@ model Event {
   startDate   DateTime
   endDate     DateTime
 }
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  message   String
+  level     String
+  timestamp DateTime @default(now())
+}
