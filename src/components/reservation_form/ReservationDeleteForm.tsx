@@ -11,6 +11,8 @@ import {
   Button,
   Box,
   useToast,
+  Text,
+  Input,
 } from "@chakra-ui/react";
 
 import { FC, useState } from "react";
@@ -46,6 +48,7 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
   const isPc = useIsPc(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [user, _] = useRecoilState(userState);
+  const [deleteKey, setDeleteKey] = useState("");
   if (isPc === undefined) {
     return <></>;
   }
@@ -61,41 +64,58 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
         <ModalCloseButton />
         <ModalBody>
           <Box>
-            {DisplayPeriod[period]}のPC{seat + 1}席の予約を削除しますか？
+            <Text>
+              {DisplayPeriod[period]}のPC{seat + 1}席の予約を削除しますか？
+              <br />
+              予約時の学籍番号のうちの一つか管理者番号を入力してください
+            </Text>
+            <Input
+              marginBottom={"5px"}
+              marginTop={"5px"}
+              placeholder="学籍番号か管理者番号を入力"
+              onChange={(e) => setDeleteKey(e.target.value)}
+            />
           </Box>
         </ModalBody>
         <ModalFooter>
           <Button
             isLoading={isLoading}
             colorScheme="red"
+            isDisabled={deleteKey.length === 0}
             onClick={() => {
               setIsLoading(true);
               fetch("api/auth/reservation", {
                 method: "DELETE",
-                body: JSON.stringify({ id }),
+                body: JSON.stringify({ id, deleteKey }),
                 // TODO: もうちょいいい感じに。
                 headers: {
                   authorization: "Bearer " + user.session?.access_token || "",
                 },
               })
                 .then(async (res) => {
-                  setIsLoading(false);
-                  onClose();
+                  if (!res.ok) {
+                    const { message } = await res.json();
+                    throw new Error(message);
+                  }
                   toast({
                     title: "削除しました",
                     status: "success",
                     duration: 2000,
                     isClosable: true,
                   });
+                  onClose();
                 })
                 .catch((e) => {
                   console.log(e);
                   toast({
-                    title: "削除に失敗しました",
+                    title: e.message,
                     status: "error",
                     duration: 2000,
                     isClosable: true,
                   });
+                })
+                .finally(() => {
+                  setIsLoading(false);
                 });
             }}
           >

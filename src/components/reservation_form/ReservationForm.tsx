@@ -20,6 +20,7 @@ import { useIsPc } from "@/Hooks/useIsPc";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
+import { validateStudentId } from "@/utils/validation";
 
 const DisplayPeriod: Record<number, string> = {
   0: "1時限目",
@@ -127,6 +128,15 @@ export const ReservationForm: FC<ReservationFormProps> = ({
             colorScheme="blue"
             isDisabled={studentsIds.some((v) => v.length === 0)}
             onClick={() => {
+              if (!validateStudentId(studentsIds)) {
+                toast({
+                  title: "正しくない学生証番号が含まれています",
+                  status: "error",
+                  duration: 2000,
+                  isClosable: true,
+                });
+                return;
+              }
               setIsLoading(true);
               fetch("api/auth/reservation", {
                 method: "POST",

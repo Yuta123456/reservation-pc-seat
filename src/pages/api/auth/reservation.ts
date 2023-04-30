@@ -4,6 +4,7 @@ import { PrismaClient, Reservation, Student } from "@prisma/client";
 import { utcToZonedTime } from "date-fns-tz";
 import { supabase } from "./supabase";
 import { prisma } from "../prisma";
+import { env } from "process";
 
 type Data = {
   reservation: Reservation;
@@ -103,7 +104,6 @@ const postHandler = async (
   );
   // もし、予約者の中に一人でも今日予約を二回行っている人がいた場合
   if (reservationsFromIds.some((v) => v)) {
-    console.log("予約制限");
     res.status(400).json({ message: "予約制限に達しています" });
     return;
   }
@@ -162,22 +162,48 @@ const postHandler = async (
  */
 const deleteHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse<Data | Error>,
   prisma: PrismaClient
 ) => {
-  const { id } = JSON.parse(req.body);
+  const { id, deleteKey }: { id: string; deleteKey: string } = JSON.parse(
+    req.body
+  );
+  // 消そうとした予約が、deleteKeyの物を含んでいるか？あるいは管理者か？
+  const isAdmin = process.env.ADMIN_KEY === deleteKey;
+  const studentIds = await prisma.reservationStudent
+    .findMany({
+      where: {
+        reservationId: Number(id),
+      },
+      select: {
+        student: {
+          select: {
+            studentId: true,
+          },
+        },
+      },
+    })
+    .then((res) => {
+      return res.map((r) => r.student.studentId);
+    });
 
+  if (!isAdmin && !studentIds.includes(deleteKey)) {
+    res.status(400).json({
+      message: "キーが間違っています",
+    });
+    return;
+  }
   // 中間テーブルから削除
   const reservationStudentQuery = prisma.reservationStudent.deleteMany({
     where: {
-      reservationId: id,
+      reservationId: Number(id),
     },
   });
 
   // 予約の削除
   const reservationQuery = prisma.reservation.delete({
     where: {
-      id,
+      id: Number(id),
     },
   });
 
