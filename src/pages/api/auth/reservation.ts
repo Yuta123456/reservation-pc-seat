@@ -9,9 +9,12 @@ type Data = {
   reservation: Reservation;
 };
 
+type Error = {
+  message: string;
+};
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Data | Error>
 ) {
   const jwt = req.headers.authorization?.slice(7);
   if (typeof jwt !== "string") {
@@ -61,19 +64,54 @@ export default async function handler(
  * @param {number} seat 取りたい席
  * @param {number} period 時間帯
  * @param {string[]} studentIds 使う生徒の台帳番号または学籍番号
- * @return {string} - [Hello + name]という形式で戻る。
  */
 const postHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse<Data | Error>,
   prisma: PrismaClient
 ) => {
-  const { seat, period, studentsIds } = JSON.parse(req.body);
+  const {
+    seat,
+    period,
+    studentsIds,
+  }: { seat: string; period: string; studentsIds: string[] } = JSON.parse(
+    req.body
+  );
+
+  const reservationsFromIds = await Promise.all(
+    studentsIds.map(async (id: string) => {
+      const today = new Date(new Date().setHours(0, 0, 0, 0));
+      const reservationFromId = await prisma.reservationStudent.findMany({
+        where: {
+          student: {
+            is: {
+              studentId: id,
+            },
+          },
+          reservation: {
+            date: {
+              gte: today,
+            },
+          },
+        },
+        select: {
+          reservationId: true,
+        },
+      });
+      return reservationFromId.length >= 2;
+    })
+  );
+  // もし、予約者の中に一人でも今日予約を二回行っている人がいた場合
+  if (reservationsFromIds.some((v) => v)) {
+    console.log("予約制限");
+    res.status(400).json({ message: "予約制限に達しています" });
+    return;
+  }
   // TODO: 既に予約がある場合はこれを弾く必要がある。
   const reservationResult = await prisma.reservation.create({
     data: {
-      seat,
-      period,
+      seat: Number(seat),
+      period: Number(period),
       date: utcToZonedTime(new Date(), "Asia/Tokyo"),
     },
   });

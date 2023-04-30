@@ -135,16 +135,31 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 headers: {
                   authorization: "Bearer " + user.session?.access_token || "",
                 },
-              }).then(async (res) => {
-                setIsLoading(false);
-                onClose();
-                toast({
-                  title: "予約しました",
-                  status: "success",
-                  duration: 2000,
-                  isClosable: true,
+              })
+                .then(async (res) => {
+                  if (!res.ok) {
+                    const { message } = await res.json();
+                    throw new Error(message);
+                  }
+                  toast({
+                    title: "予約しました",
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                  });
+                })
+                .catch((e) => {
+                  toast({
+                    title: e.message,
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                  });
+                })
+                .finally(() => {
+                  setIsLoading(false);
+                  onClose();
                 });
-              });
             }}
           >
             予約する
