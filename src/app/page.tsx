@@ -6,11 +6,8 @@ import { ReservationTable } from "@/components/reservation_table/ReservationTabl
 import { userState } from "@/state/user";
 import { useCallback, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { Container, useToast, Heading } from "@chakra-ui/react";
+import { Container, useToast } from "@chakra-ui/react";
 import { login } from "@/utils/login";
-import { DisplayTime } from "@/components/display_time/DisplayTime";
-import { pageHeadline } from "@/style/style";
-import Image from "next/image";
 export default function Home() {
   const [isOpenReservationForm, setIsOpenReservationForm] = useState(false);
   const [isOpenReservationDeleteForm, setIsOpenReservationDeleteForm] =

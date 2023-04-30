@@ -14,7 +14,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  // console.log(process.env.NEXT_PUBLIC_SUPABASE_URL);
   // TODO: 環境変数がうまく行ってない場合
   // 良い感じに直す
   if (supabase === undefined || supabase === "") {
