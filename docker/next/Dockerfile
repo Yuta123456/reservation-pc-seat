@@ -1,5 +1,5 @@
 FROM node:latest
 WORKDIR /app
 COPY ./package*.json ./
-COPY ./.next ./
+COPY ./.next ./.next
 RUN npm i --production
