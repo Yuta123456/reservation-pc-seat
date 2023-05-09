@@ -6,7 +6,9 @@ services:
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
     logging:
       options:
         max-size: "10k"
@@ -25,6 +27,8 @@ services:
     ports:
       - "4000:3000"
     tty: true
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/db?schema=postgres
     # command: >
     #   sh -c "npm run start"
 networks:
