@@ -4,14 +4,19 @@ import { PrismaClient, Reservation, Student } from "@prisma/client";
 import { utcToZonedTime } from "date-fns-tz";
 import { supabase } from "./supabase";
 import { prisma } from "../prisma";
+import { logger } from "@/utils/logger";
 
 type Data = {
   reservation: Reservation;
 };
 
+type Error = {
+  message: string;
+};
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Data | Error>
 ) {
   const jwt = req.headers.authorization?.slice(7);
   if (typeof jwt !== "string") {
@@ -47,10 +52,12 @@ export default async function handler(
   }
   await handler
     .then(async () => {
+      logger(req.method, req.body, 200, "Log");
       await prisma.$disconnect();
     })
     .catch(async (e) => {
       console.error(e);
+      logger(req.method, req.body + e?.message, 500, "Error");
       await prisma.$disconnect();
       res.status(500).end();
     });
@@ -61,19 +68,53 @@ export default async function handler(
  * @param {number} seat 取りたい席
  * @param {number} period 時間帯
  * @param {string[]} studentIds 使う生徒の台帳番号または学籍番号
- * @return {string} - [Hello + name]という形式で戻る。
  */
 const postHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse<Data | Error>,
   prisma: PrismaClient
 ) => {
-  const { seat, period, studentsIds } = JSON.parse(req.body);
+  const {
+    seat,
+    period,
+    studentsIds,
+  }: { seat: string; period: string; studentsIds: string[] } = JSON.parse(
+    req.body
+  );
+
+  const reservationsFromIds = await Promise.all(
+    studentsIds.map(async (id: string) => {
+      const today = new Date(new Date().setHours(0, 0, 0, 0));
+      const reservationFromId = await prisma.reservationStudent.findMany({
+        where: {
+          student: {
+            is: {
+              studentId: id,
+            },
+          },
+          reservation: {
+            date: {
+              gte: today,
+            },
+          },
+        },
+        select: {
+          reservationId: true,
+        },
+      });
+      return reservationFromId.length >= 2;
+    })
+  );
+  // もし、予約者の中に一人でも今日予約を二回行っている人がいた場合
+  if (reservationsFromIds.some((v) => v)) {
+    res.status(400).json({ message: "予約制限に達しています" });
+    return;
+  }
   // TODO: 既に予約がある場合はこれを弾く必要がある。
   const reservationResult = await prisma.reservation.create({
     data: {
-      seat,
-      period,
+      seat: Number(seat),
+      period: Number(period),
       date: utcToZonedTime(new Date(), "Asia/Tokyo"),
     },
   });
@@ -124,22 +165,48 @@ const postHandler = async (
  */
 const deleteHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse<Data | Error>,
   prisma: PrismaClient
 ) => {
-  const { id } = JSON.parse(req.body);
+  const { id, deleteKey }: { id: string; deleteKey: string } = JSON.parse(
+    req.body
+  );
+  // 消そうとした予約が、deleteKeyの物を含んでいるか？あるいは管理者か？
+  const isAdmin = process.env.ADMIN_KEY === deleteKey;
+  const studentIds = await prisma.reservationStudent
+    .findMany({
+      where: {
+        reservationId: Number(id),
+      },
+      select: {
+        student: {
+          select: {
+            studentId: true,
+          },
+        },
+      },
+    })
+    .then((res) => {
+      return res.map((r) => r.student.studentId);
+    });
 
+  if (!isAdmin && !studentIds.includes(deleteKey)) {
+    res.status(400).json({
+      message: "キーが間違っています",
+    });
+    return;
+  }
   // 中間テーブルから削除
   const reservationStudentQuery = prisma.reservationStudent.deleteMany({
     where: {
-      reservationId: id,
+      reservationId: Number(id),
     },
   });
 
   // 予約の削除
   const reservationQuery = prisma.reservation.delete({
     where: {
-      id,
+      id: Number(id),
     },
   });
 
