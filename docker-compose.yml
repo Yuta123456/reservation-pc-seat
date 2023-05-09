@@ -19,15 +19,14 @@ services:
       context: .
       dockerfile: docker/next/Dockerfile
     volumes:
-      - .:/app
       - next-node-modules:/node_modules
     networks:
       - rps-network
     ports:
       - "4000:3000"
     tty: true
-    command: >
-      sh -c "npm run start"
+    # command: >
+    #   sh -c "npm run start"
 networks:
   rps-network:
 

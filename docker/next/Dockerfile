@@ -1,5 +1,6 @@
 FROM node:latest
+COPY . /app/
 WORKDIR /app
-COPY ./package*.json ./
-COPY ./.next ./.next
 RUN npm i --production
+RUN npm run docker-build
+CMD ["npm", "run", "start"]
