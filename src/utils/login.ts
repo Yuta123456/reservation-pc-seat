@@ -41,18 +41,18 @@ export const login = async (
   })
     .then(async (res) => {
       const {
-        authResponce,
+        authResponse,
       }: {
-        authResponce: { user: User | null; session: Session | null };
+        authResponse: { user: User | null; session: Session | null };
       } = await res.json();
 
-      if (authResponce.session !== null) {
-        sessionStorage.setItem("session", JSON.stringify(authResponce.session));
+      if (authResponse.session !== null) {
+        sessionStorage.setItem("session", JSON.stringify(authResponse.session));
       }
       setUser((oldUser) => {
         return {
-          user: authResponce.user || oldUser.user,
-          session: authResponce.session || oldUser.session || session,
+          user: authResponse.user || oldUser.user,
+          session: authResponse.session || oldUser.session || session,
         };
       });
     })
