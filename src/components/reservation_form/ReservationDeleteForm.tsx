@@ -19,6 +19,7 @@ import { FC, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
 import { userState } from "../../state/user";
 import { useRecoilState } from "recoil";
+import { confirmAccessToken } from "@/utils/confirmAccessToken";
 
 type ReservationFormProps = {
   isOpen: boolean;
@@ -47,7 +48,7 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
   const toast = useToast();
   const isPc = useIsPc(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, _] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [deleteKey, setDeleteKey] = useState("");
   if (isPc === undefined) {
     return <></>;
@@ -82,8 +83,9 @@ export const ReservationDeleteForm: FC<ReservationFormProps> = ({
             isLoading={isLoading}
             colorScheme="red"
             isDisabled={deleteKey.length === 0}
-            onClick={() => {
+            onClick={async () => {
               setIsLoading(true);
+              await confirmAccessToken(setUser);
               fetch("api/auth/reservation", {
                 method: "DELETE",
                 body: JSON.stringify({ id, deleteKey }),

@@ -1,5 +1,6 @@
 import { useIsPc } from "@/Hooks/useIsPc";
 import { userState } from "@/state/user";
+import { confirmAccessToken } from "@/utils/confirmAccessToken";
 import {
   Box,
   Text,
@@ -34,13 +35,14 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
   onClose,
 }) => {
   const [studentId, setStudentId] = useState("");
-  const [user, _] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<
     ReservationScheduleWithAuth[] | undefined
   >();
-  const onClickSearch = () => {
+  const onClickSearch = async () => {
     setIsLoading(true);
+    await confirmAccessToken(setUser);
     fetch("api/auth/reservation/today", {
       headers: {
         Authorization: "Bearer " + user.session?.access_token,

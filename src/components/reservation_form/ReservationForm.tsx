@@ -21,6 +21,7 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useRecoilState } from "recoil";
 import { userState } from "@/state/user";
 import { validateStudentId } from "@/utils/validation";
+import { confirmAccessToken } from "@/utils/confirmAccessToken";
 
 const DisplayPeriod: Record<number, string> = {
   0: "1時限目",
@@ -48,7 +49,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const isPc = useIsPc(undefined);
-  const [user, _] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
 
   if (isPc === undefined) {
     return <></>;
@@ -127,7 +128,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
             isLoading={isLoading}
             colorScheme="blue"
             isDisabled={studentsIds.some((v) => v.length === 0)}
-            onClick={() => {
+            onClick={async () => {
               if (!validateStudentId(studentsIds)) {
                 toast({
                   title: "正しくない学生証番号が含まれています",
@@ -138,6 +139,7 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 return;
               }
               setIsLoading(true);
+              await confirmAccessToken(setUser);
               fetch("api/auth/reservation", {
                 method: "POST",
                 body: JSON.stringify({ seat, period, studentsIds }),
