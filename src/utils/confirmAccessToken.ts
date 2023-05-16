@@ -2,41 +2,20 @@ import { UserState } from "@/state/user";
 import { Session, User } from "@supabase/supabase-js";
 import { SetterOrUpdater } from "recoil";
 
-export type LoginInfo = {
-  email: string | undefined;
-  password: string | undefined;
-};
-
-export const login = async (
-  loginInfo: LoginInfo | undefined,
+export const confirmAccessToken = async (
   setUser: SetterOrUpdater<UserState>
 ) => {
   const sessionStr = sessionStorage.getItem("session");
   const session: Session = JSON.parse(sessionStr !== null ? sessionStr : "{}");
-  if (
-    !session.access_token &&
-    (!loginInfo || !loginInfo.email || !loginInfo.password)
-  ) {
+
+  if (new Date() < new Date(Number(session.expires_at) * 1000)) {
     return;
   }
-
   const requestBody = {
-    email: loginInfo?.email,
-    password: loginInfo?.password,
-    // 必要が無い場合は不用意にrefresh_tokenを送らない
-    refresh_token:
-      new Date() > new Date(Number(session.expires_at) * 1000)
-        ? session.refresh_token
-        : undefined,
+    refresh_token: session.refresh_token,
   };
-
-  await fetch("api/auth/login", {
+  await fetch("api/auth/refresh", {
     method: "POST",
-    headers: session.access_token
-      ? {
-          Authorization: "Bearer " + session.access_token,
-        }
-      : {},
     body: JSON.stringify(requestBody),
   })
     .then(async (res) => {

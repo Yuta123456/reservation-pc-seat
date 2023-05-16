@@ -4,7 +4,7 @@ import { supabase } from "./supabase";
 import { User, Session } from "@supabase/supabase-js";
 
 type Data = {
-  authResponce: {
+  authResponse: {
     user: User | null;
     session: Session | null;
   };
@@ -26,7 +26,7 @@ export default async function handler(
     const { data, error } = await supabase.auth.getUser(access_token);
     if (!error) {
       return res.status(200).json({
-        authResponce: {
+        authResponse: {
           user: data.user,
           session: null,
         },
@@ -41,7 +41,7 @@ export default async function handler(
     });
     if (!error) {
       return res.status(200).json({
-        authResponce: {
+        authResponse: {
           user: data.user,
           session: data.session,
         },
@@ -56,7 +56,7 @@ export default async function handler(
     password,
   });
   if (!error && data.user && data.session) {
-    return res.status(200).json({ authResponce: data });
+    return res.status(200).json({ authResponse: data });
   }
   return res.status(500).end();
 }

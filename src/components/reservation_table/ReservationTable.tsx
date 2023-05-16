@@ -93,11 +93,11 @@ export const DisplayPeriod = [
 ];
 const reservationStateStyle: Record<ReservationState, {}> = {
   available: {
-    bgColor: "yellow.100",
+    bgColor: "yellow.200",
     color: "white",
   },
   isReserved: {
-    bgColor: "gray.200",
+    bgColor: "gray.400",
     color: "white",
   },
   occupied: {
