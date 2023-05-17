@@ -14,11 +14,14 @@ export const confirmAccessToken = async (
   const requestBody = {
     refresh_token: session.refresh_token,
   };
-  await fetch("api/auth/refresh", {
+  await fetch("api/refresh", {
     method: "POST",
     body: JSON.stringify(requestBody),
   })
     .then(async (res) => {
+      if (!res.ok) {
+        throw new Error("access tokenのリフレッシュに失敗しました。");
+      }
       const {
         authResponse,
       }: {
