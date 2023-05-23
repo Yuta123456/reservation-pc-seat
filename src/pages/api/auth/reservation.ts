@@ -32,7 +32,7 @@ export default async function handler(
 
   if (!user) {
     // accessTokenが無効
-    return res.status(401).end();
+    return res.status(401).json({ message: "再度やり直して下さい" });
   }
 
   let handler = undefined;

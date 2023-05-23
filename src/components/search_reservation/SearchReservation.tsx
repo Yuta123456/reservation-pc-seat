@@ -17,6 +17,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalBody,
+  useToast,
 } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -37,6 +38,7 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
   const [studentId, setStudentId] = useState("");
   const [user, setUser] = useRecoilState(userState);
   const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
   const [result, setResult] = useState<
     ReservationScheduleWithAuth[] | undefined
   >();
@@ -56,7 +58,15 @@ export const SearchReservationModal: FC<SearchReservationModalProps> = ({
           .filter((res) => res.studentIds.includes(studentId));
         setResult(targetReservation);
       })
-      .then(() => {
+      .catch((e) => {
+        toast({
+          title: "検索に失敗しました",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };

@@ -159,6 +159,8 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                     duration: 2000,
                     isClosable: true,
                   });
+                  // 成功した時のみ閉じる
+                  onClose();
                 })
                 .catch((e) => {
                   toast({
@@ -170,7 +172,6 @@ export const ReservationForm: FC<ReservationFormProps> = ({
                 })
                 .finally(() => {
                   setIsLoading(false);
-                  onClose();
                 });
             }}
           >

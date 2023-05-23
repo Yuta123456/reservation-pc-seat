@@ -6,7 +6,8 @@ import { supabase } from "../supabase";
 import { prisma } from "../../prisma";
 import { logger } from "@/utils/logger";
 type Data = {
-  reservationSchedule: ReservationScheduleWithAuth[][];
+  reservationSchedule?: ReservationScheduleWithAuth[][];
+  message?: string;
 };
 export default async function handler(
   req: NextApiRequest,
@@ -50,7 +51,7 @@ const getHandler = async (
 
   if (!user) {
     // accessTokenが無効
-    return res.status(401).end();
+    return res.status(401).json({ message: "再度やり直して下さい" });
   }
   const today = new Date(new Date().setHours(0, 0, 0, 0));
 
