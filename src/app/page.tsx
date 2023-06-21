@@ -1,6 +1,6 @@
 "use client";
 
-import { ReservationDeleteForm } from "@/components/reservation_form/ReservationDeleteForm";
+import { ReservationEditForm } from "@/components/reservation_form/ReservationEditForm";
 import { ReservationForm } from "@/components/reservation_form/ReservationForm";
 import { ReservationTable } from "@/components/reservation_table/ReservationTable";
 import { userState } from "@/state/user";
@@ -70,7 +70,7 @@ export default function Home() {
           />
         )}
         {isOpenReservationDeleteForm && reservationId && (
-          <ReservationDeleteForm
+          <ReservationEditForm
             isOpen={isOpenReservationDeleteForm}
             onClose={() => {
               setIsOpenReservationDeleteForm(false);
