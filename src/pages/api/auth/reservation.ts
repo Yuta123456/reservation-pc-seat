@@ -42,8 +42,10 @@ export default async function handler(
       break;
     case "DELETE":
       handler = deleteHandler(req, res, prisma);
+      break;
     case "PUT":
       handler = putHandler(req, res, prisma);
+      break;
     default:
       break;
   }
@@ -170,34 +172,7 @@ const deleteHandler = async (
   res: NextApiResponse<Data | Error>,
   prisma: PrismaClient
 ) => {
-  const { id, deleteKey }: { id: string; deleteKey: string } = JSON.parse(
-    req.body
-  );
-  // 消そうとした予約が、deleteKeyの物を含んでいるか？あるいは管理者か？
-  const isAdmin = process.env.ADMIN_KEY === deleteKey;
-  const studentIds = await prisma.reservationStudent
-    .findMany({
-      where: {
-        reservationId: Number(id),
-      },
-      select: {
-        student: {
-          select: {
-            studentId: true,
-          },
-        },
-      },
-    })
-    .then((res) => {
-      return res.map((r) => r.student.studentId);
-    });
-
-  if (!isAdmin && !studentIds.includes(deleteKey)) {
-    res.status(400).json({
-      message: "キーが間違っています",
-    });
-    return;
-  }
+  const { id }: { id: string } = JSON.parse(req.body);
   // 中間テーブルから削除
   const reservationStudentQuery = prisma.reservationStudent.deleteMany({
     where: {
@@ -233,6 +208,7 @@ const putHandler = async (
     studentsIds: string[];
   } = JSON.parse(req.body);
 
+  console.log("PUT HANDLER", studentsIds, reservationId);
   const reservationsFromIds = await Promise.all(
     studentsIds.map(async (id: string) => {
       const today = new Date(new Date().setHours(0, 0, 0, 0));

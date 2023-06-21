@@ -346,6 +346,49 @@ const EditReservation: FC<EditReservationProps> = ({
             >
               予約する
             </Button>
+            <Button
+              isLoading={isLoading}
+              colorScheme="red"
+              onClick={async () => {
+                setIsLoading(true);
+                await confirmAccessToken(setUser);
+                fetch("api/auth/reservation", {
+                  method: "DELETE",
+                  body: JSON.stringify({ id }),
+                  // TODO: もうちょいいい感じに。
+                  headers: {
+                    authorization: "Bearer " + user.session?.access_token || "",
+                  },
+                })
+                  .then(async (res) => {
+                    if (!res.ok) {
+                      throw new Error("失敗しました");
+                    }
+                    toast({
+                      title: "削除しました",
+                      status: "success",
+                      duration: 2000,
+                      isClosable: true,
+                    });
+                    onClose();
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                    toast({
+                      title: e.message,
+                      status: "error",
+                      duration: 2000,
+                      isClosable: true,
+                    });
+                  })
+                  .finally(() => {
+                    setIsLoading(false);
+                  });
+              }}
+              ml="3"
+            >
+              削除する
+            </Button>
           </ModalFooter>
         </>
       ) : (
