@@ -211,13 +211,18 @@ const EditReservation: FC<EditReservationProps> = ({
       .then((res) => res.json())
       .then((res) => res.reservationSchedule)
       .then((res: ReservationScheduleWithAuth[][]) => {
-        const targetReservation = res[seat][period];
-        console.log(targetReservation, res, seat, period);
-        setNumberOfForm(targetReservation.studentIds.length);
-        setStudentsIds(targetReservation.studentIds);
+        const targetReservations = res[seat].filter(
+          (r) => r.seat === seat && r.period === period
+        );
+        if (targetReservations.length !== 1) {
+          throw new Error("予約情報がおかしい");
+        }
+        setNumberOfForm(targetReservations[0].studentIds.length);
+        setStudentsIds(targetReservations[0].studentIds);
         setIsFetched(true);
       })
       .catch((e) => {
+        console.log(e);
         toast({
           title: "データの取得に失敗しました",
           status: "error",
