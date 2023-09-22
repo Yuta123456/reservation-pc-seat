@@ -222,7 +222,6 @@ const EditReservation: FC<EditReservationProps> = ({
         setIsFetched(true);
       })
       .catch((e) => {
-        console.log(e);
         toast({
           title: "データの取得に失敗しました",
           status: "error",
