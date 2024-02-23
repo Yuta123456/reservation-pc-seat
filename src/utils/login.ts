@@ -10,7 +10,7 @@ export type LoginInfo = {
 export const login = async (
   loginInfo: LoginInfo | undefined,
   setUser: SetterOrUpdater<UserState>
-) => {
+): Promise<void> => {
   const sessionStr = sessionStorage.getItem("session");
   const session: Session = JSON.parse(sessionStr !== null ? sessionStr : "{}");
   if (
@@ -30,31 +30,35 @@ export const login = async (
         : undefined,
   };
 
-  await fetch("api/auth/login", {
-    method: "POST",
-    headers: session.access_token
-      ? {
-          Authorization: "Bearer " + session.access_token,
-        }
-      : {},
-    body: JSON.stringify(requestBody),
-  })
-    .then(async (res) => {
-      const {
-        authResponse,
-      }: {
-        authResponse: { user: User | null; session: Session | null };
-      } = await res.json();
+  try {
+    const res = await fetch("api/auth/login", {
+      method: "POST",
+      headers: session.access_token
+        ? {
+            Authorization: "Bearer " + session.access_token,
+          }
+        : {},
+      body: JSON.stringify(requestBody),
+    });
+    if (!res.ok) {
+      throw new Error("ログインに失敗しました");
+    }
+    const {
+      authResponse,
+    }: {
+      authResponse: { user: User | null; session: Session | null };
+    } = await res.json();
 
-      if (authResponse.session !== null) {
-        sessionStorage.setItem("session", JSON.stringify(authResponse.session));
-      }
-      setUser((oldUser) => {
-        return {
-          user: authResponse.user || oldUser.user,
-          session: authResponse.session || oldUser.session || session,
-        };
-      });
-    })
-    .catch((e) => console.log(e));
+    if (authResponse.session !== null) {
+      sessionStorage.setItem("session", JSON.stringify(authResponse.session));
+    }
+    setUser((oldUser) => {
+      return {
+        user: authResponse.user || oldUser.user,
+        session: authResponse.session || oldUser.session || session,
+      };
+    });
+  } catch (e) {
+    throw e;
+  }
 };
