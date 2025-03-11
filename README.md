@@ -5,9 +5,6 @@
 - Next.js
 - ChakraUI
 - Docker
-- supabase 
-  - 認証
-  - 外部DB
 - prisma
 - swr
 - recoil

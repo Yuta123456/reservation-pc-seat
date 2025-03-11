@@ -19,7 +19,6 @@ import {
 } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useRecoilState } from "recoil";
 import {
   DisplayPeriod,
   ReservationScheduleWithAuth,
