@@ -1,6 +1,5 @@
 "use client";
-
-import { UserState, userState } from "@/state/user";
+import { userState } from "@/state/user";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -107,16 +106,6 @@ export default function Home() {
               </Button>
             </InputRightElement>
           </InputGroup>
-
-          <Button
-            mt={4}
-            onClick={handleSubmit}
-            variant="solid"
-            color={"teal.700"}
-            isLoading={isLoading}
-          >
-            Login
-          </Button>
         </FormControl>
       </Center>
     </Center>

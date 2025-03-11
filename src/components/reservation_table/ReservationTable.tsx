@@ -14,8 +14,6 @@ import {
 import { useIsPc } from "@/Hooks/useIsPc";
 import { FC } from "react";
 import useSWR from "swr";
-import { useRecoilState } from "recoil";
-import { userState } from "@/state/user";
 import IsReserved from "../../../public/IsReserved.svg";
 import Image from "next/image";
 
@@ -45,7 +43,6 @@ export const ReservationTable: FC<ReservationTableProps> = ({
   onCellClick,
 }) => {
   const isPc = useIsPc(undefined);
-  const [user, _] = useRecoilState(userState);
   // TODO: ここ、頑張らないと予約の書き換えが起こる
   const { data, error, isLoading } = useSWR<{
     reservationSchedule: ReservationSchedule[][];

@@ -2,7 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { ReservationScheduleWithAuth } from "@/components/reservation_table/ReservationTable";
-import { supabase } from "../supabase";
 import { prisma } from "../../prisma";
 import { logger } from "@/utils/logger";
 type Data = {
@@ -37,22 +36,6 @@ const getHandler = async (
   res: NextApiResponse<Data>,
   prisma: PrismaClient
 ) => {
-  const jwt = req.headers.authorization?.slice(7);
-  if (typeof jwt !== "string") {
-    return res.status(400).end();
-  }
-
-  if (supabase === "" || supabase === undefined) {
-    return res.status(500).end();
-  }
-  const {
-    data: { user },
-  } = await supabase.auth.getUser(jwt);
-
-  if (!user) {
-    // accessTokenが無効
-    return res.status(401).json({ message: "再度やり直して下さい" });
-  }
   const today = new Date(new Date().setHours(0, 0, 0, 0));
 
   // 今日にされた予約を全て取得

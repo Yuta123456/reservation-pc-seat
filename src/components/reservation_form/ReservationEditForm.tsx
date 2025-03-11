@@ -18,16 +18,9 @@ import {
 
 import { FC, useEffect, useState } from "react";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { UserState, userState } from "../../state/user";
-import { SetterOrUpdater, useRecoilState } from "recoil";
-import { confirmAccessToken } from "@/utils/confirmAccessToken";
 import { MinusIcon, AddIcon } from "@chakra-ui/icons";
 import { validateStudentId } from "@/utils/validation";
-import useSWR from "swr";
-import {
-  ReservationSchedule,
-  ReservationScheduleWithAuth,
-} from "../reservation_table/ReservationTable";
+import { ReservationScheduleWithAuth } from "../reservation_table/ReservationTable";
 type ReservationFormProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -53,8 +46,6 @@ export const ReservationEditForm: FC<ReservationFormProps> = ({
   id,
 }) => {
   const isPc = useIsPc(undefined);
-
-  const [user, setUser] = useRecoilState(userState);
   const [isAbleEdit, setIsAbleEdit] = useState(false);
   if (isPc === undefined) {
     return <></>;
@@ -74,8 +65,6 @@ export const ReservationEditForm: FC<ReservationFormProps> = ({
             period={period}
             seat={seat}
             id={id}
-            user={user}
-            setUser={setUser}
             setIsAbleEdit={(isAbleEdit) => setIsAbleEdit(isAbleEdit)}
           />
         )}
@@ -83,9 +72,7 @@ export const ReservationEditForm: FC<ReservationFormProps> = ({
           <EditReservation
             period={period}
             seat={seat}
-            user={user}
             id={id}
-            setUser={setUser}
             onClose={onClose}
           />
         )}
@@ -98,15 +85,11 @@ type ConfirmUserProps = {
   period: number;
   seat: number;
   id: number;
-  user: UserState;
-  setUser: SetterOrUpdater<UserState>;
   setIsAbleEdit: (isAbleEdit: boolean) => void;
 };
 const ConfirmUser: FC<ConfirmUserProps> = ({
   period,
   seat,
-  user,
-  setUser,
   setIsAbleEdit,
   id,
 }) => {
@@ -138,14 +121,9 @@ const ConfirmUser: FC<ConfirmUserProps> = ({
           isDisabled={editKey.length === 0}
           onClick={async () => {
             setIsLoading(true);
-            await confirmAccessToken(setUser);
             fetch("api/auth/reservation/edit-confirm", {
               method: "POST",
               body: JSON.stringify({ id, editKey }),
-              // TODO: もうちょいいい感じに。
-              headers: {
-                authorization: "Bearer " + user.session?.access_token || "",
-              },
             })
               .then(async (res) => {
                 if (!res.ok) {
@@ -184,17 +162,13 @@ const ConfirmUser: FC<ConfirmUserProps> = ({
 type EditReservationProps = {
   period: number;
   seat: number;
-  user: UserState;
   id: number;
-  setUser: SetterOrUpdater<UserState>;
   onClose: () => void;
 };
 const EditReservation: FC<EditReservationProps> = ({
   period,
   seat,
-  user,
   id,
-  setUser,
   onClose,
 }) => {
   const toast = useToast();
@@ -203,11 +177,7 @@ const EditReservation: FC<EditReservationProps> = ({
   const [studentsIds, setStudentsIds] = useState<string[]>([""]);
   const [numberOfForm, setNumberOfForm] = useState<number>(1);
   useEffect(() => {
-    fetch("api/auth/reservation/today", {
-      headers: {
-        Authorization: "Bearer " + user.session?.access_token,
-      },
-    })
+    fetch("api/auth/reservation/today")
       .then((res) => res.json())
       .then((res) => res.reservationSchedule)
       .then((res: ReservationScheduleWithAuth[][]) => {
@@ -313,13 +283,9 @@ const EditReservation: FC<EditReservationProps> = ({
                   return;
                 }
                 setIsLoading(true);
-                await confirmAccessToken(setUser);
                 fetch("api/auth/reservation", {
                   method: "PUT",
                   body: JSON.stringify({ id, studentsIds }),
-                  headers: {
-                    authorization: "Bearer " + user.session?.access_token || "",
-                  },
                 })
                   .then(async (res) => {
                     if (!res.ok) {
@@ -355,14 +321,9 @@ const EditReservation: FC<EditReservationProps> = ({
               colorScheme="red"
               onClick={async () => {
                 setIsLoading(true);
-                await confirmAccessToken(setUser);
                 fetch("api/auth/reservation", {
                   method: "DELETE",
                   body: JSON.stringify({ id }),
-                  // TODO: もうちょいいい感じに。
-                  headers: {
-                    authorization: "Bearer " + user.session?.access_token || "",
-                  },
                 })
                   .then(async (res) => {
                     if (!res.ok) {
