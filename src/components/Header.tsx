@@ -1,11 +1,9 @@
 "use client";
 import { useIsPc } from "@/Hooks/useIsPc";
-import { Box, Button, Heading, IconButton, Link, Text } from "@chakra-ui/react";
+import { Box, Heading, IconButton } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useRecoilState } from "recoil";
-import { userState } from "@/state/user";
 import { FC, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { SearchReservationModal } from "./search_reservation/SearchReservation";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Navbar } from "./Tabs";
@@ -13,12 +11,10 @@ import { headingStyle } from "@/style/style";
 
 export const Header = () => {
   const isPc = useIsPc(undefined);
-  const [user, _] = useRecoilState(userState);
   const pathname = usePathname();
   // そのうちLA検索やいべんとの検索が出来るようにしたい
   const [isOpenSearchReservation, setIsOpenSearchReservation] = useState(false);
   const isPCReservePage = pathname === "/";
-  const isHiddenButton = user.user !== null || pathname === "/login";
   if (isPc === undefined) {
     return <></>;
   }
@@ -26,7 +22,6 @@ export const Header = () => {
     <>
       {isPc ? (
         <PCHeader
-          isHiddenButton={isHiddenButton}
           setIsOpenSearchReservation={() =>
             setIsOpenSearchReservation((prev) => !prev)
           }
@@ -34,7 +29,6 @@ export const Header = () => {
         />
       ) : (
         <SPHeader
-          isHiddenButton={isHiddenButton}
           setIsOpenSearchReservation={() =>
             setIsOpenSearchReservation((prev) => !prev)
           }
@@ -52,17 +46,14 @@ export const Header = () => {
 };
 
 type HeaderProps = {
-  isHiddenButton: boolean;
   setIsOpenSearchReservation: () => void;
   isPCReservePage: boolean;
 };
 
 const PCHeader: FC<HeaderProps> = ({
-  isHiddenButton,
   setIsOpenSearchReservation,
   isPCReservePage,
 }) => {
-  const [user, _] = useRecoilState(userState);
   return (
     <Box
       bg="#EFB134"
@@ -78,20 +69,7 @@ const PCHeader: FC<HeaderProps> = ({
             <NextLink href={"/"}>Learning Commons PC席予約システム</NextLink>
           </Heading>
           <Box w="100%" display={"flex"} justifyContent="flex-end">
-            {/* TODO: ここ三項演算子にしてくれ */}
-            {!isHiddenButton && (
-              <Button
-                variant="putline"
-                display="flex"
-                justifyContent={"flex-end"}
-                size="lg"
-              >
-                <Link as={NextLink} href={"/login"}>
-                  Login
-                </Link>
-              </Button>
-            )}
-            {user.user && isPCReservePage && (
+            {isPCReservePage && (
               <IconButton
                 aria-label="search"
                 onClick={setIsOpenSearchReservation}
@@ -108,11 +86,9 @@ const PCHeader: FC<HeaderProps> = ({
   );
 };
 const SPHeader: FC<HeaderProps> = ({
-  isHiddenButton,
   setIsOpenSearchReservation,
   isPCReservePage,
 }) => {
-  const [user, _] = useRecoilState(userState);
   return (
     <Box
       bg="#EFB134"
@@ -128,14 +104,7 @@ const SPHeader: FC<HeaderProps> = ({
             <NextLink href={"/"}>LC PC 予約</NextLink>
           </Heading>
           <Box justifyContent={"flex-end"} display="flex" w="100%">
-            {!isHiddenButton && (
-              <Button variant="putline">
-                <Link as={NextLink} href={"/login"}>
-                  Login
-                </Link>
-              </Button>
-            )}
-            {user.user && isPCReservePage && (
+            {isPCReservePage && (
               <IconButton
                 aria-label="search"
                 onClick={setIsOpenSearchReservation}

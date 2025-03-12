@@ -14,7 +14,8 @@ export default async function handler(
     return res.status(500).end();
   }
   const { id, editKey }: { id: string; editKey: string } = JSON.parse(req.body);
-  const isAdmin = process.env.ADMIN_KEY === editKey;
+  const isAdmin =
+    process.env.ADMIN_KEY1 === editKey || process.env.ADMIN_KEY2 === editKey;
   const studentIds = await prisma.reservationStudent
     .findMany({
       where: {

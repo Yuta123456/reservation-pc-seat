@@ -14,7 +14,7 @@ services:
         max-size: "10k"
         max-file: "5"
     networks:
-    - rps-network
+      - rps-network
   web:
     container_name: reservation_pc_seat
     build:
@@ -29,6 +29,8 @@ services:
     tty: true
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/db?schema=postgres
+      - ADMIN_KEY1=hogehoge1
+      - ADMIN_KEY2=hogehoge2
     # command: >
     #   sh -c "npm run start"
 networks:
