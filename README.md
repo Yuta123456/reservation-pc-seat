@@ -29,6 +29,12 @@ Docker上でビルドさせようと思ったが、中々処理が重い可能�
 - `npx next build`
 - `docker compose up -d --build`
 
+# 2025/09/09追記
+- powershellだと`npm`が使えない
+- docker上で操作してその結果をホストに持ってきて対処
+- docker上で`next build`してホストに持ってきた後、これを元にサーブするので、Dockerfileの`docker-build`はコメントアウト
+
+
 ## 失敗しそうなところ
 - Docker Desktopが立ち上がっていない
 - dockerを立ち上げるときに何かしらエラーがおこっている（Docker Desktopのログをみる）
